@@ -1,5 +1,20 @@
 <template>
-  <v-treeview hoverable :items="items"></v-treeview>
+  <div>
+    <v-sheet class="pa-4 primary lighten-2">
+      <v-text-field
+        v-model="search"
+        label="搜尋檔案"
+        flat
+        dark
+        solo-inverted
+        hide-details
+        clearable
+        clear-icon="mdi-close-circle-outline"
+      ></v-text-field>
+      <v-checkbox v-model="caseSensitive" dark hide-details label="區分大小寫"></v-checkbox>
+    </v-sheet>
+    <v-treeview hoverable :search="search" :filter="filter" :items="items"></v-treeview>
+  </div>
 </template>
 
 <script>
@@ -15,11 +30,20 @@ export default {
   name: 'SideBar',
   data() {
     return {
-      items: []
+      items: [],
+      search: null,
+      caseSensitive: false,
     }
   },
   created() {
     this.items = this.getItems();
+  },
+  computed: {
+    filter() {
+      return this.caseSensitive
+        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
+        : undefined
+    },
   },
   methods: {
     getItems() {
