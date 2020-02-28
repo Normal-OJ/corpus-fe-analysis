@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="side-bar">
     <v-sheet class="pa-4 primary lighten-2">
       <v-text-field
         v-model="search"
@@ -17,6 +17,9 @@
       open-on-click
       transition
       hoverable
+      activatable
+      return-object
+      @update:active="onUpdate"
       :search="search"
       :filter="filter"
       :items="items"
@@ -26,28 +29,21 @@
 </template>
 
 <script>
-class File {
-  constructor({ name, children = [], fullName = '' } = {}) {
-    this.name = name
-    this.children = children
-    this.fullName = fullName
-  }
-}
+import File from '@/util/file'
 
 export default {
   name: 'SideBar',
+  props: {
+    items: {
+      type: Array,
+      default: [],
+    },
+  },
   data() {
     return {
-      items: [],
       search: null,
       caseSensitive: false,
     }
-  },
-  async created() {
-    let temp = new File({ name: 'temp', fullName: '/' })
-    console.log(temp)
-    await this.getItems(temp);
-    this.items = temp.children
   },
   computed: {
     filter() {
@@ -57,41 +53,16 @@ export default {
     },
   },
   methods: {
-    async getItems(file) {
-      try {
-        let resp = await this.$http.get('/api/view', { params: { file: file.fullName } })
-        let data = resp.data;
-        // parse tree view
-        let files = []
-        let isDir = false;
-        if (data.folders) {
-          files.push(...data.folders)
-        }
-        if (data.files) {
-          files.push(...data.files)
-        }
-        for (let f of files) {
-          let fullName = `${file.prefix}/${f}`
-          file.children.push(new File({
-            name: f,
-            fullName: fullName,
-          }))
-        }
-        // parse info panel
-        if (data.description) { // colletion
-
-        }
-        else if (data.content) { // file
-
-        }
-      }
-      catch (err) {
-        console.log(err)
-      }
-    },
+    onUpdate(ele) {
+      this.$emit('nodeClick', ele)
+    }
   }
 }
 </script>
 
 <style>
+#side-bar {
+  overflow-y: scroll;
+  height: 80vh;
+}
 </style>

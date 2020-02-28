@@ -1,13 +1,11 @@
 <template>
   <v-app>
     <v-app-bar app color="success" dark>
-      <div class="d-flex align-center title">
-        兒童語料庫 語料查看與分析
-      </div>
+      <div class="d-flex align-center title">兒童語料庫 語料查看與分析</div>
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/view" text>
+      <v-btn to="/browse" text>
         <v-icon>mdi-file-find</v-icon>
         <span class="title">語料查看</span>
       </v-btn>
@@ -26,7 +24,7 @@
     </v-app-bar>
 
     <v-content>
-      <router-view/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
