@@ -13,19 +13,26 @@
       ></v-text-field>
       <v-checkbox v-model="caseSensitive" dark hide-details label="區分大小寫"></v-checkbox>
     </v-sheet>
-    <v-treeview hoverable :search="search" :filter="filter" :items="items" item-key="fullName"></v-treeview>
+    <v-treeview
+      open-on-click
+      transition
+      hoverable
+      :search="search"
+      :filter="filter"
+      :items="items"
+      item-key="fullName"
+    ></v-treeview>
   </div>
 </template>
 
 <script>
 class File {
-  constructor(name, children = [], fullName = '') {
+  constructor({ name, children = [], fullName = '' } = {}) {
     this.name = name
     this.children = children
     this.fullName = fullName
   }
 }
-const API_BASE = 'https://noj.tw:8777'
 
 export default {
   name: 'SideBar',
@@ -37,7 +44,8 @@ export default {
     }
   },
   async created() {
-    let temp = new File('tempfile')
+    let temp = new File({ name: 'temp', fullName: '/' })
+    console.log(temp)
     await this.getItems(temp);
     this.items = temp.children
   },
@@ -63,8 +71,8 @@ export default {
           files.push(...data.files)
         }
         for (let f of files) {
-          let fullName = `${fileObj.prefix}/${f}`
-          fileObj.children.push(new File({
+          let fullName = `${file.prefix}/${f}`
+          file.children.push(new File({
             name: f,
             fullName: fullName,
           }))
