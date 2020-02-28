@@ -1,20 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import View from '../views/View.vue'
+import Browse from '@/views/Browse'
 import Analysis from '../views/Analysis.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'home',
     redirect: '/view',
   },
   {
-    path: '/view',
-    name: 'view',
-    component: View,
+    path: '/browse',
+    name: 'browse',
+    component: Browse,
   },
   {
     path: '/analysis',
