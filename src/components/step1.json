@@ -71,10 +71,6 @@
     {
       "label": "12歲～12歲11個月",
       "value": [144, 155]
-    },
-    {
-      "label": "不限年齡",
-      "value": [0, 9999]
     }
   ],
   "sexs": [
@@ -112,31 +108,27 @@
   "contexts": [
     {
       "label": "限玩玩具敘說",
-      "value": ["toy play narrative"]
+      "value": "toy play narrative"
     },
     {
       "label": "限親子共玩玩具",
-      "value": ["joint toy play"]
+      "value": "joint toy play"
     },
     {
       "label": "限親子軼事敘說",
-      "value": ["anecdote"]
+      "value": "anecdote"
     },
     {
       "label": "限親子共讀",
-      "value": ["joint book reading"]
+      "value": "joint book reading"
     },
     {
       "label": "限個人生活經驗敘說",
-      "value": ["personal narrative"]
+      "value": "personal narrative"
     },
     {
       "label": "限無字圖畫書敘說",
-      "value": ["frog story narration"]
-    },
-    {
-      "label": "不限情境",
-      "value": ["toy play narrative", "joint toy play", "anecdote", "joint book reading", "personal narrative", "frog story narration"]
+      "value": "frog story narration"
     }
   ],
   "indicator": [

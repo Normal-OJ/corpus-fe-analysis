@@ -3,12 +3,12 @@
 
     <v-btn
       color="warning"
-    >重新分析</v-btn>
+      @click="$emit('back')"
+    >返回</v-btn>
 
     <v-btn
       text
-      @click="$emit('back')"
-    >返回</v-btn>
+    >重新分析</v-btn>
 
   </v-container>
 </template>
@@ -17,6 +17,13 @@
 export default {
 
   name: 'Step2',
+
+  props: {
+    items: {
+      type: Array,
+      required: true,
+    },
+  },
 
   data () {
     return {

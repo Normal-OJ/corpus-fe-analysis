@@ -17,13 +17,13 @@
     <v-stepper-items>
       <v-stepper-content step="1">
 
-        <Step1 @next="step1"></Step1>
+        <Step1 @next="step1" :loading="loading"></Step1>
 
       </v-stepper-content>
 
       <v-stepper-content step="2">
 
-        <Step2 @next="step2" @back="step = step-1"></Step2>
+        <Step2 @next="step2" @back="step = step-1" :items="items"></Step2>
 
       </v-stepper-content>
     </v-stepper-items>
@@ -45,12 +45,24 @@ export default {
   data () {
     return {
       step: 1,
+      loading: false,
+      items: [],
     }
   },
 
   methods: {
     step1(data) {
-      this.step = 2;
+      this.loading = true;
+      this.$http.post('/api/option_kideval', data)
+        .then((res) => {
+          console.log(res);
+          this.items = res.data.data;
+          this.loading = false;
+          this.step = 2;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     step2(data) {
     },
