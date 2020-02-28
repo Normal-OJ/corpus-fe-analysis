@@ -1,60 +1,98 @@
 <template>
-  <v-container fluid style="height: 100vh;">
+  <v-container fluid style="min-height: 100vh; padding: 0 20vw;">
     
     <!-- Age -->
     <h2>年齡層（可複選）：</h2>
-    <v-row no-gutters>
-      <v-select
-        v-model="data.ages"
-        :items="ages"
-        item-text="label"
-        item-value="value"
-        label="選擇年齡層"
-        chips
-        multiple
-      ></v-select>
-    </v-row>
+    <v-select
+      v-model="data.ages"
+      :items="ages"
+      item-text="label"
+      item-value="value"
+      label="選擇年齡層"
+      chips
+      multiple
+    ></v-select>
 
     <!-- Sex -->
     <h2>性別：</h2>
-    <v-row no-gutters>
-      <v-radio-group v-model="data.sex">
-        <v-radio
-          v-for="sex in sexs"
-          :key="sex.label"
-          :label="sex.label"
-          :value="sex.value"
-        ></v-radio>
-      </v-radio-group>
-    </v-row>
+    <v-radio-group row v-model="data.sex">
+      <v-radio
+        v-for="sex in sexs"
+        :key="sex.label"
+        class="mb-3"
+        :label="sex.label"
+        :value="sex.value"
+      ></v-radio>
+    </v-radio-group>
+
+    <!-- Speaker -->
+    <h2>分析對象：</h2>
+    <v-radio-group row v-model="data.speaker">
+      <v-radio
+        v-for="speaker in speakers"
+        :key="speaker.label"
+        class="mb-3"
+        :label="speaker.label"
+        :value="speaker.value"
+      ></v-radio>
+    </v-radio-group>
 
     <!-- Context -->
     <h2>情境：</h2>
-    <v-row no-gutters>
-      <v-select
-        v-model="data.context"
-        :items="context"
-        item-text="label"
-        item-value="value"
-        label="選擇情境"
-      ></v-select>
-    </v-row>
+    <v-radio-group row v-model="data.context">
+      <v-radio
+        v-for="context in contexts"
+        :key="context.label"
+        class="mb-3"
+        :label="context.label"
+        :value="context.value"
+      ></v-radio>
+    </v-radio-group>
 
-    {{ data.ages }}
-    {{ data.sex }}
-    {{ data.context }}
+    <!-- Indicator -->
+    <h2>語言指標（可複選）：</h2>
+    <v-select
+      v-model="data.indicator"
+      :items="indicators"
+      item-text="label"
+      item-value="value"
+      label="選擇語言指標"
+      chips
+      multiple
+    >
+      <v-list-item
+        slot="prepend-item"
+        ripple
+        @click="toggle"
+      >
+        <v-list-item-action>
+          <v-icon :color="data.indicator.length > 0 ? 'indigo darken-4' : ''">{{ icon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-title>全選</v-list-item-title>
+      </v-list-item>
+      <v-divider slot="prepend-item" class="mt-2"/>
+    </v-select>
+
+    <!-- DEBUG MSG -->
+    <!-- {{ data.ages }} -->
+    <!-- {{ data.sex }} -->
+    <!-- {{ data.context }} -->
+    <!-- {{ data.speaker }} -->
+    <!-- {{ data.indicator }} -->
 
     <v-btn
       color="primary"
       @click="$emit('next', data)"
-    >
-      繼續
-    </v-btn>
+    >繼續</v-btn>
+
+    <br v-for="n in 10">
 
   </v-container>
 </template>
 
 <script>
+import json from './step1.json'
+
 export default {
 
   name: 'Step1',
@@ -65,138 +103,43 @@ export default {
         ages: [],
         sex: [],
         context: [],
+        speaker: [],
+        indicator: [],
       },
 
-      ages: [
-        {
-          label: '未滿1歲',
-          value: [0, 11],  
-        },
-        {
-          label: '1歲～1歲5個月',
-          value: [12, 17],
-        },
-        {
-          label: '1歲6個月～1歲11月',
-          value: [18, 23],
-        },
-        {
-          label: '2歲～2歲5個月',
-          value: [24, 29],  
-        },
-        {
-          label: '2歲6個月～2歲11個月',
-          value: [30, 35],  
-        },
-        {
-          label: '3歲～3歲5個月',
-          value: [36, 41],  
-        },
-        {
-          label: '3歲6個月～3歲11個月',
-          value: [42, 47],  
-        },
-        {
-          label: '4歲～4歲5個月',
-          value: [48, 53],  
-        },
-        {
-          label: '4歲6個月～4歲11個月',
-          value: [54, 59],  
-        },
-        {
-          label: '5歲～5歲5個月',
-          value: [60, 65],  
-        },
-        {
-          label: '5歲6個月～5歲11個月',
-          value: [66, 71],  
-        },
-        {
-          label: '6歲～6歲11個月',
-          value: [72, 83],  
-        },
-        {
-          label: '7歲～7歲11個月',
-          value: [84, 95],  
-        },
-        {
-          label: '8歲～8歲11個月',
-          value: [96, 107],  
-        },
-        {
-          label: '9歲～9歲11個月',
-          value: [108, 119],  
-        },
-        {
-          label: '10歲～10歲11個月',
-          value: [120, 131],  
-        },
-        {
-          label: '11歲～11歲11個月',
-          value: [132, 143],  
-        },
-        {
-          label: '12歲～12歲11個月',
-          value: [144, 155],  
-        },
-        {
-          label: '不限年齡',
-          value: [0, 9999],
-        },
-      ],
-
-      sexs: [
-        {
-          label: '只選男生',
-          value: [0],
-        },
-        {
-          label: '只選女生',
-          value: [1],
-        },
-        {
-          label: '不限性別',
-          value: [0, 1],
-        },
-      ],
-
-      context: [
-        {
-          label: '限玩玩具敘說',
-          value: ["toy play narrative"],
-        },
-        {
-          label: '限親子共玩玩具',
-          value: ["joint toy play"],
-        },
-        {
-          label: '限親子軼事敘說',
-          value: ["anecdote"],
-        },
-        {
-          label: '限親子共讀',
-          value: ["joint book reading"],
-        },
-        {
-          label: '限個人生活經驗敘說',
-          value: ["personal narrative"],
-        },
-        {
-          label: '限無字圖畫書敘說',
-          value: ["frog story narration"],
-        },
-        {
-          label: '限敘說 (含玩玩具敘說、親子軼事敘說、個人生活經驗敘說和無字圖畫敘說)',
-          value: ["toy play narrative", "anecdote", "personal narrative", "frog story narration"],
-        },
-        {
-          label: '不限情境',
-          value: ["toy play narrative", "joint toy play", "anecdote", "joint book reading", "personal narrative", "frog story narration"],
-        },
-      ]
+      ages: json.ages,
+      sexs: json.sexs,
+      speakers: json.speakers,
+      contexts: json.contexts,
+      indicators: json.indicator,
     }
   },
+
+  computed: {
+    selectAll () {
+      return this.data.indicator.length === this.indicators.length
+    },
+    selectSome () {
+      return this.data.indicator.length > 0 && !this.selectAll
+    },
+    icon () {
+      if (this.selectAll) return 'mdi-close-box'
+      if (this.selectSome) return 'mdi-minus-box'
+      return 'mdi-checkbox-blank-outline'
+    }
+  },
+
+  methods: {
+    toggle() {
+      this.$nextTick(() => {
+        if ( this.selectAll ) {
+          this.data.indicator = [];
+        } else {
+          this.data.indicator = this.indicators.map(v => v.value);
+        }
+      })
+    }
+  }
 }
 </script>
 
