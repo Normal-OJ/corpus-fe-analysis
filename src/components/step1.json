@@ -1,0 +1,288 @@
+{
+  "ages": [
+    {
+      "label": "未滿1歲",
+      "value": [0, 11]
+    },
+    {
+      "label": "1歲～1歲5個月",
+      "value": [12, 17]
+    },
+    {
+      "label": "1歲6個月～1歲11月",
+      "value": [18, 23]
+    },
+    {
+      "label": "2歲～2歲5個月",
+      "value": [24, 29]  
+    },
+    {
+      "label": "2歲6個月～2歲11個月",
+      "value": [30, 35]  
+    },
+    {
+      "label": "3歲～3歲5個月",
+      "value": [36, 41]  
+    },
+    {
+      "label": "3歲6個月～3歲11個月",
+      "value": [42, 47]  
+    },
+    {
+      "label": "4歲～4歲5個月",
+      "value": [48, 53]  
+    },
+    {
+      "label": "4歲6個月～4歲11個月",
+      "value": [54, 59]  
+    },
+    {
+      "label": "5歲～5歲5個月",
+      "value": [60, 65]  
+    },
+    {
+      "label": "5歲6個月～5歲11個月",
+      "value": [66, 71]  
+    },
+    {
+      "label": "6歲～6歲11個月",
+      "value": [72, 83]  
+    },
+    {
+      "label": "7歲～7歲11個月",
+      "value": [84, 95]  
+    },
+    {
+      "label": "8歲～8歲11個月",
+      "value": [96, 107]  
+    },
+    {
+      "label": "9歲～9歲11個月",
+      "value": [108, 119]  
+    },
+    {
+      "label": "10歲～10歲11個月",
+      "value": [120, 131]  
+    },
+    {
+      "label": "11歲～11歲11個月",
+      "value": [132, 143]  
+    },
+    {
+      "label": "12歲～12歲11個月",
+      "value": [144, 155]
+    },
+    {
+      "label": "不限年齡",
+      "value": [0, 9999]
+    }
+  ],
+  "sexs": [
+    {
+      "label": "只選男生",
+      "value": [0]
+    },
+    {
+      "label": "只選女生",
+      "value": [1]
+    },
+    {
+      "label": "不限性別",
+      "value": [0, 1]
+    }
+  ],
+  "speakers": [
+    {
+      "label": "只選幼兒",
+      "value": ["CHI"]
+    },
+    {
+      "label": "只選母親",
+      "value": ["MOT"]
+    },
+    {
+      "label": "只選父親",
+      "value": ["FAT"]
+    },
+    {
+      "label": "不限定說話者",
+      "value": ["CHI", "MOT", "FAT"]
+    }
+  ],
+  "contexts": [
+    {
+      "label": "限玩玩具敘說",
+      "value": ["toy play narrative"]
+    },
+    {
+      "label": "限親子共玩玩具",
+      "value": ["joint toy play"]
+    },
+    {
+      "label": "限親子軼事敘說",
+      "value": ["anecdote"]
+    },
+    {
+      "label": "限親子共讀",
+      "value": ["joint book reading"]
+    },
+    {
+      "label": "限個人生活經驗敘說",
+      "value": ["personal narrative"]
+    },
+    {
+      "label": "限無字圖畫書敘說",
+      "value": ["frog story narration"]
+    },
+    {
+      "label": "不限情境",
+      "value": ["toy play narrative", "joint toy play", "anecdote", "joint book reading", "personal narrative", "frog story narration"]
+    }
+  ],
+  "indicator": [
+    {
+      "label": "語句總數(Total Utts)",
+      "value": "Total Utts"
+    },
+    {
+      "label": "平均語句長度語句數(MLU Utts)",
+      "value": "MLU Utts"
+    },
+    {
+      "label": "平均語句長度(以詞彙計算)(MLU Words)",
+      "value": "MLU Words"
+    },
+    {
+      "label": "平均語句長度(以詞素計算)(MLU Morphemes)",
+      "value": "MLU Morphemes"
+    },
+    {
+      "label": "前百句平均語句長度語句總數(MLU 100 Utts)",
+      "value": "MLU 100 Utts"
+    },
+    {
+      "label": "前百句平均語句長度(以詞彙計算) (MLU 100 Words)",
+      "value": "MLU 100 Words"
+    },
+    {
+      "label": "前百句平均語句長度(以詞素計算) (MLU 100 Morphemes)",
+      "value": "MLU 100 Morphemes"
+    },
+    {
+      "label": "相異詞彙數(FREQ types)",
+      "value": "FREQ types"
+    },
+    {
+      "label": "總詞彙數(FREQ tokens)",
+      "value": "FREQ tokens"
+    },
+    {
+      "label": "相異詞比率(FREQ TTR)",
+      "value": "FREQ TTR"
+    },
+    {
+      "label": "前百字相異詞彙數(NDW/100)",
+      "value": "NDW/100"
+    },
+    {
+      "label": "詞彙多樣性(VOCD)",
+      "value": "VOCD"
+    },
+    {
+      "label": "每語句平均動詞數(Verbs/Utt)",
+      "value": "Verbs/Utt"
+    },
+    {
+      "label": "每位說話者在 TIMEDUR 總詞數(TD Words)",
+      "value": "TD Words"
+    },
+    {
+      "label": "每位說話者在 TIMEDUR 總句數(TD Utts)",
+      "value": "TD Utts"
+    },
+    {
+      "label": "每位說話者語句時間數(TD Time(secs))",
+      "value": "TD Time(secs)"
+    },
+    {
+      "label": "每秒詞彙數(TD Words/Time)",
+      "value": "TD Words/Time"
+    },
+    {
+      "label": "每秒語句數(TD Utts/Time)",
+      "value": "TD Utts/Time"
+    },
+    {
+      "label": "錯誤詞彙數(Word Errors)",
+      "value": "Word Errors"
+    },
+    {
+      "label": "錯誤語句數(Utt Errors)",
+      "value": "Utt Errors"
+    },
+    {
+      "label": "語詞延宕次數(retracing)",
+      "value": "retracing"
+    },
+    {
+      "label": "語詞重複次數(repetition)",
+      "value": "repetition"
+    },
+    {
+      "label": "mor 行段詞彙數(mor Words)",
+      "value": "mor Words"
+    },
+    {
+      "label": "形容詞總次數(adj)",
+      "value": "adj"
+    },
+    {
+      "label": "量詞總次數(cl)",
+      "value": "cl"
+    },
+    {
+      "label": "連接詞總次數(conn)",
+      "value": "conn"
+    },
+    {
+      "label": "限定詞總次數(det)",
+      "value": "det"
+    },
+    {
+      "label": "位置或方位總次數(loc)",
+      "value": "loc"
+    },
+    {
+      "label": "名詞總次數(n)",
+      "value": "n"
+    },
+    {
+      "label": "數詞總次數(num)",
+      "value": "num"
+    },
+    {
+      "label": "代名詞總次數(pro)",
+      "value": "pro"
+    },
+    {
+      "label": "語助詞總次數(sfp)",
+      "value": "sfp"
+    },
+    {
+      "label": "動詞總次數(v)",
+      "value": "v"
+    },
+    {
+      "label": "助動詞總次數(v:aux)",
+      "value": "v:aux"
+    },
+    {
+      "label": "疑問詞總次數(wh)",
+      "value": "wh"
+    },
+    {
+      "label": "方向性動詞總次數(v:dirc)",
+      "value": "v:dirc"
+    }
+  ]
+}
