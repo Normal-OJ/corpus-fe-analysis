@@ -1,5 +1,11 @@
+const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
+
 module.exports = {
   devServer: {
-    disableHostCheck: true,
-  }
-}
+    disableHostCheck: true
+  },
+  configureWebpack: {
+    // plugins: [new VuetifyLoaderPlugin()]
+  },
+  transpileDependencies: ["vuetify"]
+};
