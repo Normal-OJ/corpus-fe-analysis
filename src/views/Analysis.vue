@@ -62,6 +62,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.loading = false;
         })
     },
     step2(data) {
