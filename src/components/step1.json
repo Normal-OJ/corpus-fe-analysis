@@ -99,10 +99,6 @@
     {
       "label": "只選父親",
       "value": ["FAT"]
-    },
-    {
-      "label": "不限定說話者",
-      "value": ["CHI", "MOT", "FAT"]
     }
   ],
   "contexts": [
@@ -134,83 +130,83 @@
   "indicator": [
     {
       "label": "語句總數(Total Utts)",
-      "value": "Total Utts"
+      "value": "Total_Utts"
     },
     {
       "label": "平均語句長度語句數(MLU Utts)",
-      "value": "MLU Utts"
+      "value": "MLU_Utts"
     },
     {
       "label": "平均語句長度(以詞彙計算)(MLU Words)",
-      "value": "MLU Words"
+      "value": "MLU_Words"
     },
     {
       "label": "平均語句長度(以詞素計算)(MLU Morphemes)",
-      "value": "MLU Morphemes"
+      "value": "MLU_Morphemes"
     },
     {
       "label": "前百句平均語句長度語句總數(MLU 100 Utts)",
-      "value": "MLU 100 Utts"
+      "value": "MLU100_Utts"
     },
     {
       "label": "前百句平均語句長度(以詞彙計算) (MLU 100 Words)",
-      "value": "MLU 100 Words"
+      "value": "MLU100_Words"
     },
     {
       "label": "前百句平均語句長度(以詞素計算) (MLU 100 Morphemes)",
-      "value": "MLU 100 Morphemes"
+      "value": "MLU100_Morphemes"
     },
     {
       "label": "相異詞彙數(FREQ types)",
-      "value": "FREQ types"
+      "value": "FREQ_types"
     },
     {
       "label": "總詞彙數(FREQ tokens)",
-      "value": "FREQ tokens"
+      "value": "FREQ_tokens"
     },
     {
       "label": "相異詞比率(FREQ TTR)",
-      "value": "FREQ TTR"
+      "value": "FREQ_TTR"
     },
     {
       "label": "前百字相異詞彙數(NDW/100)",
-      "value": "NDW/100"
+      "value": "NDW_100"
     },
     {
       "label": "詞彙多樣性(VOCD)",
-      "value": "VOCD"
+      "value": "VOCD_D_optimum_average"
     },
     {
       "label": "每語句平均動詞數(Verbs/Utt)",
-      "value": "Verbs/Utt"
+      "value": "Verbs_Utt"
     },
     {
       "label": "每位說話者在 TIMEDUR 總詞數(TD Words)",
-      "value": "TD Words"
+      "value": "TD_Words"
     },
     {
       "label": "每位說話者在 TIMEDUR 總句數(TD Utts)",
-      "value": "TD Utts"
+      "value": "TD_Utts"
     },
     {
       "label": "每位說話者語句時間數(TD Time(secs))",
-      "value": "TD Time(secs)"
+      "value": "TD_Time_(secs)"
     },
     {
       "label": "每秒詞彙數(TD Words/Time)",
-      "value": "TD Words/Time"
+      "value": "TD_Words_Time"
     },
     {
       "label": "每秒語句數(TD Utts/Time)",
-      "value": "TD Utts/Time"
+      "value": "TD_Utts_Time"
     },
     {
       "label": "錯誤詞彙數(Word Errors)",
-      "value": "Word Errors"
+      "value": "Word_Errors"
     },
     {
       "label": "錯誤語句數(Utt Errors)",
-      "value": "Utt Errors"
+      "value": "Utt_Errors"
     },
     {
       "label": "語詞延宕次數(retracing)",
@@ -222,59 +218,62 @@
     },
     {
       "label": "mor 行段詞彙數(mor Words)",
-      "value": "mor Words"
-    },
-    {
-      "label": "形容詞總次數(adj)",
-      "value": "adj"
-    },
-    {
-      "label": "量詞總次數(cl)",
-      "value": "cl"
-    },
-    {
-      "label": "連接詞總次數(conn)",
-      "value": "conn"
-    },
-    {
-      "label": "限定詞總次數(det)",
-      "value": "det"
-    },
-    {
-      "label": "位置或方位總次數(loc)",
-      "value": "loc"
+      "value": "mor_Words"
     },
     {
       "label": "名詞總次數(n)",
       "value": "n"
     },
     {
-      "label": "數詞總次數(num)",
-      "value": "num"
-    },
-    {
-      "label": "代名詞總次數(pro)",
-      "value": "pro"
-    },
-    {
-      "label": "語助詞總次數(sfp)",
-      "value": "sfp"
-    },
-    {
       "label": "動詞總次數(v)",
       "value": "v"
     },
     {
-      "label": "助動詞總次數(v:aux)",
-      "value": "v:aux"
+      "label": "副詞總次數(adv)",
+      "value": "adv"
     },
     {
-      "label": "疑問詞總次數(wh)",
-      "value": "wh"
+      "label": "量詞總次數(cl)",
+      "value": "cl"
     },
     {
-      "label": "方向性動詞總次數(v:dirc)",
-      "value": "v:dirc"
+      "label": "連接詞總次數(conj)",
+      "value": "conj"
+    },
+    {
+      "label": "介系詞總次數(prep)",
+      "value": "prep"
     }
-  ]
+  ],
+  "reindicator": {
+    "Total_Utts": "語句總數(Total Utts)",
+    "MLU_Utts": "平均語句長度語句數(MLU Utts)",
+    "MLU_Words": "平均語句長度(以詞彙計算)(MLU Words)",
+    "MLU_Morphemes": "平均語句長度(以詞素計算)(MLU Morphemes)",
+    "MLU100_Utts": "前百句平均語句長度語句總數(MLU 100 Utts)",
+    "MLU100_Words": "前百句平均語句長度(以詞彙計算) (MLU 100 Words)",
+    "MLU100_Morphemes": "前百句平均語句長度(以詞素計算) (MLU 100 Morphemes)",
+    "FREQ_types": "相異詞彙數(FREQ types)",
+    "FREQ_tokens": "總詞彙數(FREQ tokens)",
+    "FREQ_TTR": "相異詞比率(FREQ TTR)",
+    "NDW_100": "前百字相異詞彙數(NDW/100)",
+    "VOCD_D_optimum_average": "詞彙多樣性(VOCD)",
+    "Verbs_Utt": "每語句平均動詞數(Verbs/Utt)",
+    "TD_Words": "每位說話者在 TIMEDUR 總詞數(TD Words)",
+    "TD_Utts": "每位說話者在 TIMEDUR 總句數(TD Utts)",
+    "TD_Time_(secs)": "每位說話者語句時間數(TD Time(secs))",
+    "TD_Words_Time": "每秒詞彙數(TD Words/Time)",
+    "TD_Utts_Time": "每秒語句數(TD Utts/Time)",
+    "Word_Errors": "錯誤詞彙數(Word Errors)",
+    "Utt_Errors": "錯誤語句數(Utt Errors)",
+    "retracing": "語詞延宕次數(retracing)",
+    "repetition": "語詞重複次數(repetition)",
+    "mor_Words": "mor 行段詞彙數(mor Words)",
+    "n": "名詞總次數(n)",
+    "v": "動詞總次數(v)",
+    "adv": "副詞總次數(adv)",
+    "cl": "量詞總次數(cl)",
+    "conj": "連接詞總次數(conj)",
+    "prep": "介系詞總次數(prep)"
+  }
 }

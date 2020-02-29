@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid style="min-height: 100vh; padding: 0 20vw;">
-    
+  <v-container fluid style="min-height: 150%; padding: 0 15vw;">
+    <v-form ref="form">
     <!-- Age -->
     <h2>年齡層（可複選）：</h2>
     <v-select
@@ -23,6 +23,15 @@
         <v-list-item-title>全選</v-list-item-title>
       </v-list-item>
       <v-divider slot="prepend-item" class="mt-2"/>
+      <template v-slot:selection="{ item, index }">
+        <v-chip v-if="index < 10">
+          <span>{{ item.label }}</span>
+        </v-chip>
+        <span
+          v-if="index === 10"
+          class="grey--text caption"
+        >(+{{ ages.length - 10 }} others)</span>
+      </template>
     </v-select>
 
     <!-- Sex -->
@@ -95,8 +104,18 @@
         <v-list-item-title>全選</v-list-item-title>
       </v-list-item>
       <v-divider slot="prepend-item" class="mt-2"/>
+      <template v-slot:selection="{ item, index }">
+        <v-chip v-if="index < 10">
+          <span>{{ item.label }}</span>
+        </v-chip>
+        <span
+          v-if="index === 10"
+          class="grey--text caption"
+        >(+{{ indicator.length - 10 }} others)</span>
+      </template>
     </v-select>
 
+    </v-form>
     <!-- DEBUG MSG -->
     <!-- {{ data.ages }} -->
     <!-- {{ data.sex }} -->
@@ -108,7 +127,10 @@
       color="primary"
       :loading="loading"
       @click="$emit('next', data)"
+      large
     >繼續</v-btn>
+
+    <br v-for="n in 15">
 
   </v-container>
 </template>
@@ -120,18 +142,19 @@ export default {
 
   name: 'Step1',
 
-  props: ['loading'],
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
   data () {
     return {
-      data: {
-        ages: [],
-        sex: [],
-        speaker: [],
-        context: [],
-        indicator: [],
-      },
-
       ages: json.ages,
       sex: json.sexs,
       speaker: json.speakers,

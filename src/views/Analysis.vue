@@ -14,11 +14,13 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <Step1 @next="step1" :loading="loading"></Step1>
+        <Step1 @next="step1" :data="data" :loading="loading"></Step1>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <Step2 @next="step2" @back="step = step-1" :items="items"></Step2>
+        <Step2 @next="step2" @back="step = step-1" @restart="restart"
+               :filename="filename" :indicator="data.indicator" :data="items" 
+        ></Step2>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -40,7 +42,16 @@ export default {
     return {
       step: 1,
       loading: false,
-      items: [],
+      items: null,
+      filename: '',
+
+      data: {
+        ages: [],
+        sex: [],
+        speaker: [],
+        context: [],
+        indicator: [],
+      },
     }
   },
 
@@ -49,18 +60,31 @@ export default {
       this.loading = true;
       this.$http.post('/api/option_kideval', data)
         .then((res) => {
-          console.log(res);
-          this.items = res.data.data;
+          this.items = res.data;
+          this.filename = this.items['filename'][0];
+          delete this.items['filename'];
           this.loading = false;
           this.step = 2;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
         })
         .catch((err) => {
           console.log(err);
           this.loading = false;
         })
     },
-    step2(data) {
-    },
+    restart() {
+      this.data = {
+        ages: [],
+        sex: [],
+        speaker: [],
+        context: [],
+        indicator: [],
+      };
+      this.step = 1;
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
   }
 }
 </script>

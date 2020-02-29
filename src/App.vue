@@ -7,7 +7,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/view" text>
+      <v-btn to="/browse" text>
         <v-icon>mdi-file-find</v-icon>
         <span class="title">語料查看</span>
       </v-btn>
