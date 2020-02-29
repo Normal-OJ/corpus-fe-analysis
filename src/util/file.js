@@ -9,6 +9,7 @@ class File {
         this.children = children
         this.fullName = fullName
         this.parent = parent
+        this.depth = this.parent ? this.parent.depth + 1 : 0
         this.data = ''
     }
     pushDir(name) {

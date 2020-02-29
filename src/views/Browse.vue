@@ -2,10 +2,16 @@
   <v-container>
     <v-row>
       <v-col cols="3">
-        <SideBar @nodeClick="nodeClick" :get-items="getItems" :items="items"></SideBar>
+        <SideBar
+          @click-file="clickFile"
+          :get-items="getItems"
+          :items="items"
+          :active="active"
+          :show-desc="showDesc"
+        ></SideBar>
       </v-col>
       <v-col>
-        <InfoPanel>
+        <InfoPanel :fileName="fileName">
           <div v-for="(c, i) in parsedContent" :key="i">{{ c }}</div>
         </InfoPanel>
       </v-col>
@@ -18,6 +24,8 @@ import SideBar from '@/components/SideBar'
 import InfoPanel from '@/components/InfoPanel'
 import File from '@/util/file'
 
+const ROOT_FILE_NAME = '_I_ROOT_FILE__'
+
 export default {
   name: 'Browse',
   components: {
@@ -27,11 +35,14 @@ export default {
   data() {
     return {
       items: [],
-      content: ''
+      content: '',
+      fileName: '',
+      opend: [],
+      active: [],
     }
   },
   async created() {
-    let temp = new File({ name: 'temp', fullName: '', children: [] })
+    let temp = new File({ name: ROOT_FILE_NAME })
     await this.getItems(temp);
     this.items = temp.children
   },
@@ -50,8 +61,30 @@ export default {
     },
   },
   methods: {
-    nodeClick(ele) {
-      this.content = ele[0]?.data || 'no data'
+    getItemByPath(path) {
+      path = path.split('/').splice(-1, 1)
+      let ret = this.items
+      for (let p of path) {
+        for (let f of ret) {
+          if (f.name === p) {
+            ret = f
+            break
+          }
+        }
+      }
+      return ret
+    },
+    showDesc(fileName) {
+      let it = this.getItemByPath(fileName)
+      this.active = []
+      this.content = it.data
+      this.fileName = it.name
+    },
+    clickFile(files) {
+      if (!files.length) return;
+      let f = files[0]
+      this.content = f.data
+      this.fileName = f.name
     },
     async getItems(file) {
       try {
