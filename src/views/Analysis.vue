@@ -18,7 +18,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <Step2 @next="step2" @back="step = step-1" @restart="restart"
+        <Step2 @restart="restart" @back="step = step-1"
                :filename="filename" :indicator="data.indicator" :data="items" 
         ></Step2>
       </v-stepper-content>

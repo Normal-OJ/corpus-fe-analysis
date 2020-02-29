@@ -132,6 +132,10 @@
 
     <br v-for="n in 15">
 
+    <v-overlay v-model="loading" width="50%">
+      <v-btn text :loading="true"></v-btn>
+    </v-overlay>
+
   </v-container>
 </template>
 
@@ -155,6 +159,7 @@ export default {
 
   data () {
     return {
+      load: 1,
       ages: json.ages,
       sex: json.sexs,
       speaker: json.speakers,

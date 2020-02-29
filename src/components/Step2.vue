@@ -33,7 +33,7 @@
         <v-row justify="center" class="my-6">
           <v-btn
             width="80%"
-            @click="$emit('restart')"
+            @click="alert = true"
           >重新分析</v-btn>
         </v-row>
       </v-col>
@@ -41,6 +41,23 @@
     </v-row>
 
     <br v-for="n in 15">
+
+    <v-dialog v-model="alert" width="35vw">
+      <v-card>
+        <v-card-title></v-card-title>
+        <v-card-text class="text-center text--primary">
+          <v-icon color="warning" size="5rem">mdi-alert-circle-outline</v-icon>
+          <p class="headline mt-3">確定要回到重新分析頁面嗎？</p>
+          <p class="subtitle-1">您目前的分析資料將不會被保留。</p>
+        </v-card-text>
+        <v-card-actions class="pb-12">
+          <v-spacer></v-spacer>
+          <v-btn class="mx-3 subtitle-1" color="info" @click="alert = false; $emit('restart')">是</v-btn>
+          <v-btn class="mx-3 subtitle-1" color="error" @click="alert = false">否</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </v-container>
 </template>
@@ -81,6 +98,7 @@ export default {
 
   data () {
     return {
+      alert: false,
       headers: [
         {
           text: '語言指標',
