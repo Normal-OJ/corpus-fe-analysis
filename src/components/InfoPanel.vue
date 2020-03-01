@@ -5,18 +5,20 @@
         <v-container>
           <v-row>
             <v-col class="font-weight-bold headline" md="8" sm="12">詳細資訊 {{ displayedName }}</v-col>
-            <v-col md="2" sm="0"></v-col>
+            <v-spacer></v-spacer>
             <template id="buttons" v-if="!file.children.length && file.name">
-              <v-col md="1" sm="3">
+              <!-- <v-col md="1" sm="3"> -->
                 <v-btn
                   color="accent"
-                  :download="file.name"
-                  :href="'data:text/plain;charset=utf-8,' + filePlainText"
+                  class="mt-3 mr-3"
+                  @click="downloadFile(file.name, filePlainText)"
                 >下載檔案</v-btn>
-              </v-col>
-              <v-col md="1" sm="3">
-                <v-btn color="accent" @click="analysisFile(file)">分析檔案</v-btn>
-              </v-col>
+              <!-- </v-col> -->
+              <!-- <v-col md="1" sm="3"> -->
+                <v-btn 
+                  class="mt-3"
+                  color="accent" @click="analysisFile(file)">分析檔案</v-btn>
+              <!-- </v-col> -->
             </template>
           </v-row>
         </v-container>
@@ -44,9 +46,29 @@ export default {
       return this.file?.name ? `(${this.file.name})` : ''
     },
     filePlainText() {
-      return this.file.data?.join?.('%0A')
+      return this.file.data?.join?.('\n')
     }
   },
+  methods: {
+    downloadFile(filename, data) {
+      var file = new Blob([data], {type: 'text/plain;charset=utf-8'});
+      if ( window.navigator.msSaveOrOpenBlob ) { // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+      }
+      else { // Others
+        var a = document.createElement("a");
+        var url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0); 
+      }
+    }
+  }
 }
 </script>
 

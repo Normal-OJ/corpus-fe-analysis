@@ -13,7 +13,7 @@
       <v-col>
         <InfoPanel :file="file">
           <div v-if="!content.provider">
-            <div v-for="(c, i) in content" :key="i">{{ c }}</div>
+            <div class="subtitle-1" style="white-space: pre;" v-for="(c, i) in content" :key="i">{{ c }}</div>
           </div>
           <div v-else>
             <Description :desc="content"></Description>
