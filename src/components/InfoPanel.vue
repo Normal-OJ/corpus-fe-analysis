@@ -6,7 +6,7 @@
           <v-row>
             <v-col class="font-weight-bold headline" md="8" sm="12">詳細資訊 {{ displayedName }}</v-col>
             <v-col md="2" sm="0"></v-col>
-            <template id="buttons" v-if="!file.children.length">
+            <template id="buttons" v-if="!file.children.length && file.name">
               <v-col md="1" sm="3">
                 <v-btn
                   color="accent"
@@ -34,10 +34,7 @@ import File from '@/util/file'
 export default {
   name: 'InfoPanel',
   props: {
-    file: {
-      type: File,
-      default: new File('temp'),
-    },
+    file: {},
     analysisFile: {
       type: Array
     },
@@ -47,7 +44,7 @@ export default {
       return this.file?.name ? `(${this.file.name})` : ''
     },
     filePlainText() {
-      return this.file.data?.join('%0A')
+      return this.file.data?.join?.('%0A')
     }
   },
 }

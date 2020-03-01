@@ -46,12 +46,13 @@ export default {
       fileName: '',
       opend: [],
       active: [],
+      file: new File(''),
     }
   },
   async created() {
-    let temp = new File({ name: ROOT_FILE_NAME })
-    await this.getItems(temp);
-    this.items = temp.children
+    let root = new File(ROOT_FILE_NAME)
+    await this.getItems(root);
+    this.items = root.children
   },
   methods: {
     analysisFile(fileName) {
@@ -108,6 +109,7 @@ export default {
         }
       }
       catch (err) {
+        console.log(data)
         console.log(err)
       }
     },
