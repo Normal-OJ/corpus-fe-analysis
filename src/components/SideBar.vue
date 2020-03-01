@@ -1,6 +1,6 @@
 <template>
   <div id="side-bar">
-    <v-sheet class="pa-4 primary lighten-2">
+    <v-sheet class="pa-4 primary">
       <v-text-field
         v-model="search"
         label="搜尋檔案"
@@ -28,7 +28,13 @@
       item-key="fullName"
     >
       <template v-slot:append="{ item }">
-        <v-btn @click.stop="showDesc(item.fullName)" v-if="item.depth === 1">顯示詳細資訊</v-btn>
+        <v-btn
+          color="info"
+          rounded
+          small
+          @click.stop="showDesc(item.fullName)"
+          v-if="item.depth === 1"
+        >顯示詳細資訊</v-btn>
       </template>
     </v-treeview>
   </div>

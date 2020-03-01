@@ -11,8 +11,13 @@
         ></SideBar>
       </v-col>
       <v-col>
-        <InfoPanel :fileName="fileName">
-          <div v-for="(c, i) in parsedContent" :key="i">{{ c }}</div>
+        <InfoPanel :file="file">
+          <div v-if="!content.provider">
+            <div v-for="(c, i) in content" :key="i">{{ c }}</div>
+          </div>
+          <div v-else>
+            <Description :desc="content"></Description>
+          </div>
         </InfoPanel>
       </v-col>
     </v-row>
@@ -22,6 +27,7 @@
 <script>
 import SideBar from '@/components/SideBar'
 import InfoPanel from '@/components/InfoPanel'
+import Description from '@/components/Description'
 import File from '@/util/file'
 
 const ROOT_FILE_NAME = '_I_ROOT_FILE__'
@@ -31,6 +37,7 @@ export default {
   components: {
     SideBar,
     InfoPanel,
+    Description,
   },
   data() {
     return {
@@ -46,21 +53,10 @@ export default {
     await this.getItems(temp);
     this.items = temp.children
   },
-  computed: {
-    parsedContent() {
-      let info = this.content
-      // pretty format json
-      try {
-        info = JSON.parse(info)
-        info = JSON.stringify(info)
-      } catch (err) {
-        // console.log(err)
-      }
-      info = info.split('\n')
-      return info
-    },
-  },
   methods: {
+    analysisFile(fileName) {
+
+    },
     getItemByPath(path) {
       path = path.split('/').splice(-1, 1)
       let ret = this.items
@@ -78,24 +74,25 @@ export default {
       let it = this.getItemByPath(fileName)
       this.active = []
       this.content = it.data
-      this.fileName = it.name
+      this.file = it
     },
     clickFile(files) {
       if (!files.length) return;
       let f = files[0]
       this.content = f.data
-      this.fileName = f.name
+      this.file = f
     },
     async getItems(file) {
       try {
         let resp = await this.$http.get('/api/view', { params: { file: file.fullName || '/' } })
-        let data = resp.data;
+        var data = resp.data;
         // parse info panel
-        if (data.description) { // colletion
-          file.data = data.description
+        if (!!data.description) { // colletion
+          // file.data = JSON.parse(data.description)
+          file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         }
-        else if (data.content) { // file
-          file.data = data.content
+        else if (!!data.content) { // file
+          file.data = data.content.split('\n')
         }
         if (file.children !== null) {
           // parse tree view
