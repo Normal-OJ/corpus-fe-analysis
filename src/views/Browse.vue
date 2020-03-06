@@ -89,8 +89,8 @@ export default {
         var data = resp.data;
         // parse info panel
         if (!!data.description) { // colletion
-          // file.data = JSON.parse(data.description)
-          file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
+          file.data = JSON.parse(data.description)
+          // file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         }
         else if (!!data.content) { // file
           file.data = data.content.split('\n')

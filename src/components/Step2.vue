@@ -20,7 +20,7 @@
             width="80%"
             color="info"
             :loading="!filename"
-            :href="`http://noj.tw:8777/api/download?file=${filename}`"
+            :href="`http://noj.tw:55688/api/download?file=${filename}`"
           ><v-icon>mdi-download</v-icon>下載分析原始資料</v-btn>
         </v-row>
         <v-row justify="center" class="my-6">
