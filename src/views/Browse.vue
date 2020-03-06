@@ -100,7 +100,6 @@ export default {
         var data = resp.data;
         // parse info panel
         if (!!data.description) { // colletion
-          console.log(data.description)
           file.data = JSON.parse(data.description)
           // file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         }

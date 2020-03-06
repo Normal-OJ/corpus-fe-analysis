@@ -36,7 +36,7 @@
           <span v-show="hintString !== ''" class="hint ml-2 caption">{{ hintString }}</span>
         </transition>
       </v-card-title>
-      <v-card-text id="quote-info">{{ desc.quoteInfo }}</v-card-text>
+      <v-card-text style="white-space: pre-wrap" id="quote-info">{{ desc.quoteInfo }}</v-card-text>
     </v-card>
   </div>
 </template>
