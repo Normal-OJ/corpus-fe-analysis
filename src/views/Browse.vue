@@ -13,7 +13,12 @@
       <v-col>
         <InfoPanel :file="file">
           <div v-if="!content.provider">
-            <div class="subtitle-1" style="white-space: pre;" v-for="(c, i) in content" :key="i">{{ c }}</div>
+            <div
+              class="subtitle-1"
+              style="white-space: pre;"
+              v-for="(c, i) in content"
+              :key="i"
+            >{{ c }}</div>
           </div>
           <div v-else>
             <Description :desc="content"></Description>
@@ -89,8 +94,9 @@ export default {
         var data = resp.data;
         // parse info panel
         if (!!data.description) { // colletion
-          // file.data = JSON.parse(data.description)
-          file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
+          console.log(data.description)
+          file.data = JSON.parse(data.description)
+          // file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         }
         else if (!!data.content) { // file
           file.data = data.content.split('\n')
@@ -109,7 +115,6 @@ export default {
         }
       }
       catch (err) {
-        console.log(data)
         console.log(err)
       }
     },

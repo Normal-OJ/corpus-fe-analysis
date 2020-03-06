@@ -8,16 +8,14 @@
             <v-spacer></v-spacer>
             <template id="buttons" v-if="!file.children.length && file.name">
               <!-- <v-col md="1" sm="3"> -->
-                <v-btn
-                  color="accent"
-                  class="mt-3 mr-3"
-                  @click="downloadFile(file.name, filePlainText)"
-                >下載檔案</v-btn>
+              <v-btn
+                color="accent"
+                class="mt-3 mr-3"
+                @click="downloadFile(file.name, filePlainText)"
+              >下載檔案</v-btn>
               <!-- </v-col> -->
               <!-- <v-col md="1" sm="3"> -->
-                <v-btn 
-                  class="mt-3"
-                  color="accent" @click="analysisFile(file)">分析檔案</v-btn>
+              <v-btn class="mt-3" color="accent" @click="analysisFile(file)">分析檔案</v-btn>
               <!-- </v-col> -->
             </template>
           </v-row>
@@ -51,8 +49,8 @@ export default {
   },
   methods: {
     downloadFile(filename, data) {
-      var file = new Blob([data], {type: 'text/plain;charset=utf-8'});
-      if ( window.navigator.msSaveOrOpenBlob ) { // IE10+
+      var file = new Blob([data], { type: 'text/plain;charset=utf-8' });
+      if (window.navigator.msSaveOrOpenBlob) { // IE10+
         window.navigator.msSaveOrOpenBlob(file, filename);
       }
       else { // Others
@@ -62,10 +60,10 @@ export default {
         a.download = filename;
         document.body.appendChild(a);
         a.click();
-        setTimeout(function() {
+        setTimeout(function () {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
-        }, 0); 
+        }, 0);
       }
     }
   }
