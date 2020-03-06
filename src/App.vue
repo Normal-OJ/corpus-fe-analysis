@@ -10,7 +10,7 @@
         <span class="title">語料查看</span>
       </v-btn>
 
-      <v-btn to="/analysis" text>
+      <v-btn to="/analysis/none" text>
         <v-icon>mdi-desktop-classic</v-icon>
         <span class="title">語料分析</span>
       </v-btn>

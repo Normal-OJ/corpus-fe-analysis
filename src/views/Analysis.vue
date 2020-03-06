@@ -14,7 +14,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <Step1 @next="step1" :data="data" :loading="loading"></Step1>
+        <Step1 @next="step1" :data="data" :loading="loading" :fileMode="file"></Step1>
       </v-stepper-content>
 
       <v-stepper-content step="2">
@@ -55,10 +55,24 @@ export default {
     }
   },
 
+  computed: {
+    file() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      const myParam = this.$route.params.file;
+      if ( myParam !== 'none' ) {
+        this.data['file'] = [myParam];
+        return true;
+      }
+      this.restart();
+      return false;
+    }
+  },
+
   methods: {
     step1(data) {
       this.loading = true;
-      this.$http.post('/api/option_kideval', data)
+      this.$http.post(`/api/${ this.file ? 'path' : 'option' }_kideval`, data)
         .then((res) => {
           this.items = res.data;
           this.filename = this.items['filename'][0];

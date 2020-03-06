@@ -16,10 +16,10 @@ const routes = [{
     component: Browse,
   },
   {
-    path: '/analysis',
+    path: '/analysis/:file',
     name: 'analysis',
     component: Analysis,
-  }
+  },
 ]
 
 const router = new VueRouter({

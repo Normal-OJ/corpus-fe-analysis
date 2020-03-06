@@ -15,7 +15,7 @@
               >下載檔案</v-btn>
               <!-- </v-col> -->
               <!-- <v-col md="1" sm="3"> -->
-              <v-btn class="mt-3" color="accent" @click="analysisFile(file)">分析檔案</v-btn>
+              <v-btn class="mt-3" color="accent" @click="$emit('analysisFile', file)">分析檔案</v-btn>
               <!-- </v-col> -->
             </template>
           </v-row>
@@ -35,9 +35,6 @@ export default {
   name: 'InfoPanel',
   props: {
     file: {},
-    analysisFile: {
-      type: Array
-    },
   },
   computed: {
     displayedName() {

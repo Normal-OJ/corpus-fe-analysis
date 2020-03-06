@@ -11,7 +11,7 @@
         ></SideBar>
       </v-col>
       <v-col>
-        <InfoPanel :file="file">
+        <InfoPanel :file="file" @analysisFile="analysisFile">
           <div v-if="!content.provider">
             <div
               class="subtitle-1"
@@ -24,6 +24,9 @@
         </InfoPanel>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar" color="error">
+      無法取得檔案
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -50,6 +53,7 @@ export default {
       opend: [],
       active: [],
       file: new File(''),
+      snackbar: false,
     }
   },
   async created() {
@@ -59,7 +63,11 @@ export default {
   },
   methods: {
     analysisFile(fileName) {
-
+      if ( fileName ) {
+        this.$router.push({name: 'analysis', params: {file: fileName.fullName}});
+      } else {
+        this.snackbar = true;
+      }
     },
     getItemByPath(path) {
       path = path.split('/').splice(-1, 1)

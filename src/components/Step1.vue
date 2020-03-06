@@ -1,9 +1,12 @@
 <template>
   <v-container fluid style="min-height: 150%; padding: 0 15vw;">
     <v-form ref="form">
+    <h2 v-if="fileMode">分析檔案：</h2>
+    <kbd v-if="fileMode" class="mb-8">{{ data.file.join('\n') }}</kbd>
     <!-- Age -->
-    <h2>年齡層（可複選）：</h2>
+    <h2 v-if="!fileMode">年齡層（可複選）：</h2>
     <v-select
+      v-if="!fileMode"
       v-model="data.ages"
       :items="ages"
       item-text="label"
@@ -35,8 +38,8 @@
     </v-select>
 
     <!-- Sex -->
-    <h2>性別：</h2>
-    <v-radio-group row v-model="data.sex">
+    <h2 v-if="!fileMode">性別：</h2>
+    <v-radio-group v-if="!fileMode" row v-model="data.sex">
       <v-radio
         v-for="sx in sex"
         :key="sx.label"
@@ -59,8 +62,9 @@
     </v-radio-group>
 
     <!-- Context -->
-    <h2>情境（可複選）：</h2>
+    <h2 v-if="!fileMode">情境（可複選）：</h2>
     <v-select
+      v-if="!fileMode"
       v-model="data.context"
       :items="context"
       item-text="label"
@@ -117,6 +121,7 @@
 
     </v-form>
     <!-- DEBUG MSG -->
+    <!-- {{ data }} -->
     <!-- {{ data.ages }} -->
     <!-- {{ data.sex }} -->
     <!-- {{ data.context }} -->
@@ -126,9 +131,33 @@
     <v-btn
       color="primary"
       :loading="loading"
-      @click="$emit('next', data)"
+      @click="$emit('next', res)"
       large
     >繼續</v-btn>
+    <v-btn
+      v-if="fileMode"
+      class="ml-3"
+      color="warning"
+      @click="alert = true"
+      large
+    >捨棄選取檔案，回到語料分析</v-btn>
+
+    <v-dialog v-model="alert" width="35vw">
+      <v-card>
+        <v-card-title></v-card-title>
+        <v-card-text class="text-center text--primary">
+          <v-icon color="warning" size="5rem">mdi-alert-circle-outline</v-icon>
+          <p class="headline mt-3">確定要回到語料分析頁面嗎？</p>
+          <p class="subtitle-1">您目前的分析資料將不會被保留。</p>
+        </v-card-text>
+        <v-card-actions class="pb-12">
+          <v-spacer></v-spacer>
+          <v-btn class="mx-3 subtitle-1" color="info" @click="alert = false; $router.push('/analysis/none')">是</v-btn>
+          <v-btn class="mx-3 subtitle-1" color="error" @click="alert = false">否</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <br v-for="n in 15">
 
@@ -155,6 +184,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    fileMode: {
+      type: Boolean,
+    },
   },
 
   data () {
@@ -165,6 +197,18 @@ export default {
       speaker: json.speakers,
       context: json.contexts,
       indicator: json.indicator,
+      alert: false,
+    }
+  },
+
+  computed: {
+    res() {
+      if ( this.fileMode ) {
+        delete this.data.ages;
+        delete this.data.sex;
+        delete this.data.context;
+      }
+      return this.data;
     }
   },
 
