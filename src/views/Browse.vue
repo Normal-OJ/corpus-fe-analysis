@@ -16,9 +16,7 @@
             <div
               class="subtitle-1"
               style="white-space: pre;"
-              v-for="(c, i) in content"
-              :key="i"
-            >{{ c }}</div>
+            >{{ content }}</div>
           </div>
           <div v-else>
             <Description :desc="content"></Description>
@@ -99,7 +97,8 @@ export default {
           // file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         }
         else if (!!data.content) { // file
-          file.data = data.content.split('\n')
+          // file.data = data.content.split('\n')
+          file.data = data.content
         }
         if (file.children !== null) {
           // parse tree view

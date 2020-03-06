@@ -11,7 +11,7 @@
               <v-btn
                 color="accent"
                 class="mt-3 mr-3"
-                @click="downloadFile(file.name, filePlainText)"
+                @click="downloadFile(file.name, file.data)"
               >下載檔案</v-btn>
               <!-- </v-col> -->
               <!-- <v-col md="1" sm="3"> -->
@@ -43,9 +43,6 @@ export default {
     displayedName() {
       return this.file?.name ? `(${this.file.name})` : ''
     },
-    filePlainText() {
-      return this.file.data?.join?.('\n')
-    }
   },
   methods: {
     downloadFile(filename, data) {
