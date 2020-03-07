@@ -27,7 +27,7 @@
 
     <UiAlert 
       v-model="alert" 
-      title="確定要分析此資料夾所有檔案嗎？"
+      title="確定要分析此目錄底下所有檔案嗎？"
       subtitle="確認後將前往分析頁面。" 
       @ok="analysisFolder(file)"
     ></UiAlert>
@@ -142,7 +142,7 @@ export default {
             this.getItems(c)
           // prepend "select all" item
           if ( isFolder ) {
-            file.pushNode('分析此資料夾')
+            file.pushNode('分析此目錄所有檔案')
           }
         }
       }
