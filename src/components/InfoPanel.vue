@@ -7,16 +7,16 @@
             <v-col class="font-weight-bold headline" md="8" sm="12">詳細資訊 {{ displayedName }}</v-col>
             <v-spacer></v-spacer>
             <template id="buttons" v-if="!file.children.length && file.name && !file.selectAll">
-              <!-- <v-col md="1" sm="3"> -->
               <v-btn
-                color="accent"
+                color="green"
                 class="mt-3 mr-3"
                 @click="downloadFile(file.name, file.data)"
-              >下載檔案</v-btn>
-              <!-- </v-col> -->
-              <!-- <v-col md="1" sm="3"> -->
-              <v-btn class="mt-3" color="accent" @click="$emit('analysisFile', file)">分析檔案</v-btn>
-              <!-- </v-col> -->
+              ><v-icon>mdi-download</v-icon>下載檔案</v-btn>
+              <v-btn 
+                color="green" 
+                class="mt-3" 
+                @click="$emit('analysisFile', file)"
+              ><v-icon>mdi-chart-bar</v-icon>分析檔案</v-btn>
             </template>
           </v-row>
         </v-container>
