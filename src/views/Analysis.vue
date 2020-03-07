@@ -23,6 +23,10 @@
         ></Step2>
       </v-stepper-content>
     </v-stepper-items>
+
+    <v-snackbar v-model="snackbar" color="error">
+      分析失敗
+    </v-snackbar>
   </v-stepper>
 </template>
 
@@ -52,6 +56,8 @@ export default {
         context: [],
         indicator: [],
       },
+
+      snackbar: false,
     }
   },
 
@@ -84,6 +90,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.snackbar = true;
           this.loading = false;
         })
     },

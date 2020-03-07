@@ -42,32 +42,27 @@
 
     <br v-for="n in 15">
 
-    <v-dialog v-model="alert" width="35vw">
-      <v-card>
-        <v-card-title></v-card-title>
-        <v-card-text class="text-center text--primary">
-          <v-icon color="warning" size="5rem">mdi-alert-circle-outline</v-icon>
-          <p class="headline mt-3">確定要重新分析嗎？</p>
-          <p class="subtitle-1">您目前的分析資料將不會被保留。</p>
-        </v-card-text>
-        <v-card-actions class="pb-12">
-          <v-spacer></v-spacer>
-          <v-btn class="mx-3 subtitle-1" color="info" @click="alert = false; $emit('restart')">是</v-btn>
-          <v-btn class="mx-3 subtitle-1" color="error" @click="alert = false">否</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <UiAlert 
+      v-model="alert" 
+      title="確定要重新分析嗎？" 
+      subtitle="您目前的分析資料將不會被保留。" 
+      @ok="$emit('restart')"
+    ></UiAlert>
 
   </v-container>
 </template>
 
 <script>
 import json from './step1.json'
+import UiAlert from '@/components/ui-alert'
 
 export default {
 
   name: 'Step2',
+
+  components: {
+    UiAlert,
+  },
 
   props: {
     data: {

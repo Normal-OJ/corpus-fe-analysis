@@ -6,7 +6,7 @@
           <v-row>
             <v-col class="font-weight-bold headline" md="8" sm="12">詳細資訊 {{ displayedName }}</v-col>
             <v-spacer></v-spacer>
-            <template id="buttons" v-if="!file.children.length && file.name">
+            <template id="buttons" v-if="!file.children.length && file.name && !file.selectAll">
               <!-- <v-col md="1" sm="3"> -->
               <v-btn
                 color="accent"

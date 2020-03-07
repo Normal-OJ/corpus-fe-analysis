@@ -29,11 +29,11 @@
     >
       <template v-slot:append="{ item }">
         <v-btn
+          v-if="item.depth === 1 && !item.selectAll"
           color="info"
           rounded
           small
           @click.stop="showDesc(item.fullName)"
-          v-if="item.depth === 1"
         >顯示詳細資訊</v-btn>
       </template>
     </v-treeview>
@@ -75,6 +75,7 @@ export default {
   },
   methods: {
     onActive(eles) {
+      console.log(eles);
       this.$emit('click-file', eles)
     },
   }
