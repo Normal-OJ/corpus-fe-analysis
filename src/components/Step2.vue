@@ -81,8 +81,8 @@ export default {
         for ( const[key, value] of Object.entries(this.data) ) {
           temp.push({
             'name': this.indicator[key],
-            'avg': value[0],
-            'sd': value[1],
+            'avg': Math.round((value[0] + Number.EPSILON) * 100) / 100,
+            'sd': Math.round((value[1] + Number.EPSILON) * 100) / 100,
             'size': value[2],
           });
         }
