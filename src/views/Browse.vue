@@ -10,7 +10,7 @@
           :show-desc="showDesc"
         ></SideBar>
       </v-col>
-      <v-col>
+      <v-col cols="9">
         <InfoPanel :file="file" @analysisFile="analysisFile">
           <div v-if="!content.provider">
             <div

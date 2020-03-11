@@ -27,6 +27,15 @@
       :active="active"
       item-key="fullName"
     >
+      <template v-slot:label="{ item }">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-list-item v-on="on">{{ item.name }}</v-list-item>
+            <!-- <v-btn color="primary" dark v-on="on">Button</v-btn> -->
+          </template>
+          <span>{{ item.name }}</span>
+        </v-tooltip>
+      </template>
       <template v-slot:append="{ item }">
         <v-btn
           v-if="item.depth === 1 && !item.selectAll"
