@@ -78,12 +78,12 @@ export default {
     items() {
       if ( this.data ) {
         var temp = [];
-        for ( const[key, value] of Object.entries(this.data) ) {
+        for ( const[key, value] of Object.entries(this.indicator) ) {
           temp.push({
-            'name': this.indicator[key],
-            'avg': Math.round((value[0] + Number.EPSILON) * 100) / 100,
-            'sd': Math.round((value[1] + Number.EPSILON) * 100) / 100,
-            'size': value[2],
+            'name': value,
+            'avg': Math.round((this.data[key][0] + Number.EPSILON) * 100) / 100,
+            'sd': Math.round((this.data[key][1] + Number.EPSILON) * 100) / 100,
+            'size': this.data[key][2],
           });
         }
         return temp;
@@ -102,7 +102,6 @@ export default {
           value: 'name', 
           class: 'text--primary subtitle-1 font-weight-bold',
           width: '30%',
-          sortable: false,
         },
         { text: '平均', value: 'avg', class: 'text--primary subtitle-1 font-weight-bold', width: '25%' },
         { text: '標準差', value: 'sd', class: 'text--primary subtitle-1 font-weight-bold', width: '25%' },
