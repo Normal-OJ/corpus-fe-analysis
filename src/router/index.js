@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Browse from '@/views/Browse'
 import Analysis from '../views/Analysis.vue'
+import Upload from '../views/Upload'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [{
     name: 'analysis',
     component: Analysis,
   },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: Upload,
+  }
 ]
 
 const router = new VueRouter({
