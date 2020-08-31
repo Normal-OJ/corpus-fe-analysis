@@ -18,28 +18,30 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <Step2 @restart="restart" @back="step = step-1"
-               :filename="filename" :indicator="data.indicator" :data="items" 
+        <Step2
+          @restart="restart"
+          @back="step = step-1"
+          :filename="filename"
+          :indicator="data.indicator"
+          :data="items"
         ></Step2>
       </v-stepper-content>
     </v-stepper-items>
 
-    <v-snackbar v-model="snackbar" color="error">
-      分析失敗
-    </v-snackbar>
+    <v-snackbar v-model="snackbar" color="error">{{snackbarText}}</v-snackbar>
   </v-stepper>
 </template>
 
 <script>
-import Step1 from '@/components/Step1';
-import Step2 from '@/components/Step2';
+import Step1 from "@/components/Step1";
+import Step2 from "@/components/Step2";
 
 export default {
-
-  name: 'Analysis',
+  name: "Analysis",
 
   components: {
-    Step1, Step2,
+    Step1,
+    Step2,
   },
 
   data() {
@@ -47,8 +49,7 @@ export default {
       step: 1,
       loading: false,
       items: null,
-      filename: '',
-
+      filename: "",
       data: {
         ages: [],
         sex: [],
@@ -56,9 +57,9 @@ export default {
         context: [],
         indicator: [],
       },
-
       snackbar: false,
-    }
+      snackbarText: "",
+    };
   },
 
   computed: {
@@ -66,23 +67,24 @@ export default {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
       const myParam = this.$route.params.file;
-      if ( myParam !== 'none' ) {
-        this.data['file'] = [myParam];
+      if (myParam !== "none") {
+        this.data["file"] = [myParam];
         return true;
       }
       this.restart();
       return false;
-    }
+    },
   },
 
   methods: {
     step1(data) {
       this.loading = true;
-      this.$http.post(`/api/${ this.file ? 'path' : 'option' }_kideval`, data)
+      this.$http
+        .post(`/api/${this.file ? "path" : "option"}_kideval`, data)
         .then((res) => {
           this.items = res.data;
-          this.filename = this.items['filename'][0];
-          delete this.items['filename'];
+          this.filename = this.items["filename"][0];
+          delete this.items["filename"];
           this.loading = false;
           this.step = 2;
           document.body.scrollTop = 0;
@@ -90,9 +92,16 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          if (err.response && err.response.status === 404) {
+            // not file filtered
+            this.snackbarText = "語料庫無符合搜尋條件之語料";
+          } else {
+            // unhandled errors
+            this.snackbarText = "分析失敗";
+          }
           this.snackbar = true;
           this.loading = false;
-        })
+        });
     },
     restart() {
       this.data = {
@@ -105,9 +114,9 @@ export default {
       this.step = 1;
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="css" scoped>
