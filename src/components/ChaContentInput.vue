@@ -38,7 +38,9 @@
         </v-row>
       </v-col>
       <v-col cols="2">
-        <v-btn @click="addLine" color="success">新增語句</v-btn>
+        <v-row justify="end">
+          <v-btn @click="addLine" color="success">新增語句</v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
