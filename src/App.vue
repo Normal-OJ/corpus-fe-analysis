@@ -15,6 +15,11 @@
         <span class="title">語料分析</span>
       </v-btn>
 
+      <v-btn to="/upload" text>
+        <v-icon>mdi-file-chart</v-icon>
+        <span class="title">線上分析</span>
+      </v-btn>
+
       <v-spacer></v-spacer>
 
       <v-btn href="http://noj.tw:8000/" target="_blank" text>
