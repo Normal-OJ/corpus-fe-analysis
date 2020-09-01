@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="5">
+      <v-col class="d-flex flex-column" cols="5">
         <h2>Header 預覽</h2>
-        <div style="border: 1px; white-space: pre-wrap">{{header}}</div>
+        <div class="flex-grow-1 pa-1 header-text">{{header}}</div>
       </v-col>
       <v-col cols="5">
         <h2>名稱代號 (Name code)</h2>
@@ -22,7 +22,13 @@
         </v-row>
         <h2>性別 (Sex)</h2>
         <v-radio-group v-model="sex">
-          <v-radio v-for="(sex, value) in sexs" :key="sex" class="mb-3" :label="sex" :value="value"></v-radio>
+          <v-radio
+            v-for="(_sex, value) in sexs"
+            :key="value"
+            class="mb-3"
+            :label="value"
+            :value="_sex"
+          ></v-radio>
         </v-radio-group>
         <h2>角色 (Role)</h2>
         <v-select v-model="role" :items="roleChoices"></v-select>
@@ -171,5 +177,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.header-text {
+  border: 1px solid gray;
+  white-space: pre-wrap;
+  overflow-y: scroll;
+  border-radius: 4px;
+}
 </style>
