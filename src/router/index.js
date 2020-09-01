@@ -1,26 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import View from '../views/View.vue'
+import Browse from '@/views/Browse'
 import Analysis from '../views/Analysis.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'home',
-    redirect: '/view',
+    redirect: '/browse',
   },
   {
-    path: '/view',
-    name: 'view',
-    component: View,
+    path: '/browse',
+    name: 'browse',
+    component: Browse,
   },
   {
-    path: '/analysis',
+    path: '/analysis/:file',
     name: 'analysis',
     component: Analysis,
-  }
+  },
 ]
 
 const router = new VueRouter({

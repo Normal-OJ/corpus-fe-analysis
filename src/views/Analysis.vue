@@ -1,88 +1,110 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-stepper v-model="step">
     <v-stepper-header>
-      <v-stepper-step :complete="e1 > 1" step="1">選擇年齡、性別、情境</v-stepper-step>
+      <v-divider></v-divider>
+
+      <v-stepper-step :complete="step > 1" step="1">選擇分析條件</v-stepper-step>
 
       <v-divider></v-divider>
 
-      <v-stepper-step :complete="e1 > 2" step="2">選擇分析對象、語言指標</v-stepper-step>
+      <v-stepper-step :complete="step > 2" step="2">查看分析結果</v-stepper-step>
 
       <v-divider></v-divider>
-
-      <v-stepper-step step="3">查看分析結果</v-stepper-step>
     </v-stepper-header>
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <Step1></Step1>
-
-        <v-btn
-          color="primary"
-          @click="e1 = 2"
-        >
-          繼續
-        </v-btn>
+        <Step1 @next="step1" :data="data" :loading="loading" :fileMode="file"></Step1>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
-
-        <v-btn
-          color="primary"
-          @click="e1 = 3"
-        >
-          繼續
-        </v-btn>
-
-        <v-btn
-          text
-          @click="e1 = e1-1"
-        >
-          返回
-        </v-btn>
-      </v-stepper-content>
-
-      <v-stepper-content step="3">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
-
-        <v-btn
-          color="warning"
-        >
-          重新分析
-        </v-btn>
-
-        <v-btn
-          text
-          @click="e1 = e1-1"
-        >
-          返回
-        </v-btn>
-
+        <Step2 @restart="restart" @back="step = step-1"
+               :filename="filename" :indicator="data.indicator" :data="items" 
+        ></Step2>
       </v-stepper-content>
     </v-stepper-items>
+
+    <v-snackbar v-model="snackbar" color="error">
+      分析失敗
+    </v-snackbar>
   </v-stepper>
 </template>
 
 <script>
-import 'Step1' from '@/components/Step1';
-import 'Step2' from '@/components/Step2';
-import 'Step3' from '@/components/Step3';
+import Step1 from '@/components/Step1';
+import Step2 from '@/components/Step2';
 
 export default {
 
   name: 'Analysis',
 
-  data () {
+  components: {
+    Step1, Step2,
+  },
+
+  data() {
     return {
-      e1: 1,
+      step: 1,
+      loading: false,
+      items: null,
+      filename: '',
+
+      data: {
+        ages: [],
+        sex: [],
+        speaker: [],
+        context: [],
+        indicator: [],
+      },
+
+      snackbar: false,
+    }
+  },
+
+  computed: {
+    file() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      const myParam = this.$route.params.file;
+      if ( myParam !== 'none' ) {
+        this.data['file'] = [myParam];
+        return true;
+      }
+      this.restart();
+      return false;
+    }
+  },
+
+  methods: {
+    step1(data) {
+      this.loading = true;
+      this.$http.post(`/api/${ this.file ? 'path' : 'option' }_kideval`, data)
+        .then((res) => {
+          this.items = res.data;
+          this.filename = this.items['filename'][0];
+          delete this.items['filename'];
+          this.loading = false;
+          this.step = 2;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.snackbar = true;
+          this.loading = false;
+        })
+    },
+    restart() {
+      this.data = {
+        ages: [],
+        sex: [],
+        speaker: [],
+        context: [],
+        indicator: [],
+      };
+      this.step = 1;
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
   }
 }
