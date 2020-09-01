@@ -39,7 +39,7 @@ import json from "./step1.json";
 import UiAlert from "@/components/ui-alert";
 
 export default {
-  name: "Step2",
+  name: "AnalysisResult",
 
   components: {
     UiAlert,

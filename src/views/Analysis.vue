@@ -14,17 +14,17 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <Step1 @next="step1" :data="data" :loading="loading" :fileMode="file"></Step1>
+        <FileFilter @next="step1" :data="data" :loading="loading" :fileMode="file"></FileFilter>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <Step2
+        <AnalysisResult
           @restart="restart"
           @back="step = step-1"
           :filename="filename"
           :indicator="data.indicator"
           :data="items"
-        ></Step2>
+        ></AnalysisResult>
       </v-stepper-content>
     </v-stepper-items>
 
@@ -33,15 +33,15 @@
 </template>
 
 <script>
-import Step1 from "@/components/Step1";
-import Step2 from "@/components/Step2";
+import FileFilter from "@/components/FileFilter";
+import AnalysisResult from "@/components/AnalysisResult";
 
 export default {
   name: "Analysis",
 
   components: {
-    Step1,
-    Step2,
+    FileFilter,
+    AnalysisResult,
   },
 
   data() {
