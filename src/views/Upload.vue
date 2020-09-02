@@ -9,8 +9,13 @@
     </v-stepper-header>
     <v-stepper-items style="padding: 0 15vw">
       <v-stepper-content step="1">
-        <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
-        <ChaContentInput ref="chaContent"></ChaContentInput>
+        <v-container>
+          <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
+          <ChaContentInput ref="chaContent"></ChaContentInput>
+          <v-row justify="end">
+            <v-btn color="primary" @click="upload">繼續</v-btn>
+          </v-row>
+        </v-container>
       </v-stepper-content>
       <v-stepper-content step="2">
         <AnalysisResult @restart="restart" @back="step = step-1" :filename="analysis.filename">
