@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import json from "./step1.json";
+import json from "@/util/step1.json";
 import UiAlert from "@/components/ui-alert";
 
 export default {

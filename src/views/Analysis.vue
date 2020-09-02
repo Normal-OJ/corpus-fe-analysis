@@ -30,7 +30,7 @@
 <script>
 import FileFilter from "@/components/FileFilter";
 import AnalysisResult from "@/components/AnalysisResult";
-import charArgs from "./step1.json";
+import chatArgs from '@/util/step1.json';
 
 export default {
   name: "Analysis",

@@ -32,7 +32,7 @@
 import ChaContentInput from "@/components/ChaContentInput";
 import ChaHeaderInput from "@/components/ChaHeaderInput";
 import AnalysisResult from "@/components/AnalysisResult";
-import chatArgs from "./step1.json";
+import chatArgs from "@/util/step1.json";
 
 export default {
   name: "Upload",
