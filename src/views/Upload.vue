@@ -51,8 +51,8 @@ export default {
     snackbar: false,
     snackbarText: "",
     analysis: {
-      results: null,
-      filename: null,
+      results: [],
+      filename: "",
     },
     ids: [],
     headers: [
@@ -98,7 +98,7 @@ export default {
         let resp = (
           await this.$http.post("/api/upload_detailed_kideval", {
             file: file,
-            speakers: ids.map((id) => id.nameCode),
+            speakers: this.ids.map((id) => id.nameCode),
           })
         ).data;
         this.analysis.results = resp;
@@ -111,13 +111,14 @@ export default {
         // prompt snack bar
         this.snackbar = true;
         this.snackbarText = "分析失敗";
+        console.log(err);
       }
     },
     restart() {
       this.ids = [];
       this.analysis = {
-        results: null,
-        filename: null,
+        results: [],
+        filename: "",
       };
     },
   },
