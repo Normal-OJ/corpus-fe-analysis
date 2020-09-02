@@ -53,23 +53,31 @@ export default {
     return {
       text: "",
       splitText: [{ speaker: "", text: "" }],
-      speakers: [""],
       hello: "",
     };
+  },
+  computed: {
+    speakers() {
+      const rows = this.text.split("\n");
+      return [...new Set(rows.map((text) => text.split(":")[0]).concat(""))];
+    },
   },
   methods: {
     // 把左側的文本 parse 成一行一行
     parseText() {
       const rows = this.text.split("\n");
-      this.speakers = [
-        ...new Set(rows.map((text) => text.split(":")[0]).concat("")),
-      ];
       this.splitText = rows.map((text) => {
         if (!text) {
-          return { speaker: "", text: "" };
+          return {
+            speaker: "",
+            text: "",
+          };
         } else {
           const cuts = text.split(":");
-          return { speaker: cuts[0], text: cuts.slice(1).join("") };
+          return {
+            speaker: cuts[0],
+            text: cuts.slice(1).join("").trim(),
+          };
         }
       });
     },
