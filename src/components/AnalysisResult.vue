@@ -23,7 +23,7 @@
     </v-row>
     <!-- padding = = -->
     <br v-for="n in 15" />
-    <UiAlert v-model="downloadAlert" title="提醒" :subtitle="warnMessage" @ok="download"></UiAlert>
+    <UiAlert v-model="downloadAlert" title="提醒" :subtitle="warnMessage + '，確定要下載嗎？'" @ok="download"></UiAlert>
     <UiAlert v-model="alert" title="確定要重新分析嗎？" subtitle="您目前的分析資料將不會被保留。" @ok="$emit('restart')"></UiAlert>
   </v-container>
 </template>
