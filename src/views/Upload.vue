@@ -93,13 +93,23 @@ export default {
       let content =
         this.$refs.chaHeader.header + this.$refs.chaContent.text + "\n@End";
       let file = new Blob([content], { type: "text/plain;charset=utf-8" });
+      console.log("file content");
+      console.log(content);
       try {
         // get analysis result
         let resp = (
-          await this.$http.post("/api/upload_detailed_kideval", {
-            file: file,
-            speakers: this.ids.map((id) => id.nameCode),
-          })
+          await this.$http.post(
+            "/api/upload_detailed_kideval",
+            {
+              file: file,
+              speakers: this.$refs.speakers,
+            },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
         ).data;
         this.analysis.results = resp;
         this.analysis.filename = resp["filename"];
