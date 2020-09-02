@@ -44,6 +44,7 @@ export default {
   components: {
     ChaContentInput,
     ChaHeaderInput,
+    AnalysisResult,
   },
   data: () => ({
     step: 1,
