@@ -95,34 +95,34 @@ export default {
       let file = new Blob([content], { type: "text/plain;charset=utf-8" });
       console.log("file content");
       console.log(content);
+      // prepare payload
+      let formData = new FormData();
+      formData.append("file", file);
+      for (let speaker of this.$refs.speakers)
+        formData.append("speaker[]", speaker);
       try {
         // get analysis result
         let resp = (
-          await this.$http.post(
-            "/api/upload_detailed_kideval",
-            {
-              file: file,
-              speakers: this.$refs.speakers,
+          await this.$http.post("/api/upload_detailed_kideval", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
             },
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          )
+          })
         ).data;
         this.analysis.results = resp;
         this.analysis.filename = resp["filename"];
-        this.step = 2;
-        // scroll to top
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
       } catch (err) {
         // prompt snack bar
         this.snackbar = true;
         this.snackbarText = "分析失敗";
         console.log(err);
+        return;
       }
+      // continue to next step
+      this.step = 2;
+      // scroll to top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     },
     restart() {
       this.ids = [];
