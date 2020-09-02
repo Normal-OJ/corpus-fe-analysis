@@ -8,18 +8,18 @@
       <v-col cols="6">
         <h2>新增 ID</h2>
         <h3>名稱代號 (Name code)</h3>
-        <v-text-field :value="nameCode" placeholder="例如： CHI, MOT..."></v-text-field>
+        <v-text-field v-model="nameCode" placeholder="例如： CHI, MOT..."></v-text-field>
         <h3>年齡 (Age)</h3>
         <div>月、日不足兩碼請補 0，例如： 05、07</div>
         <v-row style="max-width: 50%">
           <v-col>
-            <v-text-field :value="age.year" placeholder="年"></v-text-field>
+            <v-text-field v-model="age.year" placeholder="年"></v-text-field>
           </v-col>
           <v-col>
-            <v-text-field :value="age.month" placeholder="月"></v-text-field>
+            <v-text-field v-model="age.month" placeholder="月"></v-text-field>
           </v-col>
           <v-col>
-            <v-text-field :value="age.day" placeholder="日"></v-text-field>
+            <v-text-field v-model="age.day" placeholder="日"></v-text-field>
           </v-col>
         </v-row>
         <h3>性別 (Sex)</h3>
@@ -45,6 +45,13 @@
 <script>
 export default {
   name: "ChaHeaderInput",
+  props: {
+    // array of cha ids
+    ids: {
+      type: Array,
+      default: [],
+    },
+  },
   data: () => ({
     nameCode: "",
     age: {
@@ -54,8 +61,6 @@ export default {
     },
     sex: "",
     role: "",
-    // array of cha ids
-    ids: [],
     sexs: {
       男: "male",
       女: "female",
