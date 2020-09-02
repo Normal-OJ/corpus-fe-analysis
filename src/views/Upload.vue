@@ -98,7 +98,7 @@ export default {
       // prepare payload
       let formData = new FormData();
       formData.append("file", file);
-      for (let speaker of this.$refs.speakers)
+      for (let speaker of this.$refs.chaContent.speakers)
         formData.append("speaker[]", speaker);
       try {
         // get analysis result
