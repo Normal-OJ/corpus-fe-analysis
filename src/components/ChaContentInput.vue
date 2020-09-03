@@ -59,7 +59,10 @@ export default {
   computed: {
     speakers() {
       const rows = this.text.split("\n");
-      return [...new Set(rows.map((text) => text.split(":")[0]).concat(""))];
+      let speakers = rows
+        .filter((text) => text[0] === "*")
+        .map((text) => text.split(":")[0].concat("").slice(1));
+      return [...new Set(speakers)];
     },
   },
   methods: {

@@ -99,7 +99,7 @@ export default {
       let formData = new FormData();
       formData.append("file", file);
       for (let speaker of this.$refs.chaContent.speakers)
-        formData.append("speaker[]", speaker);
+        formData.append("Speaker", speaker);
       try {
         // get analysis result
         let resp = (
