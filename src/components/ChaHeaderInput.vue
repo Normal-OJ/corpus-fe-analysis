@@ -67,8 +67,8 @@ export default {
       未知: "unknown",
     },
     roleChoices: [
-      "Target_child",
-      "Target_adult",
+      "Target_Child",
+      "Target_Adult",
       "Child",
       "Mother",
       "Father",
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     getHeader() {
-      let header = "@Begin\n@Language:\tzho\n";
+      let header = "@UTF8\n@Begin\n@Language:\tzho\n";
       // Participants
       if (this.ids.length) {
         header += "@Participants:\t";
