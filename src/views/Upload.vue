@@ -96,7 +96,7 @@ export default {
      * @param {File} file
      */
     async uploadFile(file) {
-      let lines = (await file.text()).split(/?\r\n/g);
+      let lines = (await file.text()).split(/\r?\n/g);
       let speakers = new Set();
       for (let line of lines) {
         if (line && line[0] === "*") {
@@ -104,7 +104,7 @@ export default {
           speakers.add(line.split(":")[0].concat("").slice(1));
         }
       }
-      this.download(file, speakers);
+      this.upload(file, speakers);
     },
     /**
      * upload by text
@@ -116,7 +116,7 @@ export default {
       let file = new Blob([content], { type: "text/plain;charset=utf-8" });
       console.log("file content");
       console.log(content);
-      this.download(file, this.$refs.chaContent.speakers);
+      this.upload(file, this.$refs.chaContent.speakers);
     },
     /**
      * core upload function
