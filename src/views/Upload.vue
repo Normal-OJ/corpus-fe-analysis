@@ -10,6 +10,7 @@
     <v-stepper-items style="padding: 0 15vw">
       <v-stepper-content step="1">
         <v-container>
+          <ChaFileInput></ChaFileInput>
           <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
           <ChaContentInput ref="chaContent"></ChaContentInput>
           <v-row justify="end">
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import ChaFileInput from "@/components/ChaFileInput";
 import ChaContentInput from "@/components/ChaContentInput";
 import ChaHeaderInput from "@/components/ChaHeaderInput";
 import AnalysisResult from "@/components/AnalysisResult";
@@ -42,6 +44,7 @@ import chatArgs from "@/util/step1.json";
 export default {
   name: "Upload",
   components: {
+    ChaFileInput,
     ChaContentInput,
     ChaHeaderInput,
     AnalysisResult,
