@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     getHeader() {
-      let header = "@UTF8\n@Begin\n@Language:\tzho\n";
+      let header = "@UTF8\n@Begin\n@Languages:\tzho\n";
       // Participants
       if (this.ids.length) {
         header += "@Participants:\t";
