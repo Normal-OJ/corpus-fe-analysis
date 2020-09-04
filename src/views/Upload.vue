@@ -10,11 +10,11 @@
     <v-stepper-items style="padding: 0 15vw">
       <v-stepper-content step="1">
         <v-container>
-          <ChaFileInput></ChaFileInput>
+          <ChaFileInput @upload-file="uploadFile"></ChaFileInput>
           <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
           <ChaContentInput ref="chaContent"></ChaContentInput>
           <v-row justify="end">
-            <v-btn color="primary" @click="upload">繼續</v-btn>
+            <v-btn color="primary" @click="uploadText">繼續</v-btn>
           </v-row>
         </v-container>
       </v-stepper-content>
@@ -91,18 +91,45 @@ export default {
     },
   },
   methods: {
-    async upload() {
+    /**
+     * upload single file to analysis
+     * @param {File} file
+     */
+    async uploadFile(file) {
+      let lines = (await file.text()).split(/?\r\n/g);
+      let speakers = new Set();
+      for (let line of lines) {
+        if (line && line[0] === "*") {
+          // extract name code
+          speakers.add(line.split(":")[0].concat("").slice(1));
+        }
+      }
+      this.download(file, speakers);
+    },
+    /**
+     * upload by text
+     */
+    async uploadText() {
       // create file
       let content =
         this.$refs.chaHeader.header + this.$refs.chaContent.text + "\n@End";
       let file = new Blob([content], { type: "text/plain;charset=utf-8" });
       console.log("file content");
       console.log(content);
+      this.download(file, this.$refs.chaContent.speakers);
+    },
+    /**
+     * core upload function
+     * @param {File} file
+     * @param {String[]} speakers
+     */
+    async upload(file, speakers) {
       // prepare payload
       let formData = new FormData();
       formData.append("file", file);
-      for (let speaker of this.$refs.chaContent.speakers)
+      for (let speaker of speakers) {
         formData.append("Speaker", speaker);
+      }
       try {
         // get analysis result
         let resp = (
