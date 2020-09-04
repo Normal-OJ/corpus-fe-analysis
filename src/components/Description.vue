@@ -42,44 +42,44 @@
 </template>
 
 <script>
-import Clipboard from 'clipboard'
+import Clipboard from "clipboard";
 
 export default {
-  name: 'Description',
+  name: "Description",
   props: {
     desc: {
-      provider: '',
+      provider: "",
       introduction: [],
-      quoteInfo: '',
+      quoteInfo: "",
     },
     hintTime: {
       type: Number,
       default: 1000,
-    }
+    },
   },
   data() {
     return {
-      hintString: '',
-    }
+      hintString: "",
+    };
   },
   methods: {
     async clear() {
-      await new Promise(r => setTimeout(r, this.hintTime))
-      this.hintString = ''
-    }
+      await new Promise((r) => setTimeout(r, this.hintTime));
+      this.hintString = "";
+    },
   },
   mounted() {
-    const clipboard = new Clipboard('#copy-quote-info')
-    clipboard.on('success', () => {
-      this.hintString = '成功複製'
-      this.clear()
-    })
-    clipboard.on('error', () => {
-      this.hintString = '複製失敗，請在試一次'
-      this.clear()
-    })
+    const clipboard = new Clipboard("#copy-quote-info");
+    clipboard.on("success", () => {
+      this.hintString = "成功複製";
+      this.clear();
+    });
+    clipboard.on("error", () => {
+      this.hintString = "複製失敗，請再試一次";
+      this.clear();
+    });
   },
-}
+};
 </script>
 
 <style scpoed>

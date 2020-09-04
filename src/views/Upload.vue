@@ -1,103 +1,138 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="5">
-        <v-textarea
-          v-model="text"
-          placeholder="貼上文本"
-          auto-grow
-          outlined
-          rows="10"
-          @input="parseText"
-          row-height="40"
-        />
-      </v-col>
-      <v-col cols="5">
-        <v-row
-          v-for="(row, index) in splitText"
-          :key="index"
-          no-gutters
-        >
-          <v-col col="3">
-            <v-combobox
-              v-model="row.speaker"
-              :items="speakers"
-              placeholder="選取或輸入說話者"
-              outlined
-              @input="joinText"
-              dense
-              hide-details
-            />
-          </v-col>
-          <v-col cols="9">
-            <v-text-field
-              v-model="row.text"
-              placeholder="輸入語句"
-              outlined
-              @input="joinText"
-              dense
-              hide-details
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="2">
-        <v-btn
-          @click="addLine"
-          color="success"
-        >
-          新增語句
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-stepper v-model="step">
+    <v-stepper-header>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 1" step="1">輸入 Chat 檔內容</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 2" step="2">查看分析結果</v-stepper-step>
+      <v-divider></v-divider>
+    </v-stepper-header>
+    <v-stepper-items style="padding: 0 15vw">
+      <v-stepper-content step="1">
+        <v-container>
+          <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
+          <ChaContentInput ref="chaContent"></ChaContentInput>
+          <v-row justify="end">
+            <v-btn color="primary" @click="upload">繼續</v-btn>
+          </v-row>
+        </v-container>
+      </v-stepper-content>
+      <v-stepper-content step="2">
+        <AnalysisResult @restart="restart" @back="step = step-1" :filename="analysis.filename">
+          <v-data-table
+            v-if="tableItems"
+            :headers="headers"
+            :items="tableItems"
+            hide-default-footer
+            disable-pagination
+          ></v-data-table>
+        </AnalysisResult>
+      </v-stepper-content>
+    </v-stepper-items>
+    <v-snackbar v-model="snackbar" color="error">{{snackbarText}}</v-snackbar>
+  </v-stepper>
 </template>
 
 <script>
+import ChaContentInput from "@/components/ChaContentInput";
+import ChaHeaderInput from "@/components/ChaHeaderInput";
+import AnalysisResult from "@/components/AnalysisResult";
+import chatArgs from "@/util/step1.json";
 
 export default {
-
-  name: 'Upload',
-
+  name: "Upload",
   components: {
+    ChaContentInput,
+    ChaHeaderInput,
+    AnalysisResult,
   },
-
-  data() {
-    return {
-      text: '',
-      splitText: [
-        { speaker: '', text: '' },
-      ],
-      speakers: [''],
-      hello: '',
-    }
-  },
-
-  methods: {
-    parseText() {
-      // 把左側的文本 parse 成一行一行
-      const rows = this.text.split('\n')
-      this.speakers = [...new Set(rows.map(text => text.split(':')[0]).concat(''))]
-      this.splitText = rows.map(text => {
-        if (!text) {
-          return { speaker: '', text: '' }
-        } else {
-          const cuts = text.split(':')
-          return { speaker: cuts[0], text: cuts.slice(1).join('') }
+  data: () => ({
+    step: 1,
+    snackbar: false,
+    snackbarText: "",
+    analysis: {
+      results: [],
+      filename: "",
+    },
+    ids: [],
+    headers: [
+      {
+        text: "語言指標",
+        align: "start",
+        value: "name",
+        class: "text--primary subtitle-1 font-weight-bold",
+        width: "60%",
+      },
+      {
+        text: "數值",
+        value: "value",
+        class: "text--primary subtitle-1 font-weight-bold",
+        width: "40%",
+      },
+    ],
+  }),
+  computed: {
+    tableItems() {
+      if (!this.analysis.results) return null;
+      let items = [];
+      // get english and chinese name for each indicator
+      for (const [en, ch] in Object.entries(chatArgs.reindicator)) {
+        if (en in this.analysis.results) {
+          items.push({
+            name: ch,
+            value: this.analysis.results[en],
+          });
         }
-      })
+      }
+      return items;
     },
-    joinText() {
-      // 把右側的文本組成一行
-      this.text = this.splitText.map(text => text.speaker+text.text).join('\n')
-    },
-    addLine() {
-      // 按按鈕
-      this.text += '\n'
-      this.splitText.push({ speaker: '', text: '' })
-    }
   },
-}
+  methods: {
+    async upload() {
+      // create file
+      let content =
+        this.$refs.chaHeader.header + this.$refs.chaContent.text + "\n@End";
+      let file = new Blob([content], { type: "text/plain;charset=utf-8" });
+      console.log("file content");
+      console.log(content);
+      // prepare payload
+      let formData = new FormData();
+      formData.append("file", file);
+      for (let speaker of this.$refs.chaContent.speakers)
+        formData.append("Speaker", speaker);
+      try {
+        // get analysis result
+        let resp = (
+          await this.$http.post("/api/upload_detailed_kideval", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+        ).data;
+        this.analysis.results = resp;
+        this.analysis.filename = resp["filename"];
+      } catch (err) {
+        // prompt snack bar
+        this.snackbar = true;
+        this.snackbarText = "分析失敗";
+        console.log(err);
+        return;
+      }
+      // continue to next step
+      this.step = 2;
+      // scroll to top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    },
+    restart() {
+      this.ids = [];
+      this.analysis = {
+        results: [],
+        filename: "",
+      };
+    },
+  },
+};
 </script>
 
 <style lang="css" scoped>

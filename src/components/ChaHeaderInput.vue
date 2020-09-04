@@ -1,31 +1,57 @@
 <template>
   <v-container>
-    <h2>名稱代號 (Name code)</h2>
-    <v-text-field :value="nameCode" hint="例如： CHI, MOT..."></v-text-field>
-    <h2>年齡 (Age)</h2>
-    <v-row style="max-width: 50%">
-      <v-col>
-        <v-text-field :value="age.year" hint="年"></v-text-field>
+    <v-row>
+      <v-col class="d-flex flex-column" cols="6">
+        <h2>Header 預覽</h2>
+        <div class="flex-grow-1 pa-1 header-text">{{header}}</div>
       </v-col>
-      <v-col>
-        <v-text-field :value="age.month" hint="月"></v-text-field>
-      </v-col>
-      <v-col>
-        <v-text-field :value="age.day" hint="日"></v-text-field>
+      <v-col cols="6">
+        <h2>新增 ID</h2>
+        <h3>名稱代號 (Name code)</h3>
+        <v-text-field v-model="nameCode" placeholder="例如： CHI, MOT..."></v-text-field>
+        <h3>年齡 (Age)</h3>
+        <div>月、日不足兩碼請補 0，例如： 05、07</div>
+        <v-row style="max-width: 50%">
+          <v-col>
+            <v-text-field v-model="age.year" placeholder="年"></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field v-model="age.month" placeholder="月"></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field v-model="age.day" placeholder="日"></v-text-field>
+          </v-col>
+        </v-row>
+        <h3>性別 (Sex)</h3>
+        <v-radio-group v-model="sex">
+          <v-radio
+            v-for="(_sex, value) in sexs"
+            :key="value"
+            class="mb-3"
+            :label="value"
+            :value="_sex"
+          ></v-radio>
+        </v-radio-group>
+        <h3>角色 (Role)</h3>
+        <v-select v-model="role" :items="roleChoices"></v-select>
+        <v-row justify="end">
+          <v-btn color="success" @click="addId()">新增 ID</v-btn>
+        </v-row>
       </v-col>
     </v-row>
-    <h2>性別 (Sex)</h2>
-    <v-radio-group v-model="sex">
-      <v-radio v-for="(sex, value) in sexs" :key="sex" class="mb-3" :label="sex" :value="value"></v-radio>
-    </v-radio-group>
-    <h2>角色 (Role)</h2>
-    <v-select v-model="role" :items="roleChoices"></v-select>
   </v-container>
 </template>
 
 <script>
 export default {
   name: "ChaHeaderInput",
+  props: {
+    // array of cha ids
+    ids: {
+      type: Array,
+      default: [],
+    },
+  },
   data: () => ({
     nameCode: "",
     age: {
@@ -35,16 +61,14 @@ export default {
     },
     sex: "",
     role: "",
-    // array of cha ids
-    ids: [],
     sexs: {
       男: "male",
       女: "female",
       未知: "unknown",
     },
     roleChoices: [
-      "Target_child",
-      "Target_adult",
+      "Target_Child",
+      "Target_Adult",
       "Child",
       "Mother",
       "Father",
@@ -91,19 +115,26 @@ export default {
       "Audience",
     ],
   }),
-  mehtods: {
+  computed: {
+    header() {
+      return this.getHeader();
+    },
+  },
+  methods: {
     getHeader() {
-      let header = "@Begin\n@Language:\tzho\n";
+      let header = "@UTF8\n@Begin\n@Language:\tzho\n";
       // Participants
-      header += "@Participants:\t";
-      let participants = [];
-      for (let id of ids) {
-        participants.push(`${id.nameCode} ${id.role}`);
+      if (this.ids.length) {
+        header += "@Participants:\t";
+        let participants = [];
+        for (let id of this.ids) {
+          participants.push(`${id.nameCode} ${id.role}`);
+        }
+        header += participants.join(", ") + "\n";
       }
-      header += participants.join(", ") + "\n";
       // ID
       // format: language|corpus|code|age|sex|group|SES|role|education|custom|
-      for (let id of ids) {
+      for (let id of this.ids) {
         let infos = [
           "zho",
           "",
@@ -118,6 +149,7 @@ export default {
         ];
         header += `@ID:\t${infos.join("|")}|\n`;
       }
+      return header;
     },
     formatAge(age) {
       let ret = age.year + ";";
@@ -149,9 +181,17 @@ export default {
       this.reset();
     },
   },
-  mounted: () => this.reset(),
+  mounted() {
+    this.reset();
+  },
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.header-text {
+  border: 1px solid gray;
+  white-space: pre-wrap;
+  overflow-y: scroll;
+  border-radius: 4px;
+}
 </style>
