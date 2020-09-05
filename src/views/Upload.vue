@@ -79,7 +79,7 @@ export default {
       if (!this.analysis.results) return null;
       let items = [];
       // get english and chinese name for each indicator
-      for (const [en, ch] in Object.entries(chatArgs.reindicator)) {
+      for (const [en, ch] of Object.entries(chatArgs.reindicator)) {
         if (en in this.analysis.results) {
           items.push({
             name: ch,
@@ -140,7 +140,7 @@ export default {
           })
         ).data;
         this.analysis.results = resp;
-        this.analysis.filename = resp["filename"];
+        this.analysis.filename = resp.filename;
       } catch (err) {
         // prompt snack bar
         this.snackbar = true;
