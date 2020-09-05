@@ -25,7 +25,7 @@
         <h3>性別 (Sex)</h3>
         <v-radio-group v-model="sex">
           <v-radio
-            v-for="(_sex, value) in sexs"
+            v-for="(_sex, value) in sexChoices"
             :key="value"
             class="mb-3"
             :label="value"
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { Speaker, roleChoices, sexChoices } from "@/util/speaker";
+
 export default {
   name: "ChaHeaderInput",
   props: {
@@ -53,67 +55,24 @@ export default {
     },
   },
   data: () => ({
+    language: "",
     nameCode: "",
     age: {
       year: "",
       month: "",
       day: "",
     },
-    sex: "",
     role: "",
-    sexs: {
-      男: "male",
-      女: "female",
-      未知: "unknown",
-    },
-    roleChoices: [
-      "Target_Child",
-      "Target_Adult",
-      "Child",
-      "Mother",
-      "Father",
-      "Brother",
-      "Sister",
-      "Sibling",
-      "Grandfather",
-      "Grandmother",
-      "Relative",
-      "Participant",
-      "Investigator",
-      "Partner",
-      "Boy",
-      "Girl",
-      "Adult",
-      "Teenager",
-      "Male",
-      "Female",
-      "Visitor",
-      "Friend",
-      "Playmate",
-      "Caretaker",
-      "Environment",
-      "Group",
-      "Unidentified",
-      "Uncertain",
-      "Other",
-      "Text",
-      "Media",
-      "PlayRole",
-      "LENA",
-      "Justice",
-      "Attorney",
-      "Doctor",
-      "Nurse",
-      "Student",
-      "Teacher",
-      "Host",
-      "Guest",
-      "Leader",
-      "Member",
-      "Narrator",
-      "Speaker",
-      "Audience",
-    ],
+    sex: "",
+    corpus: "",
+    name: "",
+    customField: "",
+    race: "",
+    SES: "",
+    education: "",
+    group: "",
+    sexChoices: sexChoices,
+    roleChoices: roleChoices,
   }),
   computed: {
     header() {
@@ -171,6 +130,11 @@ export default {
       this.role = "";
     },
     addId() {
+      // check duplication
+      for (let id of this.ids) {
+        if (id.nameCode == this.nameCode)
+          throw `${id.nameCode} is already in the IDs list`;
+      }
       // add a new id
       this.ids.push({
         nameCode: this.nameCode,
