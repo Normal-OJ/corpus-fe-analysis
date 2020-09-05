@@ -137,14 +137,20 @@ export default {
     reset() {
       this.speaker = new Speaker();
     },
+    /**
+     * add a new speaker to cha file
+     */
     addId() {
+      for (let speaker of this.$store.state.speakers) {
+        if (speaker.nameCode === this.speaker.nameCode) {
+          throw "duplicated speaker name code";
+        }
+      }
       // add a new id
-      this.ids.push({
-        nameCode: this.nameCode,
-        age: this.age,
-        sex: this.sex,
-        role: this.role,
-      });
+      let speakers = this.$store.state.speakers;
+      speakers.push(this.speaker);
+      this.$store.dispatch("setSpeakers", speakers);
+      // reset page
       this.reset();
       this.getHeader();
     },
