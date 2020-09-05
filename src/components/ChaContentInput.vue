@@ -62,7 +62,13 @@ export default {
       let speakers = rows
         .filter((text) => text[0] === "*")
         .map((text) => text.split(":")[0].concat("").slice(1));
-      return [...new Set(speakers)];
+      const newSpeakers = [...new Set(speakers)];
+      // setter: 
+      //    this.$store.dispatch('setSpeakers', newSpeakers);
+      // getter:
+      //    this.$store.state.speakers;
+      this.$store.dispatch('setSpeakers', newSpeakers)
+      return newSpeakers;
     },
   },
   methods: {
