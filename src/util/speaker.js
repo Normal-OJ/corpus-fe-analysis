@@ -83,7 +83,11 @@ class Speaker {
         language,
         corpus = '',
         nameCode,
-        age = '',
+        age = {
+            y: '',
+            m: '',
+            d: '',
+        },
         sex = '',
         group = '',
         SES = '',
@@ -164,11 +168,11 @@ class Speaker {
     get ageString() {
         let ret = '';
         if ('y' in this.age) {
-            ret += trimPrefix(this.age.trim(), '0') + ';';
+            ret += trimPrefix(this.age.y.trim(), '0') + ';';
             if ('m' in this.age) {
-                ret += this.formatMonthOrDay(this.age.m) + '.';
+                ret += Speaker.formatMonthOrDay(this.age.m) + '.';
                 if ('d' in this.age) {
-                    ret += this.formatMonthOrDay(this.age.d);
+                    ret += Speaker.formatMonthOrDay(this.age.d);
                 }
             }
         }
