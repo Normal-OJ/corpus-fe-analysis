@@ -1,4 +1,4 @@
-class File {
+export default class File {
     constructor({
         name,
         children = [],
@@ -33,7 +33,7 @@ class File {
     }
     pushNode(name) {
         let fullName = `/${this.fullName}`
-        if ( fullName === '/' ) fullName = '//'
+        if (fullName === '/') fullName = '//'
         // console.log(name+': '+fullName);
         this.children.unshift(new File({
             name,
@@ -43,5 +43,3 @@ class File {
         }))
     }
 }
-
-module.exports = File

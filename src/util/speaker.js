@@ -1,6 +1,6 @@
 import { trimPrefix } from '@/util/util'
 
-roleChoices = [
+const roleChoices = [
     "Target_Child",
     "Target_Adult",
     "Child",
@@ -48,7 +48,7 @@ roleChoices = [
     "Speaker",
     "Audience",
 ]
-raceChoices = [
+const raceChoices = [
     'Asian',
     'Black',
     'Latino',
@@ -58,21 +58,21 @@ raceChoices = [
     'Unknown',
     'White',
 ]
-SESChoices = [
+const SESChoices = [
     'UNK',
     'WC',
     'UC',
     'MC',
     'LI',
 ]
-educationChoices = [
+const educationChoices = [
     'Elem',
     'HS',
     'UG',
     'Grad',
     'Doc',
 ]
-sexChoices = {
+const sexChoices = {
     '男': "male",
     '女': "female",
     '未知': "unknown",
@@ -96,10 +96,10 @@ class Speaker {
         this.language = language;
         this.corpus = corpus;
         this.nameCode = nameCode;
-        this._age = age;
+        this.age = age;
         this.sex = sex;
         this.group = group;
-        this._SES = SES;
+        this.SES = SES;
         this.role = role;
         this.education = education;
         this.customField = customField;
@@ -132,10 +132,10 @@ class Speaker {
         a = a.trim();
         if (a.match(/^\d{1,2};\d\d:\d\d$/g)) {
             // all occurred
-            [y, m, d] = a.split(/[:;])/g);
+            [y, m, d] = a.split(/[:;]/g);
         } else if (a.match(/^\d{1,2};\d\d:$/g)) {
             // only year and month
-            [y, m, _] = a.split(/[:;])/g);
+            [y, m, _] = a.split(/[:;]/g);
         } else if (a.match(/^\d{1,2};$/g)) {
             // only year
             [y, _] = a.split(';');
@@ -161,14 +161,14 @@ class Speaker {
     /**
      * formatted age
      */
-    get age() {
+    get ageString() {
         let ret = '';
-        if ('y' in this._age) {
-            ret += trimPrefix(this._age.trim(), '0') + ';';
-            if ('m' in this._age) {
-                ret += this.formatMonthOrDay(this._age.m) + '.';
-                if ('d' in this._age) {
-                    ret += this.formatMonthOrDay(this._age.d);
+        if ('y' in this.age) {
+            ret += trimPrefix(this.age.trim(), '0') + ';';
+            if ('m' in this.age) {
+                ret += this.formatMonthOrDay(this.age.m) + '.';
+                if ('d' in this.age) {
+                    ret += this.formatMonthOrDay(this.age.d);
                 }
             }
         }
@@ -186,8 +186,8 @@ class Speaker {
         }
     }
 
-    get SES() {
-        return [this.race, this._SES].filter(x => x).join(',');
+    get SESString() {
+        return [this.race, this.SES].filter(x => x).join(',');
     }
 
     /**
@@ -199,10 +199,10 @@ class Speaker {
             this.language,
             this.corpus,
             this.nameCode,
-            this.age,
+            this.ageString,
             this.sex,
             this.group,
-            this.SES,
+            this.SESString,
             this.role,
             this.education,
             this.customField,
@@ -211,11 +211,11 @@ class Speaker {
     }
 }
 
-exports.default = {
+export {
     Speaker,
     roleChoices,
     raceChoices,
     SESChoices,
     educationChoices,
     sexChoices,
-}
+};
