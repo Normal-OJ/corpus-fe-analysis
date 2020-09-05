@@ -3,58 +3,67 @@
     <v-row>
       <v-col cols="6">
         <h2>新增 ID</h2>
-        
-        <h3>名稱代號 (Name code)</h3>
-        <v-text-field v-model="nameCode" placeholder="例如： CHI, MOT..."></v-text-field>
+        <!-- i can not bind the data.. -->
+        <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
+        <v-container>
+          <h3>名稱代號 (Name code)</h3>
+          <v-text-field v-model="speaker.nameCode" outlined placeholder="例如： CHI, MOT..."></v-text-field>
 
-        <h3>年齡 (Age)</h3>
-        <div>月、日不足兩碼請補 0，例如： 05、07</div>
-        <v-row style="max-width: 50%">
-          <v-col>
-            <v-text-field v-model="age.year" placeholder="年"></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="age.month" placeholder="月"></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field v-model="age.day" placeholder="日"></v-text-field>
-          </v-col>
-        </v-row>
-        
-        <h3>性別 (Sex)</h3>
-        <v-radio-group v-model="sex">
-          <v-radio
-            v-for="(_sex, value) in sexs"
-            :key="value"
-            class="mb-3"
-            :label="value"
-            :value="_sex"
-          ></v-radio>
-        </v-radio-group>
-        
-        <h3>角色 (Role)</h3>
-        <v-select v-model="role" :items="roleChoices"></v-select>
-        
-        <h3>語言 (Language)</h3>
-        <v-text-field
-          outlined
-        />
+          <h3>名稱 (Name)</h3>
+          <v-text-field v-model="speaker.name" outlined></v-text-field>
 
-        <h3>語料庫名稱 (Corpus Name)</h3>
-        <v-text-field
-          outlined
-        />
+          <h3>語言 (Language)</h3>
+          <v-text-field v-model="speaker.language" outlined />
 
-        <h3>團體 (Group)</h3>
-        <v-text-field
-          outlined
-        />
+          <h3>語料庫名稱 (Corpus Name)</h3>
+          <v-text-field v-model="speaker.corpus" outlined />
 
-        <h3>教育程度 (Education)</h3>
-        <v-text-field
-          outlined
-        />
-        
+          <h3>年齡 (Age)</h3>
+          <div>月、日不足兩碼請補 0，例如： 05、07</div>
+          <v-row style="max-width: 50%">
+            <v-col>
+              <v-text-field outlined v-model="speaker.age.year" placeholder="年"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field outlined v-model="speaker.age.month" placeholder="月"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field outlined v-model="speaker.age.day" placeholder="日"></v-text-field>
+            </v-col>
+          </v-row>
+
+          <h3>性別 (Sex)</h3>
+          <v-radio-group row v-model="speaker.sex">
+            <v-radio
+              v-for="(_sex, value) in sexChoices"
+              :key="value"
+              class="mb-3"
+              :label="value"
+              :value="_sex"
+            ></v-radio>
+          </v-radio-group>
+
+          <v-container class="d-flex">
+            <v-container>
+              <h3>(Race)</h3>
+              <v-select outlined v-model="speaker.race" :items="raceChoices"></v-select>
+            </v-container>
+            <v-container>
+              <h3>(SES)</h3>
+              <v-select outlined v-model="speaker.SES" :items="SESChoices"></v-select>
+            </v-container>
+          </v-container>
+
+          <h3>團體 (Group)</h3>
+          <v-text-field v-model="speaker.group" outlined />
+
+          <h3>角色 (Role)</h3>
+          <v-select outlined v-model="speaker.role" :items="roleChoices"></v-select>
+
+          <h3>教育程度 (Education)</h3>
+          <v-text-field v-model="speaker.education" outlined />
+        </v-container>
+
         <v-row justify="end">
           <v-btn color="success" @click="addId()">新增 ID</v-btn>
         </v-row>
@@ -75,130 +84,58 @@
 </template>
 
 <script>
+import SpeakerInput from "@/components/SpeakerInput";
+import {
+  Speaker,
+  roleChoices,
+  raceChoices,
+  SESChoices,
+  educationChoices,
+  sexChoices,
+} from "@/util/speaker";
+
 export default {
   name: "ChaHeaderInput",
-  props: {
-    // array of cha ids
-    ids: {
-      type: Array,
-      default: [],
-    },
+  components: {
+    SpeakerInput,
   },
   data: () => ({
-    nameCode: "",
-    header: '',
-    age: {
-      year: "",
-      month: "",
-      day: "",
-    },
-    sex: "",
-    role: "",
-    sexs: {
-      男: "male",
-      女: "female",
-      未知: "unknown",
-    },
-    roleChoices: [
-      "Target_Child",
-      "Target_Adult",
-      "Child",
-      "Mother",
-      "Father",
-      "Brother",
-      "Sister",
-      "Sibling",
-      "Grandfather",
-      "Grandmother",
-      "Relative",
-      "Participant",
-      "Investigator",
-      "Partner",
-      "Boy",
-      "Girl",
-      "Adult",
-      "Teenager",
-      "Male",
-      "Female",
-      "Visitor",
-      "Friend",
-      "Playmate",
-      "Caretaker",
-      "Environment",
-      "Group",
-      "Unidentified",
-      "Uncertain",
-      "Other",
-      "Text",
-      "Media",
-      "PlayRole",
-      "LENA",
-      "Justice",
-      "Attorney",
-      "Doctor",
-      "Nurse",
-      "Student",
-      "Teacher",
-      "Host",
-      "Guest",
-      "Leader",
-      "Member",
-      "Narrator",
-      "Speaker",
-      "Audience",
-    ],
+    header: "",
+    speaker: new Speaker(),
+    roleChoices,
+    raceChoices,
+    SESChoices,
+    educationChoices,
+    sexChoices,
   }),
   methods: {
     getHeader() {
-      // TODO
-      // 保留 @ID & @Participants 以外的資訊
-      let header = "@UTF8\n@Begin\n@Languages:\tzho\n";
+      // split original header into lines
+      let headerLines = this.header.split(/[\r?\n]/g);
+      // keep headers except ID and Participants
+      let keepLines = headerLines.filter(
+        (line) => !line.match(/^@(ID|Participants):/g)
+      );
+      let speakers = this.$store.state.speakers;
       // Participants
-      if (this.ids.length) {
-        header += "@Participants:\t";
+      if (speakers.length) {
         let participants = [];
-        for (let id of this.ids) {
-          participants.push(`${id.nameCode} ${id.role}`);
+        for (let speaker of speakers) {
+          participants.push(
+            `${speaker.nameCode || ""} ${speaker.name} ${speaker.role || ""}`
+          );
         }
-        header += participants.join(", ") + "\n";
+        let participantsHeader = `@Participants:\t${participants.join(", ")}`;
+        keepLines.push(participantsHeader);
       }
       // ID
-      // format: language|corpus|code|age|sex|group|SES|role|education|custom|
-      for (let id of this.ids) {
-        let infos = [
-          "zho",
-          "",
-          id.nameCode,
-          this.formatAge(id.age),
-          id.sex,
-          "",
-          "",
-          id.role,
-          "",
-          "",
-        ];
-        header += `@ID:\t${infos.join("|")}|\n`;
+      for (let speaker of speakers) {
+        keepLines.push(speaker.header);
       }
-      this.header = header;
-    },
-    formatAge(age) {
-      let ret = age.year + ";";
-      if (age.month) {
-        ret += age.month + ".";
-        if (age.day) ret += age.day;
-      }
-      return ret;
+      this.header = keepLines.join("\n");
     },
     reset() {
-      // clear values
-      this.nameCode = "";
-      this.age = {
-        year: "",
-        month: "",
-        day: "",
-      };
-      this.sex = "unknown";
-      this.role = "";
+      this.speaker = new Speaker();
     },
     addId() {
       // add a new id
@@ -212,11 +149,8 @@ export default {
       this.getHeader();
     },
     appendTabToHeader() {
-      this.header += '\t'
+      this.header += "\t";
     },
-  },
-  mounted() {
-    this.reset();
   },
 };
 </script>
