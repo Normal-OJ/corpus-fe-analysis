@@ -12,9 +12,9 @@
           row-height="40"
         />
       </v-col>
-      <v-col cols="5">
+      <v-col cols="6">
         <v-row v-for="(row, index) in splitText" :key="index" no-gutters>
-          <v-col col="3">
+          <v-col col="4">
             <v-combobox
               v-model="row.speaker"
               :items="speakers"
@@ -25,7 +25,7 @@
               hide-details
             />
           </v-col>
-          <v-col cols="9">
+          <v-col cols="8">
             <v-text-field
               v-model="row.text"
               placeholder="輸入語句"
@@ -37,7 +37,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="2">
+      <v-col cols="1">
         <v-row justify="end">
           <v-btn @click="addLine" color="success">新增語句</v-btn>
         </v-row>
@@ -61,13 +61,18 @@ export default {
       const rows = this.text.split("\n");
       let speakers = rows
         .filter((text) => text[0] === "*")
-        .map((text) => text.split(":")[0].concat("").slice(1));
+        .map((text) =>
+          text
+            .split(":")[0]
+            .concat("")
+            .slice(1)
+        );
       const newSpeakers = [...new Set(speakers)];
-      // setter: 
+      // setter:
       //    this.$store.dispatch('setSpeakers', newSpeakers);
       // getter:
       //    this.$store.state.speakers;
-      this.$store.dispatch('setSpeakers', newSpeakers)
+      this.$store.dispatch("setSpeakers", newSpeakers);
       return newSpeakers;
     },
   },
@@ -85,7 +90,10 @@ export default {
           const cuts = text.split(":");
           return {
             speaker: cuts[0],
-            text: cuts.slice(1).join("").trim(),
+            text: cuts
+              .slice(1)
+              .join("")
+              .trim(),
           };
         }
       });
@@ -108,5 +116,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>手動輸入標頭檔和文本</h1>
     <v-row>
       <v-col cols="6">
         <h2>新增 ID</h2>
@@ -7,28 +8,48 @@
         <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
         <v-container>
           <h3>名稱代號 (Name code)</h3>
-          <v-text-field v-model="speaker.nameCode" outlined placeholder="例如： CHI, MOT..."></v-text-field>
+          <v-text-field
+            v-model="speaker.nameCode"
+            outlined
+            placeholder="例如： CHI, MOT..."
+            dense
+          />
 
           <h3>名稱 (Name)</h3>
-          <v-text-field v-model="speaker.name" outlined></v-text-field>
+          <v-text-field v-model="speaker.name" outlined dense />
 
           <h3>語言 (Language)</h3>
-          <v-text-field v-model="speaker.language" outlined />
+          <v-text-field v-model="speaker.language" outlined dense />
 
           <h3>語料庫名稱 (Corpus Name)</h3>
-          <v-text-field v-model="speaker.corpus" outlined />
+          <v-text-field v-model="speaker.corpus" outlined dense />
 
           <h3>年齡 (Age)</h3>
           <div>月、日不足兩碼請補 0，例如： 05、07</div>
-          <v-row style="max-width: 50%">
+          <v-row>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.year" placeholder="年"></v-text-field>
+              <v-text-field
+                outlined
+                v-model="speaker.age.year"
+                placeholder="年"
+                dense
+              />
             </v-col>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.month" placeholder="月"></v-text-field>
+              <v-text-field
+                outlined
+                v-model="speaker.age.month"
+                placeholder="月"
+                dense
+              />
             </v-col>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.day" placeholder="日"></v-text-field>
+              <v-text-field
+                outlined
+                v-model="speaker.age.day"
+                placeholder="日"
+                dense
+              />
             </v-col>
           </v-row>
 
@@ -43,29 +64,44 @@
             ></v-radio>
           </v-radio-group>
 
-          <v-container class="d-flex">
-            <v-container>
-              <h3>(Race)</h3>
-              <v-select outlined v-model="speaker.race" :items="raceChoices"></v-select>
-            </v-container>
-            <v-container>
-              <h3>(SES)</h3>
-              <v-select outlined v-model="speaker.SES" :items="SESChoices"></v-select>
-            </v-container>
-          </v-container>
+          <v-row>
+            <v-col>
+              <h3>種族 (Race)</h3>
+              <v-select
+                outlined
+                v-model="speaker.race"
+                :items="raceChoices"
+                dense
+              ></v-select>
+            </v-col>
+            <v-col>
+              <h3>社經程度 (SES)</h3>
+              <v-select
+                outlined
+                v-model="speaker.SES"
+                :items="SESChoices"
+                dense
+              ></v-select>
+            </v-col>
+          </v-row>
 
           <h3>團體 (Group)</h3>
-          <v-text-field v-model="speaker.group" outlined />
+          <v-text-field v-model="speaker.group" outlined dense />
 
           <h3>角色 (Role)</h3>
-          <v-select outlined v-model="speaker.role" :items="roleChoices"></v-select>
+          <v-select
+            v-model="speaker.role"
+            :items="roleChoices"
+            outlined
+            dense
+          ></v-select>
 
           <h3>教育程度 (Education)</h3>
-          <v-text-field v-model="speaker.education" outlined />
+          <v-text-field v-model="speaker.education" outlined dense />
         </v-container>
 
         <v-row justify="end">
-          <v-btn color="success" @click="addId()">新增 ID</v-btn>
+          <v-btn color="primary" @click="addId()">新增 ID</v-btn>
         </v-row>
       </v-col>
       <v-col class="d-flex flex-column" cols="6">
@@ -75,7 +111,7 @@
           class="flex-grow-1 pa-1 header-text"
           :style="{ fontFamily: 'monospace' }"
           outlined
-          rows="10"
+          style=""
           @keydown.tab.prevent="appendTabToHeader"
         />
       </v-col>
@@ -84,7 +120,7 @@
 </template>
 
 <script>
-import SpeakerInput from "@/components/SpeakerInput";
+// import SpeakerInput from "@/components/SpeakerInput";
 import {
   Speaker,
   roleChoices,
@@ -97,7 +133,7 @@ import {
 export default {
   name: "ChaHeaderInput",
   components: {
-    SpeakerInput,
+    // SpeakerInput,
   },
   data: () => ({
     header: "",
