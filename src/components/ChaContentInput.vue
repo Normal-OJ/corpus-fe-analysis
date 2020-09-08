@@ -18,7 +18,7 @@
           <v-col col="4">
             <v-combobox
               v-model="row.speaker"
-              :items="speakers"
+              :items="speakerNames"
               placeholder="選取或輸入說話者"
               outlined
               @input="joinText"
@@ -60,6 +60,9 @@ export default {
     };
   },
   computed: {
+    speakerNames() {
+      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+    },
     speakers() {
       const rows = this.text.split("\n");
       let speakers = rows
@@ -85,25 +88,20 @@ export default {
     // 把左側的文本 parse 成一行一行
     parseText() {
       const rows = this.text.split("\n");
-      this.splitText = rows.map((text) => {
-        if (!text) {
-          return {
-            speaker: "",
-            text: "",
-          };
-        } else {
+      this.splitText = rows
+        .filter((text) => text)
+        .map((text) => {
           const cuts = text.split(":");
           return {
             speaker: cuts[0],
             text: cuts.slice(1).join("").trim(),
           };
-        }
-      });
+        });
     },
     // 把右側的文本組成一行
     joinText() {
       this.text = this.splitText
-        .map((text) => text.speaker + ":\t" + text.text)
+        .map((text) => `*${text.speaker}:\t${text.text}`)
         .join("\n");
     },
     // 按按鈕
