@@ -50,7 +50,7 @@
       </v-stepper-content>
       <v-stepper-content step="3">
         <v-btn color="primary" @click="step = step - 1">返回上一步</v-btn>
-        <v-select :items="speakerNames"></v-select>
+        <v-select v-model="speaker" :items="speakerNames"></v-select>
         <v-btn @click="upload">分析</v-btn>
       </v-stepper-content>
       <v-stepper-content step="4">
@@ -157,8 +157,7 @@ export default {
      */
     async parseText() {
       // create file
-      let content =
-        this.$refs.chaHeader.header + this.$refs.chaContent.text + "\n@End\n";
+      let content = `${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
       this.file = new Blob([content], { type: "text/plain;charset=utf-8" });
       this.step++;
     },
