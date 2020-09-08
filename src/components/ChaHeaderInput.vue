@@ -7,16 +7,16 @@
         <!-- i can not bind the data.. -->
         <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
         <v-container>
-          <h3>名稱代號 (Name code)</h3>
+          <h3>說話者名稱 (Name code)</h3>
           <v-text-field v-model="speaker.nameCode" outlined placeholder="例如： CHI, MOT..." dense />
 
-          <h3>名稱 (Name)</h3>
+          <h3>完整名稱 (Name)</h3>
           <v-text-field v-model="speaker.name" outlined dense />
 
           <h3>語言 (Language)</h3>
           <v-text-field v-model="speaker.language" outlined dense />
 
-          <h3>語料庫名稱 (Corpus Name)</h3>
+          <h3>語料名稱 (Corpus Name)</h3>
           <v-text-field v-model="speaker.corpus" outlined dense />
 
           <h3>年齡 (Age)</h3>
@@ -50,18 +50,21 @@
               <v-select outlined v-model="speaker.race" :items="raceChoices" dense></v-select>
             </v-col>
             <v-col>
-              <h3>社經程度 (SES)</h3>
+              <h3>社經地位 (SES)</h3>
               <v-select outlined v-model="speaker.SES" :items="SESChoices" dense></v-select>
             </v-col>
           </v-row>
 
-          <h3>團體 (Group)</h3>
+          <h3>組別 (Group)</h3>
           <v-text-field v-model="speaker.group" outlined dense />
 
           <h3>角色 (Role)</h3>
           <v-select v-model="speaker.role" :items="roleChoices" outlined dense></v-select>
 
           <h3>教育程度 (Education)</h3>
+          <v-text-field v-model="speaker.education" outlined dense />
+
+          <h3>其他所需資訊 (Custom field)</h3>
           <v-text-field v-model="speaker.education" outlined dense />
         </v-container>
 
