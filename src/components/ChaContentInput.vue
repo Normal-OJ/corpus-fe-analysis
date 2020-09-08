@@ -59,14 +59,10 @@ export default {
   computed: {
     speakers() {
       const rows = this.text.split("\n");
+      console.log(rows);
       let speakers = rows
         .filter((text) => text[0] === "*")
-        .map((text) =>
-          text
-            .split(":")[0]
-            .concat("")
-            .slice(1)
-        );
+        .map((text) => text.split(":")[0].concat("").slice(1));
       const newSpeakers = [...new Set(speakers)];
       // setter:
       //    this.$store.dispatch('setSpeakers', newSpeakers);
@@ -90,10 +86,7 @@ export default {
           const cuts = text.split(":");
           return {
             speaker: cuts[0],
-            text: cuts
-              .slice(1)
-              .join("")
-              .trim(),
+            text: cuts.slice(1).join("").trim(),
           };
         }
       });
