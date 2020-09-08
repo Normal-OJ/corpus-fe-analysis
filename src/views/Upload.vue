@@ -2,24 +2,44 @@
   <v-stepper v-model="step">
     <v-stepper-header>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 1" step="1">輸入 Chat 檔內容</v-stepper-step>
+      <v-stepper-step :complete="step > 1" step="1">選擇上傳方式</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 2" step="2">查看分析結果</v-stepper-step>
+      <v-stepper-step :complete="step > 2" step="2">輸入 Chat 檔內容</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 3" step="3">查看分析結果</v-stepper-step>
       <v-divider></v-divider>
     </v-stepper-header>
     <v-stepper-items style="padding: 0 15vw">
       <v-stepper-content step="1">
+        <v-container fluid>
+          <v-row justify="center">
+            <v-spacer />
+            <v-col cols="3">
+              <v-btn color="success" @click="uploadByFile=true; step=2">上傳單個檔案</v-btn>
+            </v-col>
+            <v-col cols="1">
+              <div>或是</div>
+            </v-col>
+            <v-col cols="3">
+              <v-btn color="success" @click="uploadByFile=false; step=2">手動輸入文本</v-btn>
+            </v-col>
+            <v-spacer />
+          </v-row>
+        </v-container>
+      </v-stepper-content>
+      <v-stepper-content step="2">
         <v-container>
+          <v-btn color="primary" @click="step = step - 1">返回上一步</v-btn>
           <ChaFileInput @upload-file="uploadFile"></ChaFileInput>
-          <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
+          <ChaHeaderInput ref="chaHeader"></ChaHeaderInput>
           <ChaContentInput ref="chaContent"></ChaContentInput>
           <v-row justify="end">
             <v-btn color="primary" @click="uploadText">繼續</v-btn>
           </v-row>
         </v-container>
       </v-stepper-content>
-      <v-stepper-content step="2">
-        <AnalysisResult @restart="restart" @back="step = step-1" :filename="analysis.filename">
+      <v-stepper-content step="3">
+        <AnalysisResult @restart="restart" @back="step = step - 1" :filename="analysis.filename">
           <v-data-table
             v-if="tableItems"
             :headers="headers"
@@ -50,6 +70,7 @@ export default {
     AnalysisResult,
   },
   data: () => ({
+    uploadByFile: false,
     step: 1,
     snackbar: false,
     snackbarText: "",
@@ -57,7 +78,6 @@ export default {
       results: [],
       filename: "",
     },
-    ids: [],
     headers: [
       {
         text: "語言指標",
@@ -149,7 +169,7 @@ export default {
         return;
       }
       // continue to next step
-      this.step = 2;
+      this.step = 3;
       // scroll to top
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;

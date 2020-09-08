@@ -8,12 +8,7 @@
         <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
         <v-container>
           <h3>名稱代號 (Name code)</h3>
-          <v-text-field
-            v-model="speaker.nameCode"
-            outlined
-            placeholder="例如： CHI, MOT..."
-            dense
-          />
+          <v-text-field v-model="speaker.nameCode" outlined placeholder="例如： CHI, MOT..." dense />
 
           <h3>名稱 (Name)</h3>
           <v-text-field v-model="speaker.name" outlined dense />
@@ -28,28 +23,13 @@
           <div>月、日不足兩碼請補 0，例如： 05、07</div>
           <v-row>
             <v-col>
-              <v-text-field
-                outlined
-                v-model="speaker.age.year"
-                placeholder="年"
-                dense
-              />
+              <v-text-field outlined v-model="speaker.age.year" placeholder="年" dense />
             </v-col>
             <v-col>
-              <v-text-field
-                outlined
-                v-model="speaker.age.month"
-                placeholder="月"
-                dense
-              />
+              <v-text-field outlined v-model="speaker.age.month" placeholder="月" dense />
             </v-col>
             <v-col>
-              <v-text-field
-                outlined
-                v-model="speaker.age.day"
-                placeholder="日"
-                dense
-              />
+              <v-text-field outlined v-model="speaker.age.day" placeholder="日" dense />
             </v-col>
           </v-row>
 
@@ -67,21 +47,11 @@
           <v-row>
             <v-col>
               <h3>種族 (Race)</h3>
-              <v-select
-                outlined
-                v-model="speaker.race"
-                :items="raceChoices"
-                dense
-              ></v-select>
+              <v-select outlined v-model="speaker.race" :items="raceChoices" dense></v-select>
             </v-col>
             <v-col>
               <h3>社經程度 (SES)</h3>
-              <v-select
-                outlined
-                v-model="speaker.SES"
-                :items="SESChoices"
-                dense
-              ></v-select>
+              <v-select outlined v-model="speaker.SES" :items="SESChoices" dense></v-select>
             </v-col>
           </v-row>
 
@@ -89,12 +59,7 @@
           <v-text-field v-model="speaker.group" outlined dense />
 
           <h3>角色 (Role)</h3>
-          <v-select
-            v-model="speaker.role"
-            :items="roleChoices"
-            outlined
-            dense
-          ></v-select>
+          <v-select v-model="speaker.role" :items="roleChoices" outlined dense></v-select>
 
           <h3>教育程度 (Education)</h3>
           <v-text-field v-model="speaker.education" outlined dense />
@@ -111,7 +76,6 @@
           class="flex-grow-1 pa-1 header-text"
           :style="{ fontFamily: 'monospace' }"
           outlined
-          style=""
           @keydown.tab.prevent="appendTabToHeader"
         />
       </v-col>
