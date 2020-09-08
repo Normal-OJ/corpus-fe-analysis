@@ -76,7 +76,7 @@
           class="flex-grow-1 pa-1 header-text"
           :style="{ fontFamily: 'monospace' }"
           outlined
-          @keydown.tab.prevent="appendTabToHeader"
+          @keydown.tab.prevent="appendTabToHeader($event)"
         />
       </v-col>
     </v-row>
@@ -154,8 +154,11 @@ export default {
       this.reset();
       this.getHeader();
     },
-    appendTabToHeader() {
-      this.header += "\t";
+    // FIXME: caret index will at the line end after insert
+    appendTabToHeader(event) {
+      let startText = this.header.slice(0, event.target.selectionStart);
+      let endText = this.header.slice(event.target.selectionStart);
+      this.header = `${startText}\t${endText}`;
     },
   },
 };
