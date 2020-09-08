@@ -35,13 +35,13 @@
           <div>月、日不足兩碼請補 0，例如： 05、07</div>
           <v-row>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.year" placeholder="年" dense />
+              <v-text-field outlined v-model="speaker.age.y" placeholder="年" dense />
             </v-col>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.month" placeholder="月" dense />
+              <v-text-field outlined v-model="speaker.age.m" placeholder="月" dense />
             </v-col>
             <v-col>
-              <v-text-field outlined v-model="speaker.age.day" placeholder="日" dense />
+              <v-text-field outlined v-model="speaker.age.d" placeholder="日" dense />
             </v-col>
           </v-row>
 
