@@ -9,6 +9,7 @@
           outlined
           rows="10"
           @input="parseText"
+          @keydown.tab.prevent="appendTabToHeader($event)"
           row-height="40"
         />
       </v-col>
@@ -104,6 +105,12 @@ export default {
         speaker: "",
         text: "",
       });
+    },
+    // FIXME: caret index will at the line end after insert
+    appendTabToHeader(event) {
+      let startText = this.header.slice(0, event.target.selectionStart);
+      let endText = this.header.slice(event.target.selectionStart);
+      this.header = `${startText}\t${endText}`;
     },
   },
 };
