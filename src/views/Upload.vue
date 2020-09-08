@@ -128,7 +128,7 @@ export default {
       return items;
     },
     speakerNames() {
-      return this.$store.state.speakers.map((speaker) => speaker.name);
+      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
     },
   },
   methods: {

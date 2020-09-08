@@ -1,14 +1,26 @@
 <template>
   <v-container>
-    <h1>手動輸入標頭檔和文本</h1>
+    <h1>手動輸入標頭和文本</h1>
     <v-row>
       <v-col cols="6">
-        <h2>新增 ID</h2>
+        <h2>編輯 ID</h2>
+        <v-select
+          ref="speakerSelect"
+          v-model="selectedName"
+          label="選擇說話者"
+          :items="speakerNames"
+          @change="changeSpeaker"
+        />
+        <v-row justify="space-around">
+          <v-btn color="red" dark @click="addId()">刪除 ID</v-btn>
+          <v-btn color="primary" @click="addId()">新增 ID</v-btn>
+          <v-btn color="primary" @click="getHeader()">更新標頭</v-btn>
+        </v-row>
         <!-- i can not bind the data.. -->
         <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
         <v-container>
           <h3>說話者名稱 (Name code)</h3>
-          <v-text-field v-model="speaker.nameCode" outlined placeholder="例如： CHI, MOT..." dense />
+          <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
           <h3>完整名稱 (Name)</h3>
           <v-text-field v-model="speaker.name" outlined dense />
@@ -67,10 +79,6 @@
           <h3>其他所需資訊 (Custom field)</h3>
           <v-text-field v-model="speaker.education" outlined dense />
         </v-container>
-
-        <v-row justify="end">
-          <v-btn color="primary" @click="addId()">新增 ID</v-btn>
-        </v-row>
       </v-col>
       <v-col class="d-flex flex-column" cols="6">
         <h2>Header 預覽</h2>
@@ -99,12 +107,16 @@ import {
 
 export default {
   name: "ChaHeaderInput",
-  components: {
-    // SpeakerInput,
+  computed: {
+    speakerNames() {
+      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+    },
   },
   data: () => ({
     header: "",
     speaker: new Speaker(),
+    selectedName: "",
+    oldNameCode: "",
     roleChoices,
     raceChoices,
     SESChoices,
@@ -112,12 +124,20 @@ export default {
     sexChoices,
   }),
   methods: {
+    changeSpeaker(nameCode) {
+      for (let speaker of this.$store.state.speakers) {
+        if (speaker.nameCode === nameCode) {
+          this.speaker = speaker;
+          break;
+        }
+      }
+    },
     getHeader() {
       // split original header into lines
       let headerLines = this.header.split(/[\r?\n]/g);
-      // keep headers except ID and Participants
+      // keep headers except ID, Participants, empty line
       let keepLines = headerLines.filter(
-        (line) => !line.match(/^@(ID|Participants):/g)
+        (line) => line && !line.match(/^@(ID|Participants):/g)
       );
       let speakers = this.$store.state.speakers;
       // Participants
@@ -137,24 +157,19 @@ export default {
       }
       this.header = keepLines.join("\n");
     },
-    reset() {
-      this.speaker = new Speaker();
-    },
     /**
      * add a new speaker to cha file
      */
     addId() {
-      for (let speaker of this.$store.state.speakers) {
-        if (speaker.nameCode === this.speaker.nameCode) {
-          throw "duplicated speaker name code";
-        }
-      }
       // add a new id
       let speakers = this.$store.state.speakers;
-      speakers.push(this.speaker);
+      // spawn a new speaker
+      let newSpeaker = new Speaker();
+      newSpeaker.nameCode = `SP${this.$store.state.speakers.length}`;
+      speakers.push(newSpeaker);
       this.$store.dispatch("setSpeakers", speakers);
-      // reset page
-      this.reset();
+      // update selection and header
+      this.$refs.speakerSelect.value = newSpeaker.nameCode;
       this.getHeader();
     },
     // FIXME: caret index will at the line end after insert
@@ -162,6 +177,21 @@ export default {
       let startText = this.header.slice(0, event.target.selectionStart);
       let endText = this.header.slice(event.target.selectionStart);
       this.header = `${startText}\t${endText}`;
+    },
+  },
+  mounted() {
+    if (this.$store.state.speakers.length === 0) {
+      let newSpeaker = new Speaker();
+      newSpeaker.nameCode = "SP0";
+      this.$store.dispatch("setSpeakers", [newSpeaker]);
+      this.selectedName = "SP0";
+    }
+  },
+  watch: {
+    selectedName(name) {
+      this.oldNameCode = name;
+      this.changeSpeaker(name);
+      this.speaker.nameCode = name;
     },
   },
 };

@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { Speaker } from "@/util/speaker";
+
 export default {
   name: "ChaContentInput",
   data() {
@@ -60,16 +62,22 @@ export default {
   computed: {
     speakers() {
       const rows = this.text.split("\n");
-      console.log(rows);
       let speakers = rows
         .filter((text) => text[0] === "*")
         .map((text) => text.split(":")[0].concat("").slice(1));
-      const newSpeakers = [...new Set(speakers)];
+      const newSpeakers = [...new Set(speakers)].map((nameCode) => {
+        let ret = new Speaker();
+        ret.nameCode = nameCode;
+        return ret;
+      });
       // setter:
       //    this.$store.dispatch('setSpeakers', newSpeakers);
       // getter:
       //    this.$store.state.speakers;
-      this.$store.dispatch("setSpeakers", newSpeakers);
+      this.$store.dispatch(
+        "setSpeakers",
+        this.$store.state.speakers.concat(newSpeakers)
+      );
       return newSpeakers;
     },
   },
