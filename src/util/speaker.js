@@ -167,11 +167,11 @@ class Speaker {
      */
     get ageString() {
         let ret = '';
-        if ('y' in this.age) {
+        if (this.age.y) {
             ret += trimPrefix(this.age.y.trim(), '0') + ';';
-            if ('m' in this.age) {
+            if (this.age.m) {
                 ret += Speaker.formatMonthOrDay(this.age.m) + '.';
-                if ('d' in this.age) {
+                if (this.age.d) {
                     ret += Speaker.formatMonthOrDay(this.age.d);
                 }
             }
@@ -179,6 +179,7 @@ class Speaker {
         return ret;
     }
 
+    // TODO
     /**
      * parse the SES field in ID header into race and SES
      * @param {String} s SES attribute in the ID header, e.g. Asian,WC 
