@@ -12,7 +12,7 @@
           @change="changeSpeaker"
         />
         <v-row justify="space-around">
-          <v-btn color="red" dark @click="addId()">刪除 ID</v-btn>
+          <v-btn color="red" dark @click="deleteId()">刪除 ID</v-btn>
           <v-btn color="primary" @click="addId()">新增 ID</v-btn>
           <v-btn color="primary" @click="getHeader()">更新標頭</v-btn>
         </v-row>
@@ -157,6 +157,26 @@ export default {
       }
       this.header = keepLines.join("\n");
     },
+    deleteId() {
+      let speakers = this.$store.state.speakers;
+      let removeIndex = 0;
+      // find current speaker and remove it
+      for (let i in speakers) {
+        if (speakers[i].nameCode === this.speaker.nameCode) {
+          speakers.splice(i, 1);
+          removeIndex = i;
+          break;
+        }
+      }
+      this.$store.dispatch("setSpeakers", speakers);
+      this.keepSpeakers();
+      // update selected speaker
+      speakers = this.$store.state.speakers;
+      if (removeIndex >= speakers.length) {
+        removeIndex = speakers.length - 1;
+      }
+      this.selectedName = speakers[removeIndex].nameCode;
+    },
     /**
      * add a new speaker to cha file
      */
@@ -178,14 +198,20 @@ export default {
       let endText = this.header.slice(event.target.selectionStart);
       this.header = `${startText}\t${endText}`;
     },
+    /**
+     *  make the spakers array at least contain one element
+     */
+    keepSpeakers() {
+      if (this.$store.state.speakers.length === 0) {
+        let newSpeaker = new Speaker();
+        newSpeaker.nameCode = "SP0";
+        this.$store.dispatch("setSpeakers", [newSpeaker]);
+        this.selectedName = "SP0";
+      }
+    },
   },
   mounted() {
-    if (this.$store.state.speakers.length === 0) {
-      let newSpeaker = new Speaker();
-      newSpeaker.nameCode = "SP0";
-      this.$store.dispatch("setSpeakers", [newSpeaker]);
-      this.selectedName = "SP0";
-    }
+    this.keepSpeakers();
   },
   watch: {
     selectedName(name) {
