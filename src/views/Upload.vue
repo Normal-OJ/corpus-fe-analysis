@@ -148,7 +148,7 @@ export default {
           speakers.add(line.split(":")[0].concat("").slice(1));
         }
       }
-      speakers = [...speakers].map((speaker) => ({ name: speaker }));
+      speakers = [...speakers].map((speaker) => ({ nameCode: speaker }));
       this.$store.dispatch("setSpeakers", speakers);
       this.step++;
     },
