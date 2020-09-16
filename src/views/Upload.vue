@@ -4,7 +4,7 @@
       <v-divider></v-divider>
       <v-stepper-step :complete="step > 1" step="1">選擇上傳方式</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 2" step="2">輸入 Chat 檔內容</v-stepper-step>
+      <v-stepper-step :complete="step > 2" step="2">輸入 cha 檔內容</v-stepper-step>
       <v-divider></v-divider>
       <v-stepper-step :complete="step > 3" step="3">選擇分析對象</v-stepper-step>
       <v-divider></v-divider>
@@ -157,7 +157,7 @@ export default {
      */
     async parseText() {
       // create file
-      let content = `${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
+      let content = `@UTF8\n@Begin\n${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
       this.file = new Blob([content], { type: "text/plain;charset=utf-8" });
       this.step++;
     },

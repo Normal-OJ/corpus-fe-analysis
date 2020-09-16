@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>手動輸入標頭和文本</h1>
+    <h1>手動輸入表頭 (Header)</h1>
     <v-row>
       <v-col cols="6">
         <h2>編輯 ID</h2>
@@ -14,7 +14,7 @@
         <v-row justify="space-around">
           <v-btn color="red" dark @click="deleteId()">刪除 ID</v-btn>
           <v-btn color="primary" @click="addId()">新增 ID</v-btn>
-          <v-btn color="primary" @click="getHeader()">更新標頭</v-btn>
+          <v-btn color="primary" @click="getHeader()">更新表頭</v-btn>
         </v-row>
         <!-- i can not bind the data.. -->
         <!-- <SpeakerInput v-bind.sync="speaker"></SpeakerInput> -->
@@ -22,13 +22,13 @@
           <h3>說話者名稱 (Name code)</h3>
           <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
-          <h3>完整名稱 (Name)</h3>
+          <h3>完整名稱 (Optional speaker name)</h3>
           <v-text-field v-model="speaker.name" outlined dense />
 
           <h3>語言 (Language)</h3>
-          <v-text-field v-model="speaker.language" outlined dense />
+          <v-text-field v-model="speaker.language" placeholder="例如： zho" outlined dense />
 
-          <h3>語料名稱 (Corpus Name)</h3>
+          <h3>語料名稱 (Corpus name)</h3>
           <v-text-field v-model="speaker.corpus" outlined dense />
 
           <h3>年齡 (Age)</h3>
@@ -77,7 +77,7 @@
           <v-text-field v-model="speaker.education" outlined dense />
 
           <h3>其他所需資訊 (Custom field)</h3>
-          <v-text-field v-model="speaker.education" outlined dense />
+          <v-text-field v-model="speaker.customField" outlined dense />
         </v-container>
       </v-col>
       <v-col class="d-flex flex-column" cols="6">
