@@ -58,7 +58,7 @@
       <v-stepper-content step="4">
         <v-btn color="primary" @click="step--">返回上一步</v-btn>
         <v-select v-model="speaker" :items="speakerNames"></v-select>
-        <v-btn @click="upload">分析</v-btn>
+        <v-btn color="primary" @click="upload">分析</v-btn>
       </v-stepper-content>
       <v-stepper-content step="5">
         <AnalysisResult @restart="restart" @back="step--" :filename="analysis.filename">

@@ -2,7 +2,7 @@
   <v-container>
     <h1>手動輸入表頭 (Header)</h1>
 
-    <h2>Header 預覽</h2>
+    <h2>表頭 (Header) 預覽</h2>
     <v-textarea
       v-model="header"
       class="flex-grow-1 pa-1 header-text"
@@ -34,12 +34,7 @@
     <v-row>
       <v-col cols="12" md="6">
         <h3>說話者名稱 (Name code)</h3>
-        <v-text-field
-          v-model="selectedName"
-          outlined
-          placeholder="例如： CHI, MOT..."
-          dense
-        />
+        <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
         <h3>完整名稱 (Optional speaker name)</h3>
         <v-text-field v-model="speaker.name" outlined dense />
@@ -60,28 +55,13 @@
         <div>月、日不足兩碼請補 0，例如： 05、07</div>
         <v-row>
           <v-col>
-            <v-text-field
-              outlined
-              v-model="speaker.age.y"
-              placeholder="年"
-              dense
-            />
+            <v-text-field outlined v-model="speaker.age.y" placeholder="年" dense />
           </v-col>
           <v-col>
-            <v-text-field
-              outlined
-              v-model="speaker.age.m"
-              placeholder="月"
-              dense
-            />
+            <v-text-field outlined v-model="speaker.age.m" placeholder="月" dense />
           </v-col>
           <v-col>
-            <v-text-field
-              outlined
-              v-model="speaker.age.d"
-              placeholder="日"
-              dense
-            />
+            <v-text-field outlined v-model="speaker.age.d" placeholder="日" dense />
           </v-col>
         </v-row>
       </v-col>
@@ -101,21 +81,11 @@
         <v-row>
           <v-col>
             <h3>種族 (Race)</h3>
-            <v-select
-              outlined
-              v-model="speaker.race"
-              :items="raceChoices"
-              dense
-            />
+            <v-select outlined v-model="speaker.race" :items="raceChoices" dense />
           </v-col>
           <v-col>
             <h3>社經地位 (SES)</h3>
-            <v-select
-              outlined
-              v-model="speaker.SES"
-              :items="SESChoices"
-              dense
-            />
+            <v-select outlined v-model="speaker.SES" :items="SESChoices" dense />
           </v-col>
         </v-row>
 
