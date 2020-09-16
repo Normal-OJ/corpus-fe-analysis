@@ -1,10 +1,12 @@
 <template>
-  <v-container>
+  <v-container class="fill-height">
     <v-row>
-      <h2>檔案預覽</h2>
+      <h2 class="pr-3">檔案預覽</h2>
       <v-btn @click="download" color="success">下載檔案</v-btn>
     </v-row>
-    <v-textarea readonly>{{ fileText }} </v-textarea>
+    <v-row>
+      <v-textarea v-model="fileText" rows="12" no-resize readonly />
+    </v-row>
   </v-container>
 </template>
 
@@ -14,11 +16,17 @@ export default {
   props: {
     file: {
       type: File,
-      required: true,
+      default: null,
     },
   },
-  computed: {
-    fileText: async () => await this.file.text(),
+  data: () => ({
+    fileText: "",
+  }),
+  watch: {
+    async file(newFile) {
+      if (!newFile) return;
+      this.fileText = await newFile.text();
+    },
   },
   methods: {
     download() {
@@ -33,7 +41,7 @@ export default {
         a.download = "export.cha";
         document.body.appendChild(a);
         a.click();
-        setTimeout(function() {
+        setTimeout(function () {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
         }, 0);

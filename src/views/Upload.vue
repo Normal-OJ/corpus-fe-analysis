@@ -6,9 +6,11 @@
       <v-divider></v-divider>
       <v-stepper-step :complete="step > 2" step="2">輸入 cha 檔內容</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 3" step="3">選擇分析對象</v-stepper-step>
+      <v-stepper-step :complete="step > 3" step="3">檔案預覽與下載</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 4" step="4">查看分析結果</v-stepper-step>
+      <v-stepper-step :complete="step > 4" step="4">選擇分析對象</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 5" step="5">查看分析結果</v-stepper-step>
       <v-divider></v-divider>
     </v-stepper-header>
     <v-stepper-items style="padding: 0 15vw">
@@ -18,7 +20,7 @@
             <v-spacer />
             <v-col cols="2">
               <v-row justify="center">
-                <v-btn color="success" @click="uploadByFile=true; step=2">上傳單個檔案</v-btn>
+                <v-btn color="success" @click="uploadByFile=true; step++">上傳單個檔案</v-btn>
               </v-row>
             </v-col>
             <v-col cols="1">
@@ -28,7 +30,7 @@
             </v-col>
             <v-col cols="2">
               <v-row justify="center">
-                <v-btn color="success" @click="uploadByFile=false; step=2">手動輸入文本</v-btn>
+                <v-btn color="success" @click="uploadByFile=false; step++">手動輸入文本</v-btn>
               </v-row>
             </v-col>
             <v-spacer />
@@ -37,7 +39,7 @@
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-container>
-          <v-btn color="primary" @click="step = step - 1">返回上一步</v-btn>
+          <v-btn color="primary" @click="step--">返回上一步</v-btn>
           <ChaFileInput v-if="uploadByFile" @upload-file="parseFile"></ChaFileInput>
           <div v-else>
             <ChaHeaderInput ref="chaHeader"></ChaHeaderInput>
@@ -48,13 +50,18 @@
           </div>
         </v-container>
       </v-stepper-content>
-      <v-stepper-content step="3">
-        <v-btn color="primary" @click="step = step - 1">返回上一步</v-btn>
+      <v-stepper-content style="height: 100vh" step="3">
+        <v-btn color="primary" @click="step--">返回上一步</v-btn>
+        <FilePreview :file="file"></FilePreview>
+        <v-btn color="primary" @click="step++">繼續</v-btn>
+      </v-stepper-content>
+      <v-stepper-content step="4">
+        <v-btn color="primary" @click="step--">返回上一步</v-btn>
         <v-select v-model="speaker" :items="speakerNames"></v-select>
         <v-btn @click="upload">分析</v-btn>
       </v-stepper-content>
-      <v-stepper-content step="4">
-        <AnalysisResult @restart="restart" @back="step = step - 1" :filename="analysis.filename">
+      <v-stepper-content step="5">
+        <AnalysisResult @restart="restart" @back="step--" :filename="analysis.filename">
           <v-data-table
             v-if="tableItems"
             :headers="headers"
@@ -75,11 +82,13 @@ import ChaFileInput from "@/components/ChaFileInput";
 import ChaContentInput from "@/components/ChaContentInput";
 import ChaHeaderInput from "@/components/ChaHeaderInput";
 import AnalysisResult from "@/components/AnalysisResult";
+import FilePreview from "@/components/FilePreview";
 import chatArgs from "@/util/step1.json";
 
 export default {
   name: "Upload",
   components: {
+    FilePreview,
     ChaFileInput,
     ChaContentInput,
     ChaHeaderInput,
@@ -163,7 +172,6 @@ export default {
     },
     /**
      * core upload function
-     * @param {File} file
      */
     async upload() {
       // prepare payload
