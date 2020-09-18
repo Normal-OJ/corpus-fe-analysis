@@ -33,13 +33,13 @@
 
     <v-row>
       <v-col cols="12" md="6">
-        <h3>說話者名稱 (Name code)</h3>
+        <h3>*說話者代碼 (Name code) (必填)</h3>
         <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
         <h3>完整名稱 (Optional speaker name)</h3>
         <v-text-field v-model="speaker.name" outlined dense />
 
-        <h3>語言 (Language)</h3>
+        <h3>*語言 (Language) (必填)</h3>
         <v-combobox
           v-model="speaker.language"
           placeholder="例如： zho"
@@ -48,7 +48,7 @@
           dense
         />
 
-        <h3>語料名稱 (Corpus name)</h3>
+        <h3>*語料名稱 (Corpus name) (必填)</h3>
         <v-text-field v-model="speaker.corpus" outlined dense />
 
         <h3>年齡 (Age)</h3>
@@ -92,7 +92,7 @@
         <h3>組別 (Group)</h3>
         <v-text-field v-model="speaker.group" outlined dense />
 
-        <h3>角色 (Role)</h3>
+        <h3>*角色 (Role) (必填)</h3>
         <v-select v-model="speaker.role" :items="roleChoices" outlined dense />
 
         <h3>教育程度 (Education)</h3>

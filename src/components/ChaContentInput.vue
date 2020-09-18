@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <h1>輸入組段 (maintier)</h1>
+    <h1>手動輸入組段 (Main tier)</h1>
     <v-row>
       <v-col cols="5">
         <v-textarea
