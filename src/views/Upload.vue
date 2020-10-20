@@ -17,6 +17,9 @@
       <v-stepper-content step="1">
         <v-container fluid>
           <v-row justify="center">
+             <h2 style="color: red">網站建置中，分析數據待確認</h2>
+          </v-row>
+          <v-row justify="center">
             <v-spacer />
             <v-col cols="2">
               <v-row justify="center">
