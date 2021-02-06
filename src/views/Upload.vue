@@ -2,23 +2,69 @@
   <v-stepper v-model="step">
     <v-stepper-header>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 1" step="1">輸入 Chat 檔內容</v-stepper-step>
+      <v-stepper-step :complete="step > 1" step="1">選擇上傳方式</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="step > 2" step="2">查看分析結果</v-stepper-step>
+      <v-stepper-step :complete="step > 2" step="2">輸入 cha 檔內容</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 3" step="3">檔案預覽與下載</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 4" step="4">選擇分析對象</v-stepper-step>
+      <v-divider></v-divider>
+      <v-stepper-step :complete="step > 5" step="5">查看分析結果</v-stepper-step>
       <v-divider></v-divider>
     </v-stepper-header>
     <v-stepper-items style="padding: 0 15vw">
       <v-stepper-content step="1">
-        <v-container>
-          <ChaHeaderInput ref="chaHeader" :ids="ids"></ChaHeaderInput>
-          <ChaContentInput ref="chaContent"></ChaContentInput>
-          <v-row justify="end">
-            <v-btn color="primary" @click="upload">繼續</v-btn>
+        <v-container fluid>
+          <v-row justify="center">
+             <h2 style="color: red">網站建置中，分析數據待確認</h2>
+          </v-row>
+          <v-row justify="center">
+            <v-spacer />
+            <v-col cols="2">
+              <v-row justify="center">
+                <v-btn color="success" @click="uploadByFile=true; step++">上傳單個檔案</v-btn>
+              </v-row>
+            </v-col>
+            <v-col cols="1">
+              <v-row justify="center">
+                <div>或是</div>
+              </v-row>
+            </v-col>
+            <v-col cols="2">
+              <v-row justify="center">
+                <v-btn color="success" @click="uploadByFile=false; step++">手動輸入文本</v-btn>
+              </v-row>
+            </v-col>
+            <v-spacer />
           </v-row>
         </v-container>
       </v-stepper-content>
       <v-stepper-content step="2">
-        <AnalysisResult @restart="restart" @back="step = step-1" :filename="analysis.filename">
+        <v-container>
+          <v-btn color="primary" @click="step--">返回上一步</v-btn>
+          <ChaFileInput v-if="uploadByFile" @upload-file="parseFile"></ChaFileInput>
+          <div v-else>
+            <ChaHeaderInput ref="chaHeader"></ChaHeaderInput>
+            <ChaContentInput ref="chaContent"></ChaContentInput>
+            <v-row justify="end">
+              <v-btn color="primary" @click="parseText">繼續</v-btn>
+            </v-row>
+          </div>
+        </v-container>
+      </v-stepper-content>
+      <v-stepper-content style="height: 100vh" step="3">
+        <v-btn color="primary" @click="step--">返回上一步</v-btn>
+        <FilePreview :file="file"></FilePreview>
+        <v-btn color="primary" @click="step++">繼續</v-btn>
+      </v-stepper-content>
+      <v-stepper-content step="4">
+        <v-btn color="primary" @click="step--">返回上一步</v-btn>
+        <v-select v-model="speaker" :items="speakerNames"></v-select>
+        <v-btn color="primary" @click="upload">分析</v-btn>
+      </v-stepper-content>
+      <v-stepper-content step="5">
+        <AnalysisResult @restart="restart" @back="step--" :filename="analysis.filename">
           <v-data-table
             v-if="tableItems"
             :headers="headers"
@@ -34,19 +80,27 @@
 </template>
 
 <script>
+import { Speaker } from "@/util/speaker";
+import ChaFileInput from "@/components/ChaFileInput";
 import ChaContentInput from "@/components/ChaContentInput";
 import ChaHeaderInput from "@/components/ChaHeaderInput";
 import AnalysisResult from "@/components/AnalysisResult";
+import FilePreview from "@/components/FilePreview";
 import chatArgs from "@/util/step1.json";
 
 export default {
   name: "Upload",
   components: {
+    FilePreview,
+    ChaFileInput,
     ChaContentInput,
     ChaHeaderInput,
     AnalysisResult,
   },
   data: () => ({
+    file: null,
+    speaker: "",
+    uploadByFile: false,
     step: 1,
     snackbar: false,
     snackbarText: "",
@@ -54,7 +108,6 @@ export default {
       results: [],
       filename: "",
     },
-    ids: [],
     headers: [
       {
         text: "語言指標",
@@ -76,7 +129,7 @@ export default {
       if (!this.analysis.results) return null;
       let items = [];
       // get english and chinese name for each indicator
-      for (const [en, ch] in Object.entries(chatArgs.reindicator)) {
+      for (const [en, ch] of Object.entries(chatArgs.reindicator)) {
         if (en in this.analysis.results) {
           items.push({
             name: ch,
@@ -86,20 +139,48 @@ export default {
       }
       return items;
     },
+    speakerNames() {
+      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+    },
   },
   methods: {
-    async upload() {
+    /**
+     * get file
+     * @param {File} file
+     */
+    async parseFile(file) {
+      // store file
+      this.file = file;
+      // get speakers
+      let lines = (await file.text()).split(/\r?\n/g);
+      let speakers = new Set();
+      for (let line of lines) {
+        if (line && line[0] === "*") {
+          // extract name code
+          speakers.add(line.split(":")[0].concat("").slice(1));
+        }
+      }
+      speakers = [...speakers].map((speaker) => ({ nameCode: speaker }));
+      this.$store.dispatch("setSpeakers", speakers);
+      this.step++;
+    },
+    /**
+     * upload by text
+     */
+    async parseText() {
       // create file
-      let content =
-        this.$refs.chaHeader.header + this.$refs.chaContent.text + "\n@End";
-      let file = new Blob([content], { type: "text/plain;charset=utf-8" });
-      console.log("file content");
-      console.log(content);
+      let content = `@UTF8\n@Begin\n${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
+      this.file = new Blob([content], { type: "text/plain;charset=utf-8" });
+      this.step++;
+    },
+    /**
+     * core upload function
+     */
+    async upload() {
       // prepare payload
       let formData = new FormData();
-      formData.append("file", file);
-      for (let speaker of this.$refs.chaContent.speakers)
-        formData.append("Speaker", speaker);
+      formData.append("file", this.file);
+      formData.append("Speaker", this.speaker);
       try {
         // get analysis result
         let resp = (
@@ -110,7 +191,7 @@ export default {
           })
         ).data;
         this.analysis.results = resp;
-        this.analysis.filename = resp["filename"];
+        this.analysis.filename = resp.filename;
       } catch (err) {
         // prompt snack bar
         this.snackbar = true;
@@ -119,13 +200,13 @@ export default {
         return;
       }
       // continue to next step
-      this.step = 2;
+      this.step++;
       // scroll to top
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     },
     restart() {
-      this.ids = [];
+      this.file = null;
       this.analysis = {
         results: [],
         filename: "",
