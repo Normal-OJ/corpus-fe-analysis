@@ -1,3 +1,8 @@
+/**
+ * strip the prefix character ch
+ * @param {String} s the string want to be striped
+ * @param {String} ch one character want to be removed from s
+ */
 function trimPrefix(s, ch) {
     if (ch.length !== 1)
         throw 'ch must be a character';
@@ -7,6 +12,6 @@ function trimPrefix(s, ch) {
     return s.slice(i);
 }
 
-exports.default = {
+export {
     trimPrefix,
-}
+};
