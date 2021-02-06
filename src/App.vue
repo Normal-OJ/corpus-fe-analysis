@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="success" dark>
+    <v-app-bar app color="success" dark height="64">
       <div class="d-flex align-center title">兒童語料庫 語料查看與分析</div>
 
       <v-spacer></v-spacer>
@@ -35,15 +35,7 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
-
-  components: {
-  },
-
-  data: () => ({
-    //
-  }),
 };
 </script>
