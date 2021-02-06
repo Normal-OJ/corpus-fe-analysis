@@ -33,13 +33,19 @@
 
     <v-row>
       <v-col cols="12" md="6">
-        <h3>*說話者代碼 (Name code) (必填)</h3>
+        <h3>
+          *說話者代碼 (Name code) (必填)
+          <UiHint label="說話者代碼 (Name code) (必填)" :hint="hints.nameCode" />
+        </h3>
         <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
         <h3>完整名稱 (Optional speaker name)</h3>
         <v-text-field v-model="speaker.name" outlined dense />
 
-        <h3>*語言 (Language) (必填)</h3>
+        <h3>
+          *語言 (Language) (必填)
+          <UiHint label="語言 (Language) (必填)" :hint="hints.language" />
+        </h3>
         <v-combobox
           v-model="speaker.language"
           placeholder="例如： zho"
@@ -48,10 +54,16 @@
           dense
         />
 
-        <h3>*語料名稱 (Corpus name) (必填)</h3>
+        <h3>
+          *語料名稱 (Corpus name) (必填)
+          <UiHint label="語料名稱 (Corpus name) (必填)" :hint="hints.corpusName" />
+        </h3>
         <v-text-field v-model="speaker.corpus" outlined dense />
 
-        <h3>年齡 (Age)</h3>
+        <h3>
+          年齡 (Age)
+          <UiHint label="年齡 (Age)" :hint="hints.age" />
+        </h3>
         <div>月、日不足兩碼請補 0，例如： 05、07</div>
         <v-row>
           <v-col>
@@ -89,16 +101,28 @@
           </v-col>
         </v-row>
 
-        <h3>組別 (Group)</h3>
+        <h3>
+          組別 (Group)
+          <UiHint label="組別 (Group)" :hint="hints.group" />
+        </h3>
         <v-text-field v-model="speaker.group" outlined dense />
 
-        <h3>*角色 (Role) (必填)</h3>
+        <h3>
+          *角色 (Role) (必填)
+          <UiHint label="*角色 (Role) (必填)" :hint="hints.role" />
+        </h3>
         <v-select v-model="speaker.role" :items="roleChoices" outlined dense />
 
-        <h3>教育程度 (Education)</h3>
+        <h3>
+          教育程度 (Education)
+          <UiHint label="教育程度 (Education)" :hint="hints.education" />
+        </h3>
         <v-text-field v-model="speaker.education" outlined dense />
 
-        <h3>其他所需資訊 (Custom field)</h3>
+        <h3>
+          其他所需資訊 (Custom field)
+          <UiHint label="其他所需資訊 (Custom field)" :hint="hints.customField" />
+        </h3>
         <v-text-field v-model="speaker.customField" outlined dense />
       </v-col>
     </v-row>
@@ -106,7 +130,8 @@
 </template>
 
 <script>
-// import SpeakerInput from "@/components/SpeakerInput";
+import UiHint from './ui-hint';
+import hints from '@/util/hint';
 import {
   Speaker,
   languageChoices,
@@ -115,26 +140,28 @@ import {
   SESChoices,
   educationChoices,
   sexChoices,
-} from "@/util/speaker";
+} from '@/util/speaker';
 
 export default {
-  name: "ChaHeaderInput",
+  name: 'ChaHeaderInput',
+  components: { UiHint },
   computed: {
     speakerNames() {
-      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+      return this.$store.state.speakers.map(speaker => speaker.nameCode);
     },
   },
   data: () => ({
-    header: "",
+    header: '',
     speaker: new Speaker(),
-    selectedName: "",
-    oldNameCode: "",
+    selectedName: '',
+    oldNameCode: '',
     languageChoices,
     roleChoices,
     raceChoices,
     SESChoices,
     educationChoices,
     sexChoices,
+    hints,
   }),
   methods: {
     changeSpeaker(nameCode) {
@@ -149,26 +176,22 @@ export default {
       // split original header into lines
       let headerLines = this.header.split(/[\r?\n]/g);
       // keep headers except ID, Participants, empty line
-      let keepLines = headerLines.filter(
-        (line) => line && !line.match(/^@(ID|Participants):/g)
-      );
+      let keepLines = headerLines.filter(line => line && !line.match(/^@(ID|Participants):/g));
       let speakers = this.$store.state.speakers;
       // Participants
       if (speakers.length) {
         let participants = [];
         for (let speaker of speakers) {
-          participants.push(
-            `${speaker.nameCode || ""} ${speaker.name} ${speaker.role || ""}`
-          );
+          participants.push(`${speaker.nameCode || ''} ${speaker.name} ${speaker.role || ''}`);
         }
-        let participantsHeader = `@Participants:\t${participants.join(", ")}`;
+        let participantsHeader = `@Participants:\t${participants.join(', ')}`;
         keepLines.push(participantsHeader);
       }
       // ID
       for (let speaker of speakers) {
         keepLines.push(speaker.header);
       }
-      this.header = keepLines.join("\n");
+      this.header = keepLines.join('\n');
     },
     deleteId() {
       let speakers = this.$store.state.speakers;
@@ -181,7 +204,7 @@ export default {
           break;
         }
       }
-      this.$store.dispatch("setSpeakers", speakers);
+      this.$store.dispatch('setSpeakers', speakers);
       this.keepSpeakers();
       // update selected speaker
       speakers = this.$store.state.speakers;
@@ -200,7 +223,7 @@ export default {
       let newSpeaker = new Speaker();
       newSpeaker.nameCode = `SP${this.$store.state.speakers.length}`;
       speakers.push(newSpeaker);
-      this.$store.dispatch("setSpeakers", speakers);
+      this.$store.dispatch('setSpeakers', speakers);
       // update selection and header
       this.$refs.speakerSelect.value = newSpeaker.nameCode;
       this.getHeader();
@@ -217,9 +240,9 @@ export default {
     keepSpeakers() {
       if (this.$store.state.speakers.length === 0) {
         let newSpeaker = new Speaker();
-        newSpeaker.nameCode = "SP0";
-        this.$store.dispatch("setSpeakers", [newSpeaker]);
-        this.selectedName = "SP0";
+        newSpeaker.nameCode = 'SP0';
+        this.$store.dispatch('setSpeakers', [newSpeaker]);
+        this.selectedName = 'SP0';
       }
     },
   },
