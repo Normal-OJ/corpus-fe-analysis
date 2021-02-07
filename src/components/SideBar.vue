@@ -1,5 +1,5 @@
 <template>
-  <div id="side-bar">
+  <v-card id="side-bar">
     <v-sheet class="pa-4 primary">
       <v-text-field
         v-model="search"
@@ -10,8 +10,8 @@
         hide-details
         clearable
         clear-icon="mdi-close-circle-outline"
-      ></v-text-field>
-      <v-checkbox v-model="caseSensitive" dark hide-details label="區分大小寫"></v-checkbox>
+      />
+      <v-checkbox v-model="caseSensitive" dark hide-details label="區分大小寫" />
     </v-sheet>
     <v-treeview
       dense
@@ -26,32 +26,39 @@
       :items="items"
       :active="active"
       item-key="fullName"
+      style="flex: 1; overflow-y: scroll"
     >
       <template v-slot:label="{ item }">
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-list-item v-on="on">{{ item.name }}</v-list-item>
-            <!-- <v-btn color="primary" dark v-on="on">Button</v-btn> -->
-          </template>
-          <span>{{ item.name }}</span>
-        </v-tooltip>
+        <v-list-item>
+          <v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{ item.name }}</span>
+            </template>
+            <span>{{ item.name }}</span>
+          </v-tooltip>
+        </v-list-item>
       </template>
       <template v-slot:append="{ item }">
-        <v-btn
-          v-if="item.depth === 1 && !item.selectAll"
-          color="info"
-          rounded
-          small
-          @click.stop="showDesc(item.fullName)"
-        >顯示詳細資訊</v-btn>
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-if="item.depth === 1 && !item.selectAll"
+              v-on="on"
+              color="info"
+              icon
+              @click.stop="showDesc(item.fullName)"
+            >
+              <v-icon>mdi-information</v-icon>
+            </v-btn>
+          </template>
+          <span>顯示詳細資訊</span>
+        </v-tooltip>
       </template>
     </v-treeview>
-  </div>
+  </v-card>
 </template>
 
 <script>
-import File from '@/util/file'
-
 export default {
   name: 'SideBar',
   props: {
@@ -65,35 +72,36 @@ export default {
     },
     showDesc: {
       type: Function,
-      default: (fileName) => alert(fileName)
-    }
+      default: fileName => alert(fileName),
+    },
   },
   data() {
     return {
       search: null,
       caseSensitive: false,
       oldOpend: [],
-    }
+    };
   },
   computed: {
     filter() {
       return this.caseSensitive
         ? (item, search, textKey) => item[textKey].indexOf(search) > -1
-        : undefined
+        : undefined;
     },
   },
   methods: {
     onActive(eles) {
       console.log(eles);
-      this.$emit('click-file', eles)
+      this.$emit('click-file', eles);
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
 #side-bar {
-  overflow-y: scroll;
-  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>
