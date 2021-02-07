@@ -34,7 +34,6 @@ export default class File {
     pushNode(name) {
         let fullName = `/${this.fullName}`
         if (fullName === '/') fullName = '//'
-        // console.log(name+': '+fullName);
         this.children.unshift(new File({
             name,
             fullName,
