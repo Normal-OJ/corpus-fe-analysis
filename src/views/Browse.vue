@@ -1,23 +1,19 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="3">
-        <SideBar
-          @click-file="clickFile"
-          :get-items="getItems"
-          :items="items"
-          :active="active"
-          :show-desc="showDesc"
-        ></SideBar>
+  <v-container fluid class="px-6 pt-6">
+    <v-row style="height: calc(100vh - 64px - 12px - 24px)">
+      <v-col cols="3" class="pt-0 mt-0" style="height: 100%">
+        <SideBar @click-file="clickFile" :items="items" :active="active" :show-desc="showDesc" />
       </v-col>
-      <v-col cols="9">
+      <v-col cols="9" class="pt-0 mt-0" style="height: 100%">
         <InfoPanel :file="file" @analysis-file="analysisFile">
-          <div v-if="!content.provider">
-            <div class="subtitle-1" style="white-space: pre;">{{ content }}</div>
-          </div>
-          <div v-else>
-            <Description :desc="content"></Description>
-          </div>
+          <v-card
+            elevation="0"
+            v-if="!content.provider"
+            class="subtitle-1 pa-4"
+            style="white-space: pre;"
+            v-text="content"
+          />
+          <Description v-else :desc="content" />
         </InfoPanel>
       </v-col>
     </v-row>
@@ -29,21 +25,21 @@
       @ok="analysisFolder(file)"
     ></UiAlert>
 
-    <v-snackbar v-model="snackbar" color="error">無法取得檔案</v-snackbar>
+    <v-snackbar v-model="snackbar" color="error">{{ snackbarMessage }}</v-snackbar>
   </v-container>
 </template>
 
 <script>
-import SideBar from "@/components/SideBar";
-import InfoPanel from "@/components/InfoPanel";
-import Description from "@/components/Description";
-import File from "@/util/file";
-import UiAlert from "@/components/ui-alert";
+import SideBar from '@/components/SideBar';
+import InfoPanel from '@/components/InfoPanel';
+import Description from '@/components/Description';
+import File from '@/util/file';
+import UiAlert from '@/components/ui-alert';
 
-const ROOT_FILE_NAME = "_I_ROOT_FILE__";
+const ROOT_FILE_NAME = '_I_ROOT_FILE__';
 
 export default {
-  name: "Browse",
+  name: 'Browse',
   components: {
     SideBar,
     InfoPanel,
@@ -53,12 +49,12 @@ export default {
   data() {
     return {
       items: [],
-      content: "",
-      fileName: "",
-      opend: [],
+      content: '',
+      fileName: '',
       active: [],
-      file: new File(""),
+      file: new File(''),
       snackbar: false,
+      snackbarMessage: '',
       alert: false,
     };
   },
@@ -68,6 +64,10 @@ export default {
     this.items = root.children;
   },
   methods: {
+    activateSnackbar(msg) {
+      this.snackbarMessage = msg;
+      this.snackbar = true;
+    },
     analysisFolder(fileName) {
       fileName.fullName = fileName.fullName.substr(1);
       this.analysisFile(fileName);
@@ -75,15 +75,15 @@ export default {
     analysisFile(fileName) {
       if (fileName) {
         this.$router.push({
-          name: "analysis",
+          name: 'analysis',
           params: { file: fileName.fullName },
         });
       } else {
-        this.snackbar = true;
+        this.activateSnackbar('無法取得檔案');
       }
     },
     getItemByPath(path) {
-      path = path.split("/").splice(-1, 1);
+      path = path.split('/').splice(-1, 1);
       let ret = this.items;
       for (let p of path) {
         for (let f of ret) {
@@ -113,46 +113,40 @@ export default {
     },
     async getItems(file) {
       try {
-        let data = (
-          await this.$http.get("/api/view", {
-            params: { file: file.fullName || "/" },
-          })
-        ).data;
+        let { data } = await this.$http.get('/api/view', {
+          params: { file: file.fullName || '/' },
+        });
         // parse info panel
         if (!!data.description) {
           // colletion
           file.data = JSON.parse(data.description);
-          // file.data = JSON.parse('{"provider": "Bogay Chuang", "introduction": ["i am Bogay"], "quoteInfo": ":P"}')
         } else if (!!data.content) {
           // file
-          // file.data = data.content.split('\n')
           file.data = data.content;
         }
         if (file.children !== null) {
           // parse tree view
           let isFolder = false;
           if (data.folders?.length) {
-            data.folders.forEach((f) => file.pushDir(f));
+            data.folders.forEach(f => file.pushDir(f));
             isFolder = true;
           }
           if (data.files?.length) {
-            data.files.forEach((f) => file.pushFile(f));
+            data.files.forEach(f => file.pushFile(f));
             isFolder = true;
           }
           // get children
-          for (let c of file.children) this.getItems(c);
+          Promise.all(file.children.map(c => this.getItems(c)));
           // prepend "select all" item
           if (isFolder) {
-            file.pushNode("分析此目錄所有檔案");
+            file.pushNode('分析此目錄所有檔案');
           }
         }
       } catch (err) {
+        this.activateSnackbar('載入資源發生錯誤');
         console.log(err);
       }
     },
   },
 };
 </script>
-
-<style lang="css" scoped>
-</style>
