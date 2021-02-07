@@ -1,11 +1,10 @@
 // Libraries
 import Vuetify from 'vuetify'
-
 // Components
 import UiAlert from '@/components/ui-alert.vue'
-
 // Utilities
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+// use mount instead of shallowMount for Vuetify 
+import { createLocalVue, mount } from '@vue/test-utils'
 
 describe('UiAlert.vue', () => {
   // use the Vuetify object in a localVue instance and pass an instance to the mount functions options
@@ -16,8 +15,11 @@ describe('UiAlert.vue', () => {
   })
 
   it('renders default title and subtitle when no props passed', () => {
-    const wrapper = shallowMount(UiAlert, {
+    const wrapper = mount(UiAlert, {
       localVue, vuetify,
+      propsData: {
+        value: true,
+      }
     })
     const title = wrapper.find('[data-test="title"]')
     const subtitle = wrapper.find('[data-test="subtitle"]')
@@ -28,9 +30,10 @@ describe('UiAlert.vue', () => {
   it('renders title and subtitle when props passed', () => {
     const titleMsg = 'alert title msg'
     const subtitleMsg = 'alert subtitle msg'
-    const wrapper = shallowMount(UiAlert, {
+    const wrapper = mount(UiAlert, {
       localVue, vuetify,
       propsData: {
+        value: true,
         title: titleMsg,
         subtitle: subtitleMsg
       }
@@ -41,9 +44,27 @@ describe('UiAlert.vue', () => {
     expect(subtitle.text()).toMatch(subtitleMsg)
   })
 
-  it('emits (\'input\', false) when yes button clicked', async () => {
-    const wrapper = shallowMount(UiAlert, {
+  it('should not render anything when it is closed', () => {
+    const wrapper = mount(UiAlert, {
       localVue, vuetify,
+      propsData: { value: false }
+    })
+    const card = wrapper.find('[data-test="card"]')
+    expect(card.exists()).toBeFalsy()
+  })
+
+  it('should not render anything by default', () => {
+    const wrapper = mount(UiAlert, {
+      localVue, vuetify,
+    })
+    const card = wrapper.find('[data-test="card"]')
+    expect(card.exists()).toBeFalsy()
+  })
+
+  it('emits (\'input\', false) when yes button clicked', async () => {
+    const wrapper = mount(UiAlert, {
+      localVue, vuetify,
+      propsData: { value: true }
     })
     wrapper.find('[data-test="yesBtn"]').trigger('click')
     await wrapper.vm.$nextTick()
@@ -53,8 +74,9 @@ describe('UiAlert.vue', () => {
   })
 
   it('emits (\'ok\') when yes button clicked', async () => {
-    const wrapper = shallowMount(UiAlert, {
+    const wrapper = mount(UiAlert, {
       localVue, vuetify,
+      propsData: { value: true }
     })
     wrapper.find('[data-test="yesBtn"]').trigger('click')
     await wrapper.vm.$nextTick()
@@ -63,8 +85,9 @@ describe('UiAlert.vue', () => {
   })
 
   it('emits (\'input\', false) when no button clicked', async () => {
-    const wrapper = shallowMount(UiAlert, {
+    const wrapper = mount(UiAlert, {
       localVue, vuetify,
+      propsData: { value: true }
     })
     wrapper.find('[data-test="noBtn"]').trigger('click')
     await wrapper.vm.$nextTick()

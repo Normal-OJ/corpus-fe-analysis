@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="value" width="50%" data-test="dialog">
+  <v-dialog v-model="value" width="50%">
     <v-card data-test="card">
       <v-card-title></v-card-title>
       <v-card-text class="text-center text--primary">
