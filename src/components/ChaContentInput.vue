@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <h1>手動輸入組段 (Main tier)</h1>
+    <h1>手動輸入主段 (Main tier)</h1>
     <v-row>
       <v-col cols="5">
         <v-textarea
@@ -49,68 +49,67 @@
 </template>
 
 <script>
-import { Speaker } from "@/util/speaker";
+import { Speaker } from '@/util/speaker';
 
 export default {
-  name: "ChaContentInput",
+  name: 'ChaContentInput',
   data() {
     return {
-      text: "",
-      splitText: [{ speaker: "", text: "" }],
-      hello: "",
+      text: '',
+      splitText: [{ speaker: '', text: '' }],
+      hello: '',
     };
   },
   computed: {
     speakerNames() {
-      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+      return this.$store.state.speakers.map(speaker => speaker.nameCode);
     },
     speakers() {
-      const rows = this.text.split("\n");
+      const rows = this.text.split('\n');
       let speakers = rows
-        .filter((text) => text[0] === "*")
-        .map((text) => text.split(":")[0].concat("").slice(1));
-      const newSpeakers = [...new Set(speakers)].map((nameCode) => {
+        .filter(text => text[0] === '*')
+        .map(text =>
+          text
+            .split(':')[0]
+            .concat('')
+            .slice(1),
+        );
+      const newSpeakers = [...new Set(speakers)].map(nameCode => {
         let ret = new Speaker();
         ret.nameCode = nameCode;
         return ret;
       });
-      // setter:
-      //    this.$store.dispatch('setSpeakers', newSpeakers);
-      // getter:
-      //    this.$store.state.speakers;
-      this.$store.dispatch(
-        "setSpeakers",
-        this.$store.state.speakers.concat(newSpeakers)
-      );
+      this.$store.dispatch('setSpeakers', this.$store.state.speakers.concat(newSpeakers));
       return newSpeakers;
     },
   },
   methods: {
     // 把左側的文本 parse 成一行一行
     parseText() {
-      const rows = this.text.split("\n");
+      const rows = this.text.split('\n');
       this.splitText = rows
-        .filter((text) => text)
-        .map((text) => {
-          const cuts = text.split(":");
+        .filter(text => text)
+        .map(text => {
+          const cuts = text.split(':');
           return {
             speaker: cuts[0],
-            text: cuts.slice(1).join("").trim(),
+            text: cuts
+              .slice(1)
+              .join('')
+              .trim(),
           };
         });
     },
     // 把右側的文本組成一行
     joinText() {
-      this.text = this.splitText
-        .map((text) => `*${text.speaker}:\t${text.text}`)
-        .join("\n");
+      this.text = this.splitText.map(text => `*${text.speaker}:\t${text.text}`).join('\n');
     },
     // 按按鈕
     addLine() {
-      this.text += "\n";
+      this.text += '\n';
       this.splitText.push({
-        speaker: "",
-        text: "",
+        speaker: '',
+        text: '',
       });
     },
     // FIXME: caret index will at the line end after insert
