@@ -17,13 +17,20 @@
       <v-stepper-content step="1">
         <v-container fluid>
           <v-row justify="center">
-             <h2 style="color: red">網站建置中，分析數據待確認</h2>
+            <h2 style="color: red">網站建置中，分析數據待確認</h2>
           </v-row>
           <v-row justify="center">
             <v-spacer />
             <v-col cols="2">
               <v-row justify="center">
-                <v-btn color="success" @click="uploadByFile=true; step++">上傳單個檔案</v-btn>
+                <v-btn
+                  color="success"
+                  @click="
+                    uploadByFile = true;
+                    step++;
+                  "
+                  >上傳單個檔案</v-btn
+                >
               </v-row>
             </v-col>
             <v-col cols="1">
@@ -33,7 +40,15 @@
             </v-col>
             <v-col cols="2">
               <v-row justify="center">
-                <v-btn color="success" @click="uploadByFile=false; step++">手動輸入文本</v-btn>
+                <v-btn
+                  color="success"
+                  @click="
+                    uploadByFile = false;
+                    step++;
+                  "
+                  data-test="goManuallyBtn"
+                  >手動輸入文本</v-btn
+                >
               </v-row>
             </v-col>
             <v-spacer />
@@ -75,21 +90,21 @@
         </AnalysisResult>
       </v-stepper-content>
     </v-stepper-items>
-    <v-snackbar v-model="snackbar" color="error">{{snackbarText}}</v-snackbar>
+    <v-snackbar v-model="snackbar" color="error">{{ snackbarText }}</v-snackbar>
   </v-stepper>
 </template>
 
 <script>
-import { Speaker } from "@/util/speaker";
-import ChaFileInput from "@/components/ChaFileInput";
-import ChaContentInput from "@/components/ChaContentInput";
-import ChaHeaderInput from "@/components/ChaHeaderInput";
-import AnalysisResult from "@/components/AnalysisResult";
-import FilePreview from "@/components/FilePreview";
-import chatArgs from "@/util/step1.json";
+import { Speaker } from '@/util/speaker';
+import ChaFileInput from '@/components/ChaFileInput';
+import ChaContentInput from '@/components/ChaContentInput';
+import ChaHeaderInput from '@/components/ChaHeaderInput';
+import AnalysisResult from '@/components/AnalysisResult';
+import FilePreview from '@/components/FilePreview';
+import chatArgs from '@/util/step1.json';
 
 export default {
-  name: "Upload",
+  name: 'Upload',
   components: {
     FilePreview,
     ChaFileInput,
@@ -99,28 +114,28 @@ export default {
   },
   data: () => ({
     file: null,
-    speaker: "",
+    speaker: '',
     uploadByFile: false,
     step: 1,
     snackbar: false,
-    snackbarText: "",
+    snackbarText: '',
     analysis: {
       results: [],
-      filename: "",
+      filename: '',
     },
     headers: [
       {
-        text: "語言指標",
-        align: "start",
-        value: "name",
-        class: "text--primary subtitle-1 font-weight-bold",
-        width: "60%",
+        text: '語言指標',
+        align: 'start',
+        value: 'name',
+        class: 'text--primary subtitle-1 font-weight-bold',
+        width: '60%',
       },
       {
-        text: "數值",
-        value: "value",
-        class: "text--primary subtitle-1 font-weight-bold",
-        width: "40%",
+        text: '數值',
+        value: 'value',
+        class: 'text--primary subtitle-1 font-weight-bold',
+        width: '40%',
       },
     ],
   }),
@@ -140,7 +155,7 @@ export default {
       return items;
     },
     speakerNames() {
-      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
+      return this.$store.state.speakers.map(speaker => speaker.nameCode);
     },
   },
   methods: {
@@ -155,13 +170,18 @@ export default {
       let lines = (await file.text()).split(/\r?\n/g);
       let speakers = new Set();
       for (let line of lines) {
-        if (line && line[0] === "*") {
+        if (line && line[0] === '*') {
           // extract name code
-          speakers.add(line.split(":")[0].concat("").slice(1));
+          speakers.add(
+            line
+              .split(':')[0]
+              .concat('')
+              .slice(1),
+          );
         }
       }
-      speakers = [...speakers].map((speaker) => ({ nameCode: speaker }));
-      this.$store.dispatch("setSpeakers", speakers);
+      speakers = [...speakers].map(speaker => ({ nameCode: speaker }));
+      this.$store.dispatch('setSpeakers', speakers);
       this.step++;
     },
     /**
@@ -170,7 +190,7 @@ export default {
     async parseText() {
       // create file
       let content = `@UTF8\n@Begin\n${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
-      this.file = new Blob([content], { type: "text/plain;charset=utf-8" });
+      this.file = new Blob([content], { type: 'text/plain;charset=utf-8' });
       this.step++;
     },
     /**
@@ -179,14 +199,14 @@ export default {
     async upload() {
       // prepare payload
       let formData = new FormData();
-      formData.append("file", this.file);
-      formData.append("Speaker", this.speaker);
+      formData.append('file', this.file);
+      formData.append('Speaker', this.speaker);
       try {
         // get analysis result
         let resp = (
-          await this.$http.post("/api/upload_detailed_kideval", formData, {
+          await this.$http.post('/api/upload_detailed_kideval', formData, {
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
             },
           })
         ).data;
@@ -195,7 +215,7 @@ export default {
       } catch (err) {
         // prompt snack bar
         this.snackbar = true;
-        this.snackbarText = "分析失敗";
+        this.snackbarText = '分析失敗';
         console.log(err);
         return;
       }
@@ -209,12 +229,11 @@ export default {
       this.file = null;
       this.analysis = {
         results: [],
-        filename: "",
+        filename: '',
       };
     },
   },
 };
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>
