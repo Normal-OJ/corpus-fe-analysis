@@ -46,7 +46,7 @@
                     uploadByFile = false;
                     step++;
                   "
-                  data-test="goManuallyBtn"
+                  data-cy="goManuallyBtn"
                   >手動輸入文本</v-btn
                 >
               </v-row>
