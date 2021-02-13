@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Browse from '@/views/Browse'
-import Analysis from '../views/Analysis.vue'
-import Upload from '../views/Upload'
 
 Vue.use(VueRouter)
 
@@ -14,17 +11,17 @@ const routes = [{
   {
     path: '/browse',
     name: 'browse',
-    component: Browse,
+    component: () => import('@/views/Browse'),
   },
   {
     path: '/analysis/:file',
     name: 'analysis',
-    component: Analysis,
+    component: () => import('@/views/Analysis'),
   },
   {
     path: '/upload',
     name: 'upload',
-    component: Upload,
+    component: () => import('@/views/Upload'),
   }
 ]
 

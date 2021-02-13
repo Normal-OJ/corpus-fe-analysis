@@ -33,9 +33,13 @@
 
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h3 data-cy="nameCode">
           *說話者代碼 (Name code) (必填)
-          <UiHint label="說話者代碼 (Name code) (必填)" :hint="hints.nameCode" />
+          <UiHint
+            label="說話者代碼 (Name code) (必填)"
+            :hint="hints.nameCode"
+            data-cy="nameCodeHint"
+          />
         </h3>
         <v-text-field v-model="selectedName" outlined placeholder="例如： CHI, MOT..." dense />
 
