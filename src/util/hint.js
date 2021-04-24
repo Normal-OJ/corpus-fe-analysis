@@ -1,4 +1,5 @@
-const nameCode = '<p>通常以三個字母作為代碼，如小孩代碼為 CHI，媽媽代碼為 MOT，爸爸代碼為 FAT，Helen 代碼以 HEL，若為多位小孩代碼為 CH1, CH2, CH3...，以此類推。</p>'
+const nameCode =
+  '<p>通常以三個字母作為代碼，如小孩代碼為 CHI，媽媽代碼為 MOT，爸爸代碼為 FAT，Helen 代碼以 HEL，若為多位小孩代碼為 CH1, CH2, CH3...，以此類推。</p>';
 const language = `
   <p>語言代碼對照表</p>
   <table>
@@ -24,10 +25,11 @@ const language = `
     padding: 4px;
   }
   </style>
-`
-const corpusName = '填入語料名稱，通常以一個英文單詞作為標籤。'
-const age = '填寫幾歲幾個月幾天大，如 3 歲 2 個月 2 天大，則歲填 3、月填 02、天填 02。'
-const group = '若因某些目的將語料分組，則可輸入語料組別，如自閉症組可標記 ASD、遲語兒可標記 LT、特定型語言障礙可標記 DLD、典型發展兒童可標記 TD，以此類推。'
+`;
+const corpusName = '填入語料名稱，通常以一個英文單詞作為標籤。';
+const age = '填寫幾歲幾個月幾天大，如 3 歲 2 個月 2 天大，則歲填 3、月填 02、天填 02。';
+const group =
+  '若因某些目的將語料分組，則可輸入語料組別，如自閉症組可標記 ASD、遲語兒可標記 LT、特定型語言障礙可標記 DLD、典型發展兒童可標記 TD，以此類推。';
 const role = `
   <p>角色代碼對照表</p>
   <table>
@@ -66,9 +68,10 @@ const role = `
     padding: 4px;
   }
   </style>
-`
-const education = '可以英文字標記或數字標記。英文字標記，國小可標記 Elem、高中可標記 HS、大專可標記 UG、研究所可標記 Grad; 數字標記，則可輸入受教育的時間(年)，如 9、12。'
-const customField = '可輸入其他所需資訊'
+`;
+const education =
+  '可以英文字標記或數字標記。英文字標記，國小可標記 Elem、高中可標記 HS、大專可標記 UG、研究所可標記 Grad; 數字標記，則可輸入受教育的時間(年)，如 9、12。';
+const customField = '可輸入其他所需資訊';
 
 export default {
   nameCode,
@@ -79,4 +82,4 @@ export default {
   role,
   education,
   customField,
-}
+};

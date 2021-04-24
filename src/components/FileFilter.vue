@@ -17,7 +17,9 @@
       >
         <v-list-item slot="prepend-item" ripple @click="toggle('ages')">
           <v-list-item-action>
-            <v-icon :color="data.ages.length > 0 ? 'indigo darken-4' : ''">{{ icon('ages') }}</v-icon>
+            <v-icon :color="data.ages.length > 0 ? 'indigo darken-4' : ''">{{
+              icon('ages')
+            }}</v-icon>
           </v-list-item-action>
           <v-list-item-title>全選</v-list-item-title>
         </v-list-item>
@@ -26,14 +28,22 @@
           <v-chip v-if="index < 10">
             <span>{{ item.label }}</span>
           </v-chip>
-          <span v-if="index === 10" class="grey--text caption">(+{{ ages.length - 10 }} others)</span>
+          <span v-if="index === 10" class="grey--text caption"
+            >(+{{ ages.length - 10 }} others)</span
+          >
         </template>
       </v-select>
 
       <!-- Sex -->
       <h2 v-if="!fileMode">性別：</h2>
       <v-radio-group v-if="!fileMode" row v-model="data.sex">
-        <v-radio v-for="sx in sex" :key="sx.label" class="mb-3" :label="sx.label" :value="sx.value"></v-radio>
+        <v-radio
+          v-for="sx in sex"
+          :key="sx.label"
+          class="mb-3"
+          :label="sx.label"
+          :value="sx.value"
+        ></v-radio>
       </v-radio-group>
 
       <!-- Speaker -->
@@ -62,7 +72,9 @@
       >
         <v-list-item slot="prepend-item" ripple @click="toggle('context')">
           <v-list-item-action>
-            <v-icon :color="data.context.length > 0 ? 'indigo darken-4' : ''">{{ icon('context') }}</v-icon>
+            <v-icon :color="data.context.length > 0 ? 'indigo darken-4' : ''">{{
+              icon('context')
+            }}</v-icon>
           </v-list-item-action>
           <v-list-item-title>全選</v-list-item-title>
         </v-list-item>
@@ -82,9 +94,9 @@
       >
         <v-list-item slot="prepend-item" ripple @click="toggle('indicator')">
           <v-list-item-action>
-            <v-icon
-              :color="data.indicator.length > 0 ? 'indigo darken-4' : ''"
-            >{{ icon('indicator') }}</v-icon>
+            <v-icon :color="data.indicator.length > 0 ? 'indigo darken-4' : ''">{{
+              icon('indicator')
+            }}</v-icon>
           </v-list-item-action>
           <v-list-item-title>全選</v-list-item-title>
         </v-list-item>
@@ -93,7 +105,9 @@
           <v-chip v-if="index < 10">
             <span>{{ item.label }}</span>
           </v-chip>
-          <span v-if="index === 10" class="grey--text caption">(+{{ indicator.length - 10 }} others)</span>
+          <span v-if="index === 10" class="grey--text caption"
+            >(+{{ indicator.length - 10 }} others)</span
+          >
         </template>
       </v-select>
     </v-form>
@@ -106,13 +120,9 @@
     <!-- {{ data.indicator }} -->
 
     <v-btn color="primary" :loading="loading" @click="$emit('next', res)" large>繼續</v-btn>
-    <v-btn
-      v-if="fileMode"
-      class="ml-3"
-      color="warning"
-      @click="alert = true"
-      large
-    >捨棄選取檔案或資料夾，回到語料分析</v-btn>
+    <v-btn v-if="fileMode" class="ml-3" color="warning" @click="alert = true" large
+      >捨棄選取檔案或資料夾，回到語料分析</v-btn
+    >
 
     <UiAlert
       v-model="alert"
@@ -130,11 +140,11 @@
 </template>
 
 <script>
-import json from "@/util/step1.json";
-import UiAlert from "@/components/ui-alert";
+import json from '@/util/step1.json';
+import UiAlert from '@/components/ui-alert';
 
 export default {
-  name: "FileFilter",
+  name: 'FileFilter',
 
   components: {
     UiAlert,
@@ -183,7 +193,7 @@ export default {
         if (this.selectAll(item)) {
           this.data[item] = [];
         } else {
-          this.data[item] = this[item].map((v) => v.value);
+          this.data[item] = this[item].map(v => v.value);
         }
       });
     },
@@ -194,13 +204,12 @@ export default {
       return this.data[item].length > 0 && !this.selectAll(item);
     },
     icon(item) {
-      if (this.selectAll(item)) return "mdi-close-box";
-      if (this.selectSome(item)) return "mdi-minus-box";
-      return "mdi-checkbox-blank-outline";
+      if (this.selectAll(item)) return 'mdi-close-box';
+      if (this.selectSome(item)) return 'mdi-minus-box';
+      return 'mdi-checkbox-blank-outline';
     },
   },
 };
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>

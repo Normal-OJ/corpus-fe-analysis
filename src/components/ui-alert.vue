@@ -9,7 +9,15 @@
       </v-card-text>
       <v-card-actions class="pb-12">
         <v-spacer></v-spacer>
-        <v-btn class="mx-3 subtitle-1" color="info" @click="$emit('input', false); $emit('ok')">是</v-btn>
+        <v-btn
+          class="mx-3 subtitle-1"
+          color="info"
+          @click="
+            $emit('input', false);
+            $emit('ok');
+          "
+          >是</v-btn
+        >
         <v-btn class="mx-3 subtitle-1" color="error" @click="$emit('input', false)">否</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
@@ -19,7 +27,6 @@
 
 <script>
 export default {
-
   name: 'ui-alert',
 
   props: {
@@ -29,21 +36,18 @@ export default {
     },
     title: {
       type: String,
-      default: '您是否確定執行此動作？'
+      default: '您是否確定執行此動作？',
     },
     subtitle: {
       type: String,
-      default: '確認後將離開此畫面。'
+      default: '確認後將離開此畫面。',
     },
   },
 
-  data () {
-    return {
-
-    }
-  }
-}
+  data() {
+    return {};
+  },
+};
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>
