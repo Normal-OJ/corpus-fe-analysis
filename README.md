@@ -1,5 +1,12 @@
 # analysis
 
+
+## Environment Variable
+If you wanna run the project in development mode, please specify the following variable in `.env.local` (at the root of the project folder).
+```
+VUE_APP_ENV=development
+```
+
 ## Project setup
 ```
 npm install
