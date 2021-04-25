@@ -175,15 +175,25 @@ export default {
     getHeader() {
       // split original header into lines
       let headerLines = this.header.split(/[\r?\n]/g);
-      // keep headers except ID, Participants, empty line
-      let keepLines = headerLines.filter(line => line && !line.match(/^@(ID|Participants):/g));
-      let speakers = this.$store.state.speakers;
-      // Participants
+      // keep headers except @ID, @Participants, @Languages and empty line
+      let keepLines = headerLines.filter(line => line && !line.match(/^@(ID|Participants|Languages):/g));
+      const speakers = this.$store.state.speakers;
+      // There are at least 1 participant
       if (speakers.length) {
-        let participants = [];
-        for (let speaker of speakers) {
-          participants.push(`${speaker.nameCode || ''} ${speaker.name} ${speaker.role || ''}`);
+        let languages = headerLines.find(line => line.startsWith('@Languages:'));
+        let currentLanguages = new Set([speakers.map(s => s.language)]);
+        // No @Languages exist
+        if(languages === undefined) {
+          languages = `@Languages:\t${currentLanguages.join(', ')}`;
+        } else {
+          languages = languages.replace(/@Languages:\t?/g, '');
+          languages = languages.split(/, ?/g);
+          for(const lang of languages) {
+            currentLanguages.add(lang);
+          }
+          languages = `@Languages:\t${currentLanguages.join(', ')}`;
         }
+        let participants = speakers.map(s => `${s.nameCode || ''} ${s.name} ${s.role || ''}`);
         let participantsHeader = `@Participants:\t${participants.join(', ')}`;
         keepLines.push(participantsHeader);
       }
