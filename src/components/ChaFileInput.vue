@@ -9,53 +9,31 @@
         label="請選擇你的 cha 檔"
         :rules="[v => !!v || '請上傳檔案']"
       ></v-file-input>
-      <v-checkbox v-model="isAgreed" :rules="[v => v]">
-        <template v-slot:label>
-          <div>
-            我已閱讀並同意
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <span class="info--text" @click.stop="open" v-on="on">
-                  語料上傳使用條款
-                </span>
-              </template>
-              點擊以檢視條款
-            </v-tooltip>
-          </div>
-        </template>
-      </v-checkbox>
+      <div>
+        <h3>同意聲明</h3>
+        <p>
+          您所上傳之語料檔案僅進行語言樣本線上分析，本系統不做其他使用。
+          <br />
+          上傳之語料檔案在線上分析結束後將會移除，本系統不具儲存與保管責任。倘若您的語料內含重要個資或資訊，建議您保留原始檔案或改採下載
+          CLAN 軟體至個人電腦進行語言樣本分析，以減少不必要之困擾。
+        </p>
+      </div>
+      <v-checkbox
+        v-model="isAgreed"
+        :rules="[v => v || '您需要同意上述說明以進行線上分析。']"
+        label="本人已詳細閱讀上述內容，同意上述說明並願意進行線上分析。"
+      />
       <v-btn class="mt-4" color="primary" @click="submit">上傳檔案</v-btn>
     </v-form>
-    <v-dialog v-model="dialog" width="50%">
-      <v-card>
-        <v-toolbar color="info" dark>
-          <v-toolbar-title>語料上傳使用條款</v-toolbar-title>
-          <v-spacer />
-          <v-toolbar-items>
-            <v-btn icon @click="deny"><v-icon>mdi-close</v-icon></v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-        <v-card-text class="mt-4 text--primary text-body-1" v-text="terms['upload']" />
-        <v-card-actions>
-          <v-spacer />
-          <v-btn text color="primary" @click="accept">同意</v-btn>
-          <v-btn text color="error" @click="deny">不同意</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import terms from '@/util/terms';
-
 export default {
   name: 'ChaFileInput',
   data: () => ({
     file: null,
-    dialog: false,
     isAgreed: false,
-    terms,
   }),
   methods: {
     submit() {
@@ -63,20 +41,6 @@ export default {
         $emit('upload-file', file);
       }
     },
-    open() {
-      this.dialog = true;
-      this.isAgreed = !this.isAgreed;
-    },
-    accept() {
-      this.dialog = false;
-      this.isAgreed = true;
-    },
-    deny() {
-      this.dialog = false;
-      this.isAgreed = false;
-    },
   },
 };
 </script>
-
-<style></style>
