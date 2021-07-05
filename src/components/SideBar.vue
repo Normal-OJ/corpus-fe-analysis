@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     onActive(eles) {
-      console.log(eles);
       this.$emit('click-file', eles);
     },
   },
