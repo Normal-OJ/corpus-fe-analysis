@@ -12,7 +12,7 @@
         <FileFilter @next="step1" :data="data" :loading="loading" :fileMode="file"></FileFilter>
       </v-stepper-content>
       <v-stepper-content step="2">
-        <AnalysisResult @restart="restart" @back="step = step-1" :filename="filename">
+        <AnalysisResult @restart="restart" @back="step = step - 1" :filename="filename">
           <v-data-table
             v-if="tableItems"
             :headers="headers"
@@ -23,17 +23,17 @@
         </AnalysisResult>
       </v-stepper-content>
     </v-stepper-items>
-    <v-snackbar v-model="snackbar" color="error">{{snackbarText}}</v-snackbar>
+    <v-snackbar v-model="snackbar" color="error">{{ snackbarText }}</v-snackbar>
   </v-stepper>
 </template>
 
 <script>
-import FileFilter from "@/components/FileFilter";
-import AnalysisResult from "@/components/AnalysisResult";
-import chatArgs from "@/util/step1.json";
+import FileFilter from '@/components/FileFilter';
+import AnalysisResult from '@/components/AnalysisResult';
+import chatArgs from '@/util/step1.json';
 
 export default {
-  name: "Analysis",
+  name: 'Analysis',
 
   components: {
     FileFilter,
@@ -45,7 +45,7 @@ export default {
       step: 1,
       loading: false,
       items: null,
-      filename: "",
+      filename: '',
       data: {
         ages: [],
         sex: [],
@@ -54,32 +54,32 @@ export default {
         indicator: [],
       },
       snackbar: false,
-      snackbarText: "",
+      snackbarText: '',
       headers: [
         {
-          text: "語言指標",
-          align: "start",
-          value: "name",
-          class: "text--primary subtitle-1 font-weight-bold",
-          width: "30%",
+          text: '語言指標',
+          align: 'start',
+          value: 'name',
+          class: 'text--primary subtitle-1 font-weight-bold',
+          width: '30%',
         },
         {
-          text: "平均",
-          value: "avg",
-          class: "text--primary subtitle-1 font-weight-bold",
-          width: "25%",
+          text: '平均',
+          value: 'avg',
+          class: 'text--primary subtitle-1 font-weight-bold',
+          width: '25%',
         },
         {
-          text: "標準差",
-          value: "sd",
-          class: "text--primary subtitle-1 font-weight-bold",
-          width: "25%",
+          text: '標準差',
+          value: 'sd',
+          class: 'text--primary subtitle-1 font-weight-bold',
+          width: '25%',
         },
         {
-          text: "有效筆數",
-          value: "size",
-          class: "text--primary subtitle-1 font-weight-bold",
-          width: "20%",
+          text: '有效筆數',
+          value: 'size',
+          class: 'text--primary subtitle-1 font-weight-bold',
+          width: '20%',
         },
       ],
     };
@@ -90,8 +90,8 @@ export default {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
       const myParam = this.$route.params.file;
-      if (myParam !== "none") {
-        this.data["file"] = [myParam];
+      if (myParam !== 'none') {
+        this.data['file'] = [myParam];
         return true;
       }
       this.restart();
@@ -106,8 +106,7 @@ export default {
           if (key in this.items) {
             temp.push({
               name: value,
-              avg:
-                Math.round((this.items[key][0] + Number.EPSILON) * 100) / 100,
+              avg: Math.round((this.items[key][0] + Number.EPSILON) * 100) / 100,
               sd: Math.round((this.items[key][1] + Number.EPSILON) * 100) / 100,
               size: this.items[key][2],
             });
@@ -122,24 +121,24 @@ export default {
     step1(data) {
       this.loading = true;
       this.$http
-        .post(`/api/${this.file ? "path" : "option"}_kideval`, data)
-        .then((res) => {
+        .post(`/api/${this.file ? 'path' : 'option'}_kideval`, data)
+        .then(res => {
           this.items = res.data;
-          this.filename = this.items["filename"][0];
-          delete this.items["filename"];
+          this.filename = this.items['filename'][0];
+          delete this.items['filename'];
           this.loading = false;
           this.step = 2;
           document.body.scrollTop = 0;
           document.documentElement.scrollTop = 0;
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           if (err.response && err.response.status === 404) {
             // no file filtered
-            this.snackbarText = "語料庫無符合搜尋條件之語料";
+            this.snackbarText = '語料庫無符合搜尋條件之語料';
           } else {
             // unhandled errors
-            this.snackbarText = "分析失敗";
+            this.snackbarText = '分析失敗';
           }
           this.snackbar = true;
           this.loading = false;
@@ -161,5 +160,4 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>
