@@ -104,11 +104,13 @@ export default {
         // calculate avg and std for each indicator
         for (const [key, value] of Object.entries(chatArgs.reindicator)) {
           if (key in this.items) {
+            const size = this.items[key][2];
             temp.push({
               name: value,
-              avg: Math.round((this.items[key][0] + Number.EPSILON) * 100) / 100,
-              sd: Math.round((this.items[key][1] + Number.EPSILON) * 100) / 100,
-              size: this.items[key][2],
+              // If no data, then the avg and sd should be N/A
+              avg: size ? Math.round((this.items[key][0] + Number.EPSILON) * 100) / 100 : 'N/A',
+              sd: size ? Math.round((this.items[key][1] + Number.EPSILON) * 100) / 100 : 'N/A',
+              size,
             });
           }
         }
@@ -122,7 +124,7 @@ export default {
       this.loading = true;
       this.$http
         .post(`/api/${this.file ? 'path' : 'option'}_kideval`, data)
-        .then(res => {
+        .then((res) => {
           this.items = res.data;
           this.filename = this.items['filename'][0];
           delete this.items['filename'];
@@ -131,7 +133,7 @@ export default {
           document.body.scrollTop = 0;
           document.documentElement.scrollTop = 0;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           if (err.response && err.response.status === 404) {
             // no file filtered
