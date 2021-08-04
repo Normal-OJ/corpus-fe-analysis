@@ -185,12 +185,13 @@ export default {
         // @Languages header exists
         if(languages !== undefined) {
           languages = languages.replace(/@Languages:\t?/g, '');
-          languages = languages.split(/, ?/g);
+          languages = languages.split(/, ?/g).filter(Boolean);
           for(const lang of languages) {
             currentLanguages.add(lang);
           }
         }
         languages = `@Languages:\t${Array.from(currentLanguages).join(', ')}`;
+        keepLines.push(languages);
         let participants = speakers.map(s => `${s.nameCode || ''} ${s.name} ${s.role || ''}`);
         let participantsHeader = `@Participants:\t${participants.join(', ')}`;
         keepLines.push(participantsHeader);
