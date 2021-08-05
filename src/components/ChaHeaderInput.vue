@@ -180,19 +180,18 @@ export default {
       const speakers = this.$store.state.speakers;
       // There are at least 1 participant
       if (speakers.length) {
-        let languages = headerLines.find(line => line.startsWith('@Languages:'));
         let currentLanguages = new Set([speakers.map(s => s.language)]);
-        // No @Languages exist
-        if(languages === undefined) {
-          languages = `@Languages:\t${currentLanguages.join(', ')}`;
-        } else {
+        let languages = headerLines.find(line => line.startsWith('@Languages:'));
+        // @Languages header exists
+        if(languages !== undefined) {
           languages = languages.replace(/@Languages:\t?/g, '');
-          languages = languages.split(/, ?/g);
+          languages = languages.split(/, ?/g).filter(Boolean);
           for(const lang of languages) {
             currentLanguages.add(lang);
           }
-          languages = `@Languages:\t${currentLanguages.join(', ')}`;
         }
+        languages = `@Languages:\t${Array.from(currentLanguages).join(', ')}`;
+        keepLines.push(languages);
         let participants = speakers.map(s => `${s.nameCode || ''} ${s.name} ${s.role || ''}`);
         let participantsHeader = `@Participants:\t${participants.join(', ')}`;
         keepLines.push(participantsHeader);
