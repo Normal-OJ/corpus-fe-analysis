@@ -147,7 +147,7 @@ export default {
   components: { UiHint },
   computed: {
     speakerNames() {
-      return this.$store.state.speakers.map(speaker => speaker.nameCode);
+      return this.$store.state.speakers.map((speaker) => speaker.nameCode);
     },
   },
   data: () => ({
@@ -176,23 +176,25 @@ export default {
       // split original header into lines
       let headerLines = this.header.split(/[\r?\n]/g);
       // keep headers except @ID, @Participants, @Languages and empty line
-      let keepLines = headerLines.filter(line => line && !line.match(/^@(ID|Participants|Languages):/g));
+      let keepLines = headerLines.filter(
+        (line) => line && !line.match(/^@(ID|Participants|Languages):/g),
+      );
       const speakers = this.$store.state.speakers;
       // There are at least 1 participant
       if (speakers.length) {
-        let currentLanguages = new Set([speakers.map(s => s.language)]);
-        let languages = headerLines.find(line => line.startsWith('@Languages:'));
+        let currentLanguages = new Set(speakers.map((s) => s.language));
+        let languages = headerLines.find((line) => line.startsWith('@Languages:'));
         // @Languages header exists
-        if(languages !== undefined) {
+        if (languages !== undefined) {
           languages = languages.replace(/@Languages:\t?/g, '');
           languages = languages.split(/, ?/g).filter(Boolean);
-          for(const lang of languages) {
+          for (const lang of languages) {
             currentLanguages.add(lang);
           }
         }
         languages = `@Languages:\t${Array.from(currentLanguages).join(', ')}`;
         keepLines.push(languages);
-        let participants = speakers.map(s => `${s.nameCode || ''} ${s.name} ${s.role || ''}`);
+        let participants = speakers.map((s) => `${s.nameCode || ''} ${s.name} ${s.role || ''}`);
         let participantsHeader = `@Participants:\t${participants.join(', ')}`;
         keepLines.push(participantsHeader);
       }

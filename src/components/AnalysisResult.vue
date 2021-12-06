@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="min-height: 100vh; padding: 0 10vw;">
+  <v-container fluid style="min-height: 100vh; padding: 0 10vw">
     <h2 class="red--text">{{ warnMessage }}</h2>
     <v-row>
       <!-- Analysis result table -->
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import json from '@/util/step1.json';
 import UiAlert from '@/components/ui-alert';
 
 export default {
@@ -57,22 +56,21 @@ export default {
     return {
       alert: false,
       downloadAlert: false,
-      cache: null,
       warnMessage:
         '本語料非來自隨機抽樣之常模,分析結果數值僅提供參考,不適合作為幼兒語言發展篩檢或診斷之標準',
     };
   },
   methods: {
     async download() {
-      if (!this.cache) {
-        try {
-          this.cache = (await this.$http.get(`/api/download?file=${this.filename}`)).data;
-        } catch (err) {
-          console.log(err);
-        }
+      let rawBytes = null;
+      try {
+        rawBytes = (await this.$http.get(`/api/download?file=${this.filename}`)).data;
+      } catch (err) {
+        // TODO: pop error UI
+        console.log(err);
+        return;
       }
-
-      var file = new Blob([this.cache], { type: 'text/plain;charset=utf-8' });
+      const file = new Blob([rawBytes], { type: 'text/plain;charset=utf-8' });
       if (window.navigator.msSaveOrOpenBlob) {
         // IE10+
         window.navigator.msSaveOrOpenBlob(file, 'report.xls');
@@ -84,7 +82,7 @@ export default {
         a.download = 'report.xls';
         document.body.appendChild(a);
         a.click();
-        setTimeout(function() {
+        setTimeout(function () {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
         }, 0);
