@@ -22,7 +22,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn href="http://noj.tw:8000/" target="_blank" text>
+      <v-btn href="https://cmes.hdfs.ntnu.edu.tw/" target="_blank" text>
         <span>回到華語兒童語言發展評估系統</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
