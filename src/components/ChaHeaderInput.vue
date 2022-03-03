@@ -180,7 +180,7 @@ export default {
       const speakers = this.$store.state.speakers;
       // There are at least 1 participant
       if (speakers.length) {
-        let currentLanguages = new Set([speakers.map(s => s.language)]);
+        let currentLanguages = new Set(speakers.map(s => s.language));
         let languages = headerLines.find(line => line.startsWith('@Languages:'));
         // @Languages header exists
         if(languages !== undefined) {
