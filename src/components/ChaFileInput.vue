@@ -7,7 +7,7 @@
         class="my-2"
         accept=".cha"
         label="請選擇你的 cha 檔"
-        :rules="[(v) => !!v || '請上傳檔案']"
+        :rules="[v => !!v || '請上傳檔案']"
       ></v-file-input>
       <div>
         <h3>同意聲明</h3>
@@ -20,10 +20,13 @@
       </div>
       <v-checkbox
         v-model="isAgreed"
-        :rules="[(v) => v || '您需要同意上述說明以進行線上分析。']"
+        :rules="[v => v || '您需要同意上述說明以進行線上分析。']"
         label="本人已詳細閱讀上述內容，同意上述說明並願意進行線上分析。"
       />
-      <v-btn class="mt-4" color="primary" @click="submit">上傳檔案</v-btn>
+      
+       <v-btn class="mt-4" color="primary" @click="submit">上傳檔案(不須斷詞)</v-btn>&nbsp;
+       <v-btn class="mt-4" color="#FFA500" @click="submitAndSeg">上傳檔案(須斷詞)</v-btn>
+           
     </v-form>
   </v-container>
 </template>
@@ -34,12 +37,21 @@ export default {
   data: () => ({
     file: null,
     isAgreed: false,
+    seg: false,
   }),
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
+        this.seg=false;
         this.$emit('upload-file', this.file);
       }
+    },
+    submitAndSeg() {
+      if (this.$refs.form.validate()) {
+        this.seg=true;
+        this.$emit('upload-file-seg', this.file);
+      }
+      //console.log(this.seg);
     },
   },
 };

@@ -57,7 +57,9 @@
       <v-stepper-content step="2">
         <v-container>
           <v-btn color="primary" @click="step--">返回上一步</v-btn>
-          <ChaFileInput v-if="uploadByFile" @upload-file="parseFile"></ChaFileInput>
+          <ChaFileInput v-if="uploadByFile" @upload-file-seg="parseFileSeg" @upload-file="parseFile">
+          <p style="color: red">語料斷詞中，請稍候。</p>
+          </ChaFileInput>
           <div v-else>
             <ChaHeaderInput ref="chaHeader"></ChaHeaderInput>
             <ChaContentInput ref="chaContent"></ChaContentInput>
@@ -101,6 +103,7 @@ import ChaHeaderInput from '@/components/ChaHeaderInput';
 import AnalysisResult from '@/components/AnalysisResult';
 import FilePreview from '@/components/FilePreview';
 import chatArgs from '@/util/step1.json';
+import Spinner from '@/components/Spinner';
 
 export default {
   name: 'Upload',
@@ -110,11 +113,13 @@ export default {
     ChaContentInput,
     ChaHeaderInput,
     AnalysisResult,
+    Spinner,
   },
   data: () => ({
     file: null,
     speaker: '',
     uploadByFile: false,
+    spin: false,
     step: 1,
     snackbar: false,
     snackbarText: '',
@@ -182,7 +187,54 @@ export default {
       speakers = [...speakers].map(speaker => ({ nameCode: speaker }));
       this.$store.dispatch('setSpeakers', speakers);
       this.step++;
+      //console.log(this.seg);
     },
+
+    async parseFileSeg(file)
+    {
+        this.parseFile(file);
+         try {
+              this.segment();
+         }
+        catch (err){
+        this.segError("斷詞失敗");
+        this.step--;
+        }
+    },
+
+    async segment(){
+        //segment the file
+        let segFormData = new FormData();
+        segFormData.append('file', this.file);
+        let result = (
+            await this.$http.post('/api/segment', segFormData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+          ).data;
+          this.file = new File([result], { type: 'text/plain;charset=utf-8' }) //replace the file to segment file
+    },
+
+    /*async parseFileSeg(file){
+      this.parseFile(file);
+      console.log("got it!");
+      try {
+        this.segment();
+      }
+      catch (err){
+        this.segError("斷詞失敗");
+        this.step--;
+      }
+    },*/
+
+    segError(message){
+      this.snackbar = true
+      this.snackbar = message
+    },
+
+
+    
     /**
      * upload by text
      */
@@ -191,7 +243,19 @@ export default {
       let content = `@UTF8\n@Begin\n${this.$refs.chaHeader.header}\n${this.$refs.chaContent.text}\n@End\n`;
       this.file = new Blob([content], { type: 'text/plain;charset=utf-8' });
       this.step++;
+
+      if(this.seg)
+      {
+        try {
+          this.segment();
+        }
+        catch (err){
+          this.segError("斷詞失敗");
+          this.step--;
+        }
+      }
     },
+
     /**
      * core upload function
      */
@@ -212,10 +276,8 @@ export default {
         this.analysis.results = resp;
         this.analysis.filename = resp.filename;
       } catch (err) {
-        // prompt snack bar
-        this.snackbar = true;
-        this.snackbarText = '分析失敗';
-        console.log(err);
+        this.segError("分析失敗");
+        this.step--;
         return;
       }
       // continue to next step
