@@ -20,6 +20,11 @@
         <span class="title">線上分析</span>
       </v-btn>
 
+      <v-btn to="/Maps" text>
+        <v-icon>mdi-file-chart</v-icon>
+        <span class="title">Maps-R</span>
+      </v-btn>
+
       <v-spacer></v-spacer>
 
       <v-btn href="https://cmes.hdfs.ntnu.edu.tw/" target="_blank" text>
