@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Browse from '@/views/Browse';
 import Analysis from '../views/Analysis.vue';
 import Upload from '../views/Upload';
+import Maps from '../views/Maps'
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     name: 'upload',
     component: Upload,
   },
+  {
+    path: '/Maps',
+    name: 'Maps',
+    component: Maps,
+  }
 ];
 
 const router = new VueRouter({

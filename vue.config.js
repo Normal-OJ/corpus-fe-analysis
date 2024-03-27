@@ -5,7 +5,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_ENV === 'development' ? 'http://noj.tw:8787/api' : 'http://backend:8787/api',
+        target: process.env.VUE_APP_ENV === 'development' ? 'http://localhost:8787/api' : 'http://backend:8787/api',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
