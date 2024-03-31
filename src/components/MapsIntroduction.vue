@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
-    <v-row justify="center">
+    <!-- <v-row justify="center">
       <h2 style="color: red">MAPS-R分析系統尚於調適中，分析結果未認證</h2>
-    </v-row>
+    </v-row> -->
 
     <v-row justify="center">
         <template>
